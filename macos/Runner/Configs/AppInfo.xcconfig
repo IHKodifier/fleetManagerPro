@@ -8,7 +8,7 @@
 PRODUCT_NAME = fleet_manager_pro
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.fleetManagerPro
+PRODUCT_BUNDLE_IDENTIFIER = com.enigmatek.fleet_manager_pro
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.

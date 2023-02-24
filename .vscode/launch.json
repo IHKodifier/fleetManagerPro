@@ -1,0 +1,18 @@
+{
+    "configurations": [
+
+        {
+            "name": "Flutter use this",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            // "args": ["--no-sound-null-safety"],
+            "cwd": "${workspaceFolder}",
+            "flutterMode": "debug",
+            // "deviceName": "Pixel 2 API 29",
+            "target": "lib/main.dart",
+            // "flutterPlatform": "android-x86"
+          }
+
+    ]
+}

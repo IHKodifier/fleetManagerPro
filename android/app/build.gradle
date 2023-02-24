@@ -47,9 +47,11 @@ android {
         applicationId "ccom.enigmatek.fleet_manager_pro"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        // minSdkVersion flutter.minSdkVersion
+        // targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
+        minSdkVersion 21
+        targetSdkVersion 26
         versionName flutterVersionName
     }
 

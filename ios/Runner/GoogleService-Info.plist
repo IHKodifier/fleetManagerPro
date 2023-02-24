@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>315625800053-njgm8dqgeheoc5gmnh1u75j61hs56osr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.315625800053-njgm8dqgeheoc5gmnh1u75j61hs56osr</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAGBEuZlKxbSBvofmXCjiews_AtfwR5Fhs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>315625800053</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.enigmatek.fleet_manager_pro</string>
+	<key>PROJECT_ID</key>
+	<string>fleet-manager-pro</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fleet-manager-pro.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:315625800053:ios:d9e1d1f7f7239c9f41533c</string>
+</dict>
+</plist>
