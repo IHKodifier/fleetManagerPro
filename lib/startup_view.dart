@@ -1,11 +1,9 @@
-import 'dart:math';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fleet_manager_pro/onboarding.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter/foundation.dart';
 
 class StartUpResolver extends ConsumerWidget {
    StartUpResolver({super.key});
@@ -32,14 +30,14 @@ return Text(error.toString());
   }
 
   Widget onLoading() {
-    return CircularProgressIndicator();
+    return const CircularProgressIndicator();
   }
 
   Widget onData(User? user) {
-    if (user!=null) {
-      return Container(color: Colors.green,);
-    } else {
+    if (user==null) {
       return OnBoarding();
+    } else {
+      return Container(color: Colors.green,);
       
     }
   }
