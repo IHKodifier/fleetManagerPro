@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fleet_manager_pro/onboarding.dart';
+import 'package:fleet_manager_pro/app_home_screen.dart';
+import 'package:fleet_manager_pro/ui/login/login_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ logger.e(error.toString() + stackTrace.toString());
 
 return Text(error.toString());
     }
-    return  Container();
+    return  Center(child: Text(error.toString()),);
   }
 
   Widget onLoading() {
@@ -35,9 +36,11 @@ return Text(error.toString());
 
   Widget onData(User? user) {
     if (user==null) {
-      return OnBoarding();
+
+      //go to login Page
+      return  const LoginScreen();
     } else {
-      return Container(color: Colors.green,);
+      return const AppHomeScreen();
       
     }
   }
