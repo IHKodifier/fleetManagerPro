@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fleet_manager_pro/ui/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -9,20 +8,23 @@ class AppHomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return    SafeArea(
+    return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
-        drawer:  const CustomDrawer(),
+        drawer: const CustomDrawer(),
         body: Center(
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('you have logged in'),
               SizedBox(
-                height: 60, 
+                height: 60,
                 width: double.infinity,
-                child: ElevatedButton.icon(onPressed: onLogoutPressed, icon: const Icon(Icons.logout), label: const Text('Log out')),
+                child: ElevatedButton.icon(
+                    onPressed: onLogoutPressed,
+                    icon: const Icon(Icons.logout),
+                    label: const Text('Log out')),
               ),
             ],
           ),
@@ -34,4 +36,4 @@ class AppHomeScreen extends ConsumerWidget {
   void onLogoutPressed() {
     FirebaseAuth.instance.signOut();
   }
-  }
+}
