@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fleet_manager_pro/ui/custom_appbar.dart';
+import 'package:fleet_manager_pro/ui/shared/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,13 +18,16 @@ class AppHomeScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('you have logged in'),
-              SizedBox(
-                height: 60,
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                    onPressed: onLogoutPressed,
-                    icon: const Icon(Icons.logout),
-                    label: const Text('Log out')),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: SizedBox(
+                  height: 60,
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                      onPressed: onLogoutPressed,
+                      icon: const Icon(Icons.logout),
+                      label: const Text('Log out')),
+                ),
               ),
             ],
           ),

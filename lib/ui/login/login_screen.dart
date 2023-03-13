@@ -18,10 +18,13 @@ class LoginScreen extends ConsumerWidget {
             // const Spacer(flex: 1,),
             Text('Please use the button below to Login ',style: Theme.of(context).textTheme.titleLarge,),
             // const Spacer(flex: 3,),
-            SizedBox(
-              height: 60,
-              width: double.infinity,
-              child: ElevatedButton.icon(onPressed: onLoginPressed, icon: const Icon(Icons.login), label: const Text('Login'))),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SizedBox(
+                height: 60,
+                width: double.infinity,
+                child: ElevatedButton.icon(onPressed: onLoginPressed, icon: const Icon(Icons.login), label: const Text('Login'))),
+            ),
             // const Spacer(),
             SizedBox(
               height: 60,
