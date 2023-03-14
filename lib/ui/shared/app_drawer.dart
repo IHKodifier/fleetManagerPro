@@ -3,6 +3,8 @@ import 'package:fleet_manager_pro/ui/profile/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../cars/cars_list.dart';
+
 class CustomDrawer extends ConsumerWidget {
   const CustomDrawer({super.key});
 
@@ -137,19 +139,18 @@ class ProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ListTile(
       onTap: () => Navigator.of(context)
           .push(MaterialPageRoute(builder: (_) => ProfileView())),
-      child: ListTile(
-        leading: Icon(
-          (Icons.person),
-          color: Theme.of(context).colorScheme.primary,
-          size: 40,
-        ),
-        title: Text(
-          'profile',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+      hoverColor: Colors.green,
+      leading: Icon(
+        (Icons.person),
+        color: Theme.of(context).colorScheme.primary,
+        size: 40,
+      ),
+      title: Text(
+        'profile',
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }
@@ -226,6 +227,8 @@ class MyCarsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => const CarsListPage())),
       leading: Icon(
         (Icons.car_rental),
         color: Theme.of(context).colorScheme.primary,
