@@ -1,35 +1,33 @@
-
 import 'dart:convert';
 import 'dart:core';
 
 import 'package:equatable/equatable.dart';
-
-import 'package:fleet_manager_pro/states/vehicle.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AppUser extends Equatable {
-
-
   final String userId;
   String? location;
   String? profileType;
+  String? displayName;
   String? email;
-    String? phone;
+  String? phone;
   AppUser({
     required this.userId,
     this.location,
     this.profileType,
+    this.displayName,
     this.email,
     this.phone,
   });
 
-
-      @override
-      // TODO: implement props
+  @override
+  // TODO: implement props
   List<Object> get props {
     return [
       userId,
       location!,
       profileType!,
+      displayName!,
       email!,
       phone!,
     ];
@@ -39,6 +37,7 @@ class AppUser extends Equatable {
     String? userId,
     String? location,
     String? profileType,
+    String? displayName,
     String? email,
     String? phone,
   }) {
@@ -46,6 +45,7 @@ class AppUser extends Equatable {
       userId: userId ?? this.userId,
       location: location ?? this.location,
       profileType: profileType ?? this.profileType,
+      displayName: displayName ?? this.displayName,
       email: email ?? this.email,
       phone: phone ?? this.phone,
     );
@@ -60,6 +60,9 @@ class AppUser extends Equatable {
     }
     if(profileType != null){
       result.addAll({'profileType': profileType});
+    }
+    if(displayName != null){
+      result.addAll({'displayName': displayName});
     }
     if(email != null){
       result.addAll({'email': email});
@@ -76,6 +79,7 @@ class AppUser extends Equatable {
       userId: map['userId'] ?? '',
       location: map['location'],
       profileType: map['profileType'],
+      displayName: map['displayName'],
       email: map['email'],
       phone: map['phone'],
     );
@@ -83,10 +87,30 @@ class AppUser extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory AppUser.fromJson(String source) => AppUser.fromMap(json.decode(source));
+  factory AppUser.fromJson(String source) =>
+      AppUser.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'AppUser(userId: $userId, location: $location, profileType: $profileType, email: $email, phone: $phone)';
+    return 'AppUser(userId: $userId, location: $location, profileType: $profileType, displayName: $displayName, email: $email, phone: $phone)';
   }
 }
+ap<String, dynamic> userToMap(User user) {
+  return {
+    'uid': user.uid,
+    'email': user.email,
+    'displayName': user.displayName,
+    'photoUrl': user.photoURL,
+    'phoneNumber': user.phoneNumber,
+    'isEmailVerified': user.emailVerified,
+  };}
+//   User userFromMap(Map<String, dynamic> data) {
+//   return User.fromJson(
+//     uid: data['uid'],
+//     email: data['email'],
+//     displayName: data['displayName'],
+//     photoURL: data['photoUrl'],
+//     phoneNumber: data['phoneNumber'],
+//     emailVerified: data['isEmailVerified'],
+//   );
+// }

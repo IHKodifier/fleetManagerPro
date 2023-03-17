@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fleet_manager_pro/app_home_screen.dart';
+import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/ui/login/login_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class StartUpResolver extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-   final authState =  ref.watch(authStreamProvider);
+   final authState =  ref.watch(authStateChangesProvider);
     return authState.when(
       error: onError, 
       loading: onLoading,

@@ -1,4 +1,6 @@
 import 'package:fleet_manager_pro/app.dart';
+import 'package:fleet_manager_pro/states/app_user.dart';
+import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/ui/profile/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +12,11 @@ class CustomDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+    final user0 =
+        user ?? AppUser(userId: 'Not logged in', email: 'Please Login in',
+        );
+
     return Drawer(
       // backgroundColor: Colors.yellow,
       // width: MediaQuery.of(context).size.width * 0.8,
@@ -24,7 +31,7 @@ class CustomDrawer extends ConsumerWidget {
                   .headlineMedium!
                   .copyWith(color: Theme.of(context).colorScheme.onPrimary),
             ),
-            accountEmail: const Text('S@d.com'),
+            accountEmail: const Text('check user id if user exists'),
             currentAccountPicture: Icon(
               Icons.account_circle,
               size: 72,
