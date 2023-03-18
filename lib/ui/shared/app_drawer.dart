@@ -1,7 +1,6 @@
 import 'package:fleet_manager_pro/app.dart';
-import 'package:fleet_manager_pro/states/app_user.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
-import 'package:fleet_manager_pro/ui/profile/profile_view.dart';
+import 'package:fleet_manager_pro/ui/screens/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,10 +11,8 @@ class CustomDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
-    final user0 =
-        user ?? AppUser(userId: 'Not logged in', email: 'Please Login in',
-        );
+    final appUser = ref.watch(appUserProvider);
+    // final user0 = user ??
 
     return Drawer(
       // backgroundColor: Colors.yellow,
@@ -25,13 +22,13 @@ class CustomDrawer extends ConsumerWidget {
         children: [
           UserAccountsDrawerHeader(
             accountName: Text(
-              'Dev cycle  Tester',
+              appUser!.displayName!,
               style: Theme.of(context)
                   .textTheme
                   .headlineMedium!
                   .copyWith(color: Theme.of(context).colorScheme.onPrimary),
             ),
-            accountEmail: const Text('check user id if user exists'),
+            accountEmail: Text(appUser.email!),
             currentAccountPicture: Icon(
               Icons.account_circle,
               size: 72,
@@ -235,7 +232,7 @@ class MyCarsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => const CarsListPage())),
+          .push(MaterialPageRoute(builder: (_) =>  CarsListPage())),
       leading: Icon(
         (Icons.car_rental),
         color: Theme.of(context).colorScheme.primary,

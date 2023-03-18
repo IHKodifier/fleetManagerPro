@@ -7,40 +7,40 @@ final authStateChangesProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.authStateChanges().asBroadcastStream();
 });
 
-final userProvider =
+final appUserProvider =
     StateNotifierProvider<AppUserStateNotifier, AppUser?>((ref) {
   return AppUserStateNotifier(ref);
 });
 
 class AppUserStateNotifier extends StateNotifier<AppUser?> {
-  // final StateNotifierProviderRef<AppUserStateNotifier, AppUser?> ref;
   AppUserStateNotifier(this.ref, [state]) : super(state) {
-    ref.listen(
-        authStateChangesProvider,
-        (previous, next) {
+    ref.listen(authStateChangesProvider, (previous, next) {
       if (previous != next) {
         //refetch the user doc from forestore and set AppUserState
-        final user = FirebaseAuth.instance.currentUser.u
+        final user = FirebaseAuth.instance.currentUser;
 
         FirebaseFirestore.instance
             .collection('users')
-            .where('userId', isEqualTo: user?.email)
+            .doc(user?.uid)
             .get()
-            .then((value) {
-          final user = AppUser.fromMap(value.docs[0].data());
-          state = user;
+          .then((value) 
+          
+          {
+          final appUser = AppUser.fromMap(value.data()!);
+         setAppUser(appUser);
         });
       }
     });
-
-    void setUser(AppUser user) {
-      state = user;
-    }
-
-    void clearUser() {
-      state = null;
-    }
   }
 
   final StateNotifierProviderRef<AppUserStateNotifier, AppUser?> ref;
+
+  void clearUser() {
+      state = null;
+    }
+
+   void setAppUser(AppUser appUser) {
+
+      state = appUser;
+    }
 }

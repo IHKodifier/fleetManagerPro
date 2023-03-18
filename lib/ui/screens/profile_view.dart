@@ -1,4 +1,4 @@
-import 'package:fleet_manager_pro/ui/profile/profile_edit.dart';
+import 'package:fleet_manager_pro/ui/screens/profile_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

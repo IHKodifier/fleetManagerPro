@@ -1,30 +1,25 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final fruitsProvider = StreamProvider.autoDispose<List<Fruit>>((ref) {
-  final firestore = FirebaseFirestore.instance;
-  final collectionReference = firestore.collection('fruits');
+import '../../states/app_user_state.dart';
 
+final vehiclesProvider = StreamProvider.autoDispose<List<Vehicle>>((ref) {
+  final firestore = FirebaseFirestore.instance;
+  final collectionReference = firestore
+      .collection('users')
+      .doc(ref.read(appUserProvider)!.uuid)
+      .collection('vehicles');
   return collectionReference.snapshots().map((querySnapshot) {
     return querySnapshot.docs.map((doc) {
       final data = doc.data();
-      return Fruit.fromMap(data);
+      return Vehicle.fromMap(data);
     }).toList();
   });
 });
-
-
-
-
-
-
-
-
-
-
 
 /// this is just a rubbish class
 class Fruit {
@@ -44,7 +39,6 @@ class Fruit {
 
   final String name;
   final int quantity;
-
 
   @override
   String toString() => 'Fruit(name: $name, quantity: $quantity)';
@@ -71,27 +65,16 @@ class Fruit {
   String toJson() => json.encode(toMap());
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 class CarsList extends ConsumerWidget {
   const CarsList({super.key});
-///this one is effective keep this delete others
-  Widget onData(List<Fruit> data) {
+
+  ///this one is effective keep this delete others
+  Widget onData(List<Vehicle> data) {
     return ListView(
       children: data
           .map((e) => ListTile(
-                title: Text(e.name),
-                trailing: Text(e.quantity.toString()),
+                title: Text(e.make!),
+                trailing: Text(e.model!),
               ))
           .toList(),
     );
@@ -107,21 +90,25 @@ class CarsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fruits = ref.watch(fruitsProvider);
+    final vehicles = ref.watch(vehiclesProvider);
 
-    return fruits.when(data: onData, error: onError, loading: onLoading);
+    return vehicles.when(data: onData, error: onError, loading: onLoading);
   }
 }
 
 class CarsListPage extends ConsumerWidget {
-  const CarsListPage({super.key});
+   CarsListPage({super.key});
+  late BuildContext buildContext;
 
   Widget onError(Object error, StackTrace stackTrace) {
+    
     return Text(error.toString() + stackTrace.toString());
   }
 
   Widget onLoading() {
-    return const CircularProgressIndicator(strokeWidth: 10,);
+    return const CircularProgressIndicator(
+      strokeWidth: 10,
+    );
   }
 
   Widget onData(List<Fruit> data) {
@@ -135,13 +122,24 @@ class CarsListPage extends ConsumerWidget {
     );
   }
 
+  void onFABPressed() {
+   
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stream = ref.watch(fruitsProvider);
+    buildContext=context;
+    final stream = ref.watch(vehiclesProvider);
 
     return Scaffold(
       appBar: AppBar(),
-      body:  CarsList(),
+      body: const CarsList(),
+      floatingActionButton: FloatingActionButton(
+          onPressed: onFABPressed,
+          child: const Icon(
+            Icons.add,
+            size: 40,
+          )),
     );
   }
 }
