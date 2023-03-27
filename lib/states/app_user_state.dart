@@ -43,4 +43,17 @@ class AppUserStateNotifier extends StateNotifier<AppUser?> {
 
       state = appUser;
     }
+
+
+    Future<void> refreshAppUser()async {
+//TODO
+final authUser = FirebaseAuth.instance.currentUser;
+
+final snapshhot = await FirebaseFirestore.instance.collection('users')
+.doc(authUser?.uid)
+.get();
+setAppUser(AppUser.fromMap(snapshhot.data()!));
+
+
+    }
 }

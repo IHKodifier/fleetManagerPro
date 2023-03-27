@@ -10,7 +10,7 @@ class Vehicle extends Equatable {
  
 
 
-  final String id;
+   String id;
   int? doors;
   List<Maintenance?>? maintenances;
   String? make;
@@ -90,7 +90,7 @@ class Vehicle extends Equatable {
       result.addAll({'reg': reg});
     }
     if(regCity != null){
-      result.addAll({'regCity': regCity});
+      result.addAll({'regcity': regCity});
     }
   
     return result;
@@ -105,7 +105,7 @@ class Vehicle extends Equatable {
       model: map['model'],
       year: map['year'],
       reg: map['reg'],
-      regCity: map['regCity'],
+      regCity: map['regcity'],
     );
   }
 

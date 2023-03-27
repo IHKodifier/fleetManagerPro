@@ -2,6 +2,11 @@
     "launch": {
         "configurations": [],
         "compounds": []
-    }
-    
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "editor.formatOnSave": true,
+    "errorLens.onSave": true,
+    "dart.hotReloadOnSave": "all"
 }

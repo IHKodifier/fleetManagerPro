@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fleet_manager_pro/app.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
-import 'package:fleet_manager_pro/ui/screens/profile_view.dart';
+import 'package:fleet_manager_pro/ui/shared/vehicles_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../cars/cars_list.dart';
+import '../screens/profile_view_screen.dart';
 
 class CustomDrawer extends ConsumerWidget {
   const CustomDrawer({super.key});
@@ -219,6 +220,7 @@ class SignOutTile extends StatelessWidget {
         'Sign out',
         style: Theme.of(context).textTheme.titleMedium,
       ),
+      onTap: (){FirebaseAuth.instance.signOut();},
     );
   }
 }
@@ -232,7 +234,7 @@ class MyCarsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) =>  CarsListPage())),
+          .push(MaterialPageRoute(builder: (_) =>  VehicleList())),
       leading: Icon(
         (Icons.car_rental),
         color: Theme.of(context).colorScheme.primary,

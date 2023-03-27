@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 
 class StartUpResolver extends ConsumerWidget {
   StartUpResolver({super.key});
+ late  AppUserStateNotifier  notifer;
 
   final logger = Logger();
   late WidgetRef thisRef;
@@ -39,7 +40,7 @@ class StartUpResolver extends ConsumerWidget {
 // notifier. do it now.
 //TODO 
 
-
+// notifer.refreshAppUser();
 
       return const AppHomeScreen();
     }
@@ -47,8 +48,9 @@ class StartUpResolver extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    notifer= ref.read(appUserProvider.notifier);
     thisRef = ref;
-    final appUser = ref.read(appUserProvider);
+    // final appUser = ref.read(appUserProvider);
 
     final authState = ref.watch(authStateChangesProvider);
     return authState.when(
