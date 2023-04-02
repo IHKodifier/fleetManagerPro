@@ -4,9 +4,19 @@
         "compounds": []
     },
     "editor.codeActionsOnSave": {
-        "source.fixAll": true
+        "source.fixAll": true,
+        "source.organizeImports": true,
     },
     "editor.formatOnSave": true,
     "errorLens.onSave": true,
-    "dart.hotReloadOnSave": "all"
+    "dart.hotReloadOnSave": "all",
+    "errorLens.delay": 500,
+    "errorLens.enabledDiagnosticLevels": [
+        "error"
+    ],
+    "errorLens.errorGutterIconColor": "",
+    "errorLens.followCursor": "closestProblem",
+    "errorLens.gutterIconsFollowCursorOverride": false,
+    "errorLens.gutterIconSize": "0",
+    "errorLens.infoGutterIconColor": ""
 }

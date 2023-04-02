@@ -18,6 +18,7 @@ class Vehicle extends Equatable {
   String? year;
   String? reg;
   String? regCity;
+  List<String?>? images;
   Vehicle({
     required this.id,
     this.doors,
@@ -27,6 +28,7 @@ class Vehicle extends Equatable {
     this.year,
     this.reg,
     this.regCity,
+    this.images,
   });
 
   @override
@@ -41,6 +43,7 @@ class Vehicle extends Equatable {
       year!,
       reg!,
       regCity!,
+      images!,
     ];
   }
 
@@ -54,6 +57,7 @@ class Vehicle extends Equatable {
     String? year,
     String? reg,
     String? regCity,
+    List<String?>? images,
   }) {
     return Vehicle(
       id: id ?? this.id,
@@ -64,6 +68,7 @@ class Vehicle extends Equatable {
       year: year ?? this.year,
       reg: reg ?? this.reg,
       regCity: regCity ?? this.regCity,
+      images:images??this.images,
     );
   }
 
@@ -92,6 +97,9 @@ class Vehicle extends Equatable {
     if(regCity != null){
       result.addAll({'regcity': regCity});
     }
+    if(images != null){
+      result.addAll({'images': images!.map((x) => x).toList()});
+    }
   
     return result;
   }
@@ -106,6 +114,8 @@ class Vehicle extends Equatable {
       year: map['year'],
       reg: map['reg'],
       regCity: map['regcity'],
+      images: map['images'] != null ?
+       List<String?>.from(map['images']?.map(( x) => x)) : null,
     );
   }
 
@@ -115,6 +125,6 @@ class Vehicle extends Equatable {
 
   @override
   String toString() {
-    return 'Vehicle(id: $id, doors: $doors, maintenances: $maintenances, make: $make, model: $model, year: $year, reg: $reg, regCity: $regCity)';
+    return 'Vehicle(id: $id, doors: $doors, maintenances: $maintenances, make: $make, model: $model, year: $year, reg: $reg, regCity: $regCity, images: $images)';
   }
 }
