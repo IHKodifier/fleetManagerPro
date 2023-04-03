@@ -111,7 +111,7 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
           pageIndex = value;
           opacity = 1.0;
         }),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         height: 60,
         items: navBarItems,
       ),

@@ -53,26 +53,26 @@ packages:
     dependency: "direct main"
     description:
       name: cloud_firestore
-      sha256: "65f148d9f5b4f389320abb45847120cf5e46094c1a8cbc64934ffc1e29688596"
+      sha256: "3a2dba23d7d084a2d3c2dfd240d2122908cca40bab2d142f7e107f40df174ab5"
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.3"
+    version: "4.5.0"
   cloud_firestore_platform_interface:
     dependency: transitive
     description:
       name: cloud_firestore_platform_interface
-      sha256: "43ccae09f7e0c82752e69c251c6dc5efcdff4ddcfc09564175a28657bbd74188"
+      sha256: "29349a0687bc31290ab81d1de2b1cdadb40d0ea3ab30d247323c6c5be0d4c6fc"
       url: "https://pub.dev"
     source: hosted
-    version: "5.11.3"
+    version: "5.12.0"
   cloud_firestore_web:
     dependency: transitive
     description:
       name: cloud_firestore_web
-      sha256: e054c007217e28e07179bbae0564c2a4f6338a60bddb0c139e4834e953f4b95c
+      sha256: bc1fbcd6287acedded1139c9b13cfd47e792d5198f130f98759464839ea510a7
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.3"
+    version: "3.4.0"
   collection:
     dependency: transitive
     description:
@@ -165,26 +165,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_auth
-      sha256: "9907d80446466e638dad31c195150b305dffd145dc57610fcd12c72289432143"
+      sha256: "3d33d6646f08407122cd2cbd292d274b98035d93f59c9e341ba992ebefd59ffa"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.9"
+    version: "4.4.0"
   firebase_auth_platform_interface:
     dependency: transitive
     description:
       name: firebase_auth_platform_interface
-      sha256: c645fec50b0391aa878288f58fa4fe9762c271380c457aedf5c7c9b718604f68
+      sha256: "5d5f283517ba34afd69ef448cc81ea23bcf8887393bedae4f70f45060b045fb9"
       url: "https://pub.dev"
     source: hosted
-    version: "6.11.11"
+    version: "6.13.0"
   firebase_auth_web:
     dependency: transitive
     description:
       name: firebase_auth_web
-      sha256: "2dcf2a36852b9091741b4a4047a02e1f2c43a62c6cacec7df573a793a6543e6d"
+      sha256: f50f7026b95c62dba3f0b28bdb3ab3601ea402b4908c1469103f16ae2b0f5281
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.8"
+    version: "5.3.0"
   firebase_core:
     dependency: "direct main"
     description:
@@ -237,23 +237,71 @@ packages:
     dependency: "direct main"
     description:
       name: flex_color_scheme
-      sha256: "03a0ad67cc224b20aab9f9a775a6cef76c8f884887902a2d94635c187858b31b"
+      sha256: d72aac83f525bf7a0fae66a90837817c73adcd52af4b4a8f310fb40a1b57055b
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.2"
+    version: "7.0.0"
   flex_seed_scheme:
     dependency: transitive
     description:
       name: flex_seed_scheme
-      sha256: e61950ccadfb8d43ce5cdef382e8f689edc053ce6b837e277539410ecfb3b3e5
+      sha256: "7058288ef97d348657ac95cea25d65a9aac181ca08387ede891fd7230ad7600f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "1.2.3"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_keyboard_visibility:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility
+      sha256: "86b71bbaffa38e885f5c21b1182408b9be6951fd125432cf6652c636254cef2d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.0"
+  flutter_keyboard_visibility_linux:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_linux
+      sha256: "6fba7cd9bb033b6ddd8c2beb4c99ad02d728f1e6e6d9b9446667398b2ac39f08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  flutter_keyboard_visibility_macos:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_macos
+      sha256: c5c49b16fff453dfdafdc16f26bdd8fb8d55812a1d50b0ce25fc8d9f2e53d086
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  flutter_keyboard_visibility_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_platform_interface
+      sha256: e43a89845873f7be10cb3884345ceb9aebf00a659f479d1c8f4293fcb37022a4
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
+  flutter_keyboard_visibility_web:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_web
+      sha256: d3771a2e752880c79203f8d80658401d0c998e4183edca05a149f5098ce6e3d1
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
+  flutter_keyboard_visibility_windows:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_windows
+      sha256: fc4b0f0b6be9b93ae527f3d527fb56ee2d918cd88bbca438c478af7bcfd0ef73
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -282,10 +330,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_riverpod
-      sha256: "46a27b7a11dc13738054093076f2dc65692ddcd463979b15092accf5681aea20"
+      sha256: b3c3a8a9714b7f88dd2a41e1efbc47f76d620b06ab427c62ae7bc82298cd7dbb
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.3.2"
   flutter_svg:
     dependency: transitive
     description:
@@ -388,10 +436,10 @@ packages:
     dependency: "direct main"
     description:
       name: introduction_screen
-      sha256: ffbae2e9e1e21e1d8d6a898385f11513c23f6e83436f78c26664f7f002a58caa
+      sha256: "0767902260d69655b4d4bd9a88619cac06728eaf13c346cf7132cfb0809debf6"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.6"
+    version: "3.1.7"
   js:
     dependency: transitive
     description:
@@ -412,10 +460,10 @@ packages:
     dependency: "direct main"
     description:
       name: logger
-      sha256: c40f9ef51e5bffb4ce69ad2d8c8aad7bd47ec109c090521109b63a4e2bc27191
+      sha256: db2ff852ed77090ba9f62d3611e4208a3d11dfa35991a81ae724c113fcb3e3f7
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "1.3.0"
   matcher:
     dependency: transitive
     description:
@@ -556,10 +604,10 @@ packages:
     dependency: transitive
     description:
       name: riverpod
-      sha256: "59a48de9c757aa61aa28e9fd625ffb360d43b6b54606f12536622c55be9e8c4b"
+      sha256: b0fbf7927333c5c318f7e2c22c8b4fd2542ba294de0373e80ecdb34e0dcd8dc4
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.3.2"
   sky_engine:
     dependency: transitive
     description: flutter

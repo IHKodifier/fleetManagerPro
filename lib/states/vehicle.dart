@@ -1,16 +1,10 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-
 import 'package:fleet_manager_pro/states/maintenances.dart';
 
 class Vehicle extends Equatable {
- 
-
- 
-
-
-   String id;
+  String id;
   int? doors;
   List<Maintenance?>? maintenances;
   String? make;
@@ -18,6 +12,7 @@ class Vehicle extends Equatable {
   String? year;
   String? reg;
   String? regCity;
+  int? driven;
   List<String?>? images;
   Vehicle({
     required this.id,
@@ -28,6 +23,7 @@ class Vehicle extends Equatable {
     this.year,
     this.reg,
     this.regCity,
+    this.driven,
     this.images,
   });
 
@@ -43,10 +39,10 @@ class Vehicle extends Equatable {
       year!,
       reg!,
       regCity!,
+      driven!,
       images!,
     ];
   }
-
 
   Vehicle copyWith({
     String? id,
@@ -57,6 +53,7 @@ class Vehicle extends Equatable {
     String? year,
     String? reg,
     String? regCity,
+    int? driven,
     List<String?>? images,
   }) {
     return Vehicle(
@@ -68,39 +65,44 @@ class Vehicle extends Equatable {
       year: year ?? this.year,
       reg: reg ?? this.reg,
       regCity: regCity ?? this.regCity,
-      images:images??this.images,
+      driven: driven ?? this.driven,
+      images: images ?? this.images,
     );
   }
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
+
     result.addAll({'id': id});
-    if(doors != null){
+    if (doors != null) {
       result.addAll({'doors': doors});
     }
-    if(maintenances != null){
-      result.addAll({'maintenances': maintenances!.map((x) => x?.toMap()).toList()});
+    if (maintenances != null) {
+      result.addAll(
+          {'maintenances': maintenances!.map((x) => x?.toMap()).toList()});
     }
-    if(make != null){
+    if (make != null) {
       result.addAll({'make': make});
     }
-    if(model != null){
+    if (model != null) {
       result.addAll({'model': model});
     }
-    if(year != null){
+    if (year != null) {
       result.addAll({'year': year});
     }
-    if(reg != null){
+    if (reg != null) {
       result.addAll({'reg': reg});
     }
-    if(regCity != null){
-      result.addAll({'regcity': regCity});
+    if (regCity != null) {
+      result.addAll({'regCity': regCity});
     }
-    if(images != null){
+    if (driven != null) {
+      result.addAll({'driven': driven});
+    }
+    if (images != null) {
       result.addAll({'images': images!.map((x) => x).toList()});
     }
-  
+
     return result;
   }
 
@@ -108,23 +110,28 @@ class Vehicle extends Equatable {
     return Vehicle(
       id: map['id'] ?? '',
       doors: map['doors']?.toInt(),
-      maintenances: map['maintenances'] != null ? List<Maintenance?>.from(map['maintenances']?.map((x) => Maintenance?.fromMap(x))) : null,
+      maintenances: map['maintenances'] != null
+          ? List<Maintenance?>.from(
+              map['maintenances']?.map((x) => Maintenance?.fromMap(x)))
+          : null,
       make: map['make'],
       model: map['model'],
       year: map['year'],
       reg: map['reg'],
       regCity: map['regcity'],
-      images: map['images'] != null ?
-       List<String?>.from(map['images']?.map(( x) => x)) : null,
+      images: map['images'] != null
+          ? List<String?>.from(map['images']?.map((x) => x))
+          : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Vehicle.fromJson(String source) => Vehicle.fromMap(json.decode(source));
+  factory Vehicle.fromJson(String source) =>
+      Vehicle.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Vehicle(id: $id, doors: $doors, maintenances: $maintenances, make: $make, model: $model, year: $year, reg: $reg, regCity: $regCity, images: $images)';
+    return 'Vehicle(id: $id, doors: $doors, maintenances: $maintenances, make: $make, model: $model, year: $year, reg: $reg, regCity: $regCity, driven: $driven, images: $images)';
   }
 }
