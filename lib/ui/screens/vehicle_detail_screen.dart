@@ -35,8 +35,8 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         children: [
           Card(
             margin: EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Stack(
+              // mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   height: 350,
@@ -48,10 +48,9 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                             .map(
                               (e) => AspectRatio(
                                 aspectRatio: 1.618,
-                                child: Image.network(e!,
-                                loadingBuilder:(context,widget,data )=>Center(child: CircularProgressIndicator(),
+                                child: Image.network(
+                                  e!,
                                 ),
-                                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) => child,),
                               ),
                             )
                             .toList(),
@@ -59,25 +58,20 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 10,
-            left: 8,
-            child: Text(
-              state.make!,
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-          ),
-          PositionedModelWidget(state: state),
-          PositionedYearWidget(state: state),
-          Positioned(
-            bottom: 10,
+             ListTile(
+              leading: Image.network('https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/41Ortuedy4L.jpg'),
+              title: Text(state.model!,
+              style: Theme.of(context).textTheme.titleLarge,),
+              subtitle:Text(state.year!,
+              style: Theme.of(context).textTheme.labelSmall,),
+             ),
+                     Positioned(
+            bottom: 8,
             right: 8,
-            left: 8,
-            child: IconButton(
-              icon: Icon(Icons.add_a_photo),
+            // left: 8,
+            child: 
+            IconButton(
+              icon: Icon(Icons.add_a_photo,size: 45,),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -127,6 +121,12 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               },
             ),
           ),
+              
+              ],
+            ),
+          ),
+          //
+   
         ],
       ),
     );
@@ -196,8 +196,10 @@ class PositionedModelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 12,
-      left: 8,
+      // bottom: ,
+      right: 10,
+      // left: ,
+      top: 10,
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Text(
