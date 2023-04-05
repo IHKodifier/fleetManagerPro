@@ -53,6 +53,7 @@ dependencies:
   firebase_storage: ^11.1.0
   image_picker: ^0.8.7+1
   path_provider: ^2.0.14
+  image_cropper: ^3.0.2
   
 
 dev_dependencies:
@@ -78,14 +79,14 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/car.jpg
-    - assets/app_icon.png
-    - assets/background.png
-    - assets/corolla.jpg
-    - assets/vezel.png
-    - assets/diablo.jpeg
-    - assets/honda.jpg
+  # assets:
+    # - assets/car.jpg
+    # - assets/app_icon.png
+    # - assets/background.png
+    # - assets/corolla.jpg
+    # - assets/vezel.png
+    # - assets/diablo.jpeg
+    # - assets/honda.jpg
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
