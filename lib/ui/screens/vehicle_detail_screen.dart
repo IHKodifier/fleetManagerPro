@@ -5,11 +5,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:fleet_manager_pro/states/vehicle_state.dart';
-import 'package:fleet_manager_pro/ui/shared/upload_image_widget.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
+
+import '../shared/add_media_dialog.dart';
 
 class VehicleDetailScreen extends ConsumerStatefulWidget {
   const VehicleDetailScreen({super.key});
@@ -34,11 +35,12 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Card(
+            elevation: 0,
             margin: EdgeInsets.all(16),
             child: Stack(
               // mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
+                Container(
                   height: 350,
                   child: Stack(
                     children: [
@@ -46,87 +48,66 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                         controller: pageController,
                         children: state.images!
                             .map(
-                              (e) => AspectRatio(
-                                aspectRatio: 1.618,
-                                child: Image.network(
-                                  e!,
-                                ),
-                              ),
+                              (e) => e == ''
+                                  ? Container(
+                                      color: Color.fromARGB(255, 216, 225, 230),
+                                    )
+                                  : Image.network(
+                                      fit: BoxFit.contain,
+                                      e!,
+                                    ),
                             )
                             .toList(),
                       ),
                     ],
                   ),
                 ),
-             ListTile(
-              leading: Image.network('https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/41Ortuedy4L.jpg'),
-              title: Text(state.model!,
-              style: Theme.of(context).textTheme.titleLarge,),
-              subtitle:Text(state.year!,
-              style: Theme.of(context).textTheme.labelSmall,),
-             ),
-                     Positioned(
-            bottom: 8,
-            right: 8,
-            // left: 8,
-            child: 
-            IconButton(
-              icon: Icon(Icons.add_a_photo,size: 45,),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  _pickImage(imageSource: ImageSource.camera);
-                                },
-                                icon: Icon(
-                                  Icons.camera,
-                                  size: 45,
-                                ),
-                              ),
-                              Text('Take Photo'),
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  _pickImage(imageSource: ImageSource.gallery);
-                                },
-                                icon: Icon(
-                                  Icons.photo_album,
-                                  size: 45,
-                                ),
-                              ),
-                              Text('Choose from Gallery'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                ListTile(
+                  tileColor: Colors.transparent,
+                  leading: Image.network(
+                      'https://www.citypng.com/public/uploads/small/116622223421szbtwasfjdtlwhmbltou4fgm2aixci0syqz9gfsweyschieb1peugcreblyogaewk8uzuybcsojxm8s4stve8e8adipzqa7fapq.png'),
+                  title: Text(
+                    state.model!,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                );
-              },
-            ),
-          ),
-              
+                  subtitle: Text(
+                    state.year!,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                  trailing: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        state.driven.toString(),
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text('Kms'),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 8,
+                  right: 8,
+                  // left: 8,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.add_a_photo,
+                      size: 45,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const Dialog(
+                          child: AddMediaDialog(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
           //
-   
         ],
       ),
     );

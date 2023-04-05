@@ -97,7 +97,7 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       appBar: AppBar(
         title: appBarTitles[pageIndex],
       ),
@@ -111,7 +111,7 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
           pageIndex = value;
           opacity = 1.0;
         }),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         height: 60,
         items: navBarItems,
       ),

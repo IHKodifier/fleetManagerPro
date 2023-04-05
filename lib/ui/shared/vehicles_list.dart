@@ -42,12 +42,13 @@ class VehicleList extends ConsumerWidget {
                   final CurrentVehicleNotifier =
                       _ref.read(currentVehicleProvider.notifier);
                   CurrentVehicleNotifier.setVehicle(e);
-                  Navigator.of(_context).push(
-                      MaterialPageRoute(builder: (context) => VehicleDetailScreen()));
+                  Navigator.of(_context).push(MaterialPageRoute(
+                      builder: (context) => VehicleDetailScreen()));
                 },
                 child: Card(
                     margin: const EdgeInsets.all(8),
-                    color: Theme.of(_context).colorScheme.inverseSurface,
+                    // color: Theme.of(_context).colorScheme.inverseSurface,
+                    elevation: 2,
                     // height:150,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,9 +68,10 @@ class VehicleList extends ConsumerWidget {
                                             .textTheme
                                             .headlineLarge!
                                             .copyWith(
-                                                color: Theme.of(_context)
-                                                    .colorScheme
-                                                    .secondaryContainer),
+                                                // color: Theme.of(_context)
+                                                //     .colorScheme
+                                                //     .secondaryContainer,
+                                                ),
                                       ),
                                       const TextSpan(text: '  '),
                                       TextSpan(
@@ -78,9 +80,10 @@ class VehicleList extends ConsumerWidget {
                                             .textTheme
                                             .titleMedium!
                                             .copyWith(
-                                                color: Theme.of(_context)
-                                                    .colorScheme
-                                                    .secondary),
+                                            //   color: Theme.of(_context)
+                                            //       .colorScheme
+                                            //       .secondary,
+                                            ),
                                       ),
                                       TextSpan(text: '   '),
                                       TextSpan(
@@ -89,9 +92,10 @@ class VehicleList extends ConsumerWidget {
                                             .textTheme
                                             .labelSmall!
                                             .copyWith(
-                                                color: Theme.of(_context)
-                                                    .colorScheme
-                                                    .secondary),
+                                                // color: Theme.of(_context)
+                                                //     .colorScheme
+                                                //     .secondary,
+                                                    ),
                                       ),
                                     ]),
                               ),

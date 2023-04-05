@@ -1,7 +1,6 @@
 // import 'package:fleet_manager_pro/onboarding.dart';
 import 'package:fleet_manager_pro/startup_view.dart';
 import 'package:fleet_manager_pro/theme_data.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,8 +19,8 @@ class MyApp extends ConsumerWidget {
 // you use same or higher version, but still same major version. If
 // you use a lower version, some properties may not be supported. In
 // that case you can also remove them after copying the theme to your app.
-    theme: appTheme,
-    darkTheme: appDarkTheme,
+      theme: appLightTheme,
+      darkTheme: appDarkTheme,
 
       home: StartUpResolver(),
     );

@@ -119,6 +119,7 @@ class Vehicle extends Equatable {
       year: map['year'],
       reg: map['reg'],
       regCity: map['regcity'],
+      driven: map['driven'],
       images: map['images'] != null
           ? List<String?>.from(map['images']?.map((x) => x))
           : null,
