@@ -32,21 +32,21 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
       FontAwesomeIcons.carBattery,
       size: 30,
     ),
-    const FaIcon(
-      Icons.settings,
-      size: 30,
-    ),
-    const FaIcon(
-      FontAwesomeIcons.message,
-      size: 30,
-    ),
+    // const FaIcon(
+    //   Icons.settings,
+    //   size: 30,
+    // ),
+    // const FaIcon(
+    //   FontAwesomeIcons.message,
+    //   size: 30,
+    // ),
   ];
   List<Widget> appBarTitles = [
     const Text('Home'),
     const Text('My Cars'),
     const Text('Maintenance'),
-    const Text('Settings'),
-    const Text('Messages'),
+    // const Text('Settings'),
+    // const Text('Messages'),
   ];
 
   double opacity = 0;
@@ -61,14 +61,14 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
       color: Colors.green,
       child: const Text('2'),
     ),
-    Container(
-      color: Colors.blue,
-      child: const Text('3'),
-    ),
-    Container(
-      color: Colors.yellow,
-      child: const Text('4'),
-    ),
+    // Container(
+    //   color: Colors.blue,
+    //   child: const Text('3'),
+    // ),
+    // Container(
+    //   color: Colors.yellow,
+    //   child: const Text('4'),
+    // ),
   ];
 
   @override

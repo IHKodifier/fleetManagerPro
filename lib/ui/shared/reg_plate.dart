@@ -11,13 +11,13 @@ class RegPlate extends StatelessWidget {
   Widget build(BuildContext context) {
     print(state.toString());
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         height: 120,
         child: Card(
           // color: Theme.of(context).colorScheme.primaryContainer,
           elevation:10,
-          margin: const EdgeInsets.symmetric(horizontal: 64),
+          margin: const EdgeInsets.symmetric(horizontal: 16),
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: Column(

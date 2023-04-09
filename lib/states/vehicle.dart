@@ -6,7 +6,7 @@ import 'package:fleet_manager_pro/states/maintenances.dart';
 class Vehicle extends Equatable {
   String id;
   int? doors;
-  List<Maintenance?>? maintenances;
+  List<Maintenance?> maintenances;
   String? make;
   String? model;
   String? year;
@@ -17,7 +17,7 @@ class Vehicle extends Equatable {
   Vehicle({
     required this.id,
     this.doors,
-    this.maintenances,
+    this.maintenances = const [],
     this.make,
     this.model,
     this.year,
@@ -77,10 +77,15 @@ class Vehicle extends Equatable {
     if (doors != null) {
       result.addAll({'doors': doors});
     }
-    if (maintenances != null) {
+    if (maintenances!.isEmpty) {
       result.addAll(
           {'maintenances': maintenances!.map((x) => x?.toMap()).toList()});
     }
+     if (images!.isNotEmpty) {
+      result.addAll(
+          {'images': images?.map((x) => x).toList()});
+    }
+
     if (make != null) {
       result.addAll({'make': make});
     }
@@ -94,7 +99,7 @@ class Vehicle extends Equatable {
       result.addAll({'reg': reg});
     }
     if (regCity != null) {
-      result.addAll({'regCity': regCity});
+      result.addAll({'regcity': regCity});
     }
     if (driven != null) {
       result.addAll({'driven': driven});
@@ -110,10 +115,7 @@ class Vehicle extends Equatable {
     return Vehicle(
       id: map['id'] ?? '',
       doors: map['doors']?.toInt(),
-      maintenances: map['maintenances'] != null
-          ? List<Maintenance?>.from(
-              map['maintenances']?.map((x) => Maintenance?.fromMap(x)))
-          : null,
+      // maintenances: List<Maintenance?>.from(map['maintenances']),
       make: map['make'],
       model: map['model'],
       year: map['year'],

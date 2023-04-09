@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../utils.dart';
+
 class AddVehiclePage extends ConsumerStatefulWidget {
   const AddVehiclePage({super.key});
 
@@ -61,6 +63,7 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
           .collection('vehicles')
           .doc();
       state.id = docId.id;
+      state.images = [];
       var result = await FirebaseFirestore.instance
           .collection('users')
           .doc(ref.read(appUserProvider)?.uuid)
@@ -79,6 +82,7 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
 
   @override
   Widget build(BuildContext context) {
+    var sliderMin= state.driven!=null?state.driven!.toDouble():0.0,
     _context = context;
     return Scaffold(
       appBar: AppBar(),
@@ -89,18 +93,44 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               const FormTitle(),
-              MakeTextField(makeController: makeController, state: state),
-              const SizedBox(height: 10),
-              ModelTextField(modelController: modelController, state: state),
-              const SizedBox(height: 10),
-              RegTextField(regController: regController, state: state),
-              const SizedBox(height: 10),
-              RegCityTextField(
-                regcityController: regcityController,
-                state: state,
+              MakeTextField(Controller: makeController, state: state),
+              const SizedBox(height: 12),
+              ModelTextField(controller: modelController, state: state),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('  Driven: ',style: Theme.of(context).textTheme.titleMedium,),
+                  Text(Utils.thousandify(state.driven?? 0),style: Theme.of(context).textTheme.titleMedium,),
+                  Text('  Km',style: Theme.of(context).textTheme.titleMedium,),
+                ],
               ),
+              const SizedBox(height: 12),
+             
+             SliderTheme(
+  data: const SliderThemeData(
+    valueIndicatorTextStyle: TextStyle(
+      fontSize: 24, // set the font size of the label
+      height: 1.2, // set the height of the label
+    ),
+  ),
+  child: Slider(
+                min: 0,
+                max: 500000,
+                divisions:500,
+                label: Utils.thousandify(state.driven?? 0),
+
+                value: sliderMin, onChanged: (newValue){
+                setState(() {
+                  state.driven=newValue.toInt();
+                });
+              },)),
+              const SizedBox(height: 12),
+              RegTextField(controller: regController, state: state),
+              const SizedBox(height: 12),
+              RegCityTextField(controller: regcityController, state: state),
               const SizedBox(height: 10),
               YearTextField(yearController: yearController, state: state),
               const SizedBox(height: 10),
@@ -177,11 +207,11 @@ class YearTextField extends StatelessWidget {
 class RegCityTextField extends StatelessWidget {
   const RegCityTextField({
     super.key,
-    required this.regcityController,
+    required this.controller,
     required this.state,
   });
 
-  final TextEditingController regcityController;
+  final TextEditingController controller;
   final Vehicle state;
 
   @override
@@ -189,7 +219,7 @@ class RegCityTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        controller: regcityController,
+        controller: controller,
         decoration: const InputDecoration(
             label: Text('Registration City '), hintText: 'e.g. Islamabad'),
         onSaved: (value) {
@@ -203,11 +233,11 @@ class RegCityTextField extends StatelessWidget {
 class RegTextField extends StatelessWidget {
   const RegTextField({
     super.key,
-    required this.regController,
+    required this.controller,
     required this.state,
   });
 
-  final TextEditingController regController;
+  final TextEditingController controller;
   final Vehicle state;
 
   @override
@@ -215,7 +245,7 @@ class RegTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        controller: regController,
+        controller: controller,
         decoration: const InputDecoration(
             label: Text('Registration '), hintText: 'e.g. AKT 057'),
         onSaved: (value) {
@@ -229,11 +259,11 @@ class RegTextField extends StatelessWidget {
 class ModelTextField extends StatelessWidget {
   const ModelTextField({
     super.key,
-    required this.modelController,
+    required this.controller,
     required this.state,
   });
 
-  final TextEditingController modelController;
+  final TextEditingController controller;
   final Vehicle state;
 
   @override
@@ -241,11 +271,11 @@ class ModelTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        controller: modelController,
+        controller: controller,
         decoration: const InputDecoration(
             label: Text('Model'), hintText: 'e.g. Vezel Hybrid 1.8'),
         onSaved: (value) {
-          state.make = value;
+          state.model = value;
         },
       ),
     );
@@ -255,11 +285,11 @@ class ModelTextField extends StatelessWidget {
 class MakeTextField extends StatelessWidget {
   const MakeTextField({
     super.key,
-    required this.makeController,
+    required this.Controller,
     required this.state,
   });
 
-  final TextEditingController makeController;
+  final TextEditingController Controller;
   final Vehicle state;
 
   @override
@@ -267,7 +297,7 @@ class MakeTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        controller: makeController,
+        controller: Controller,
         decoration: const InputDecoration(
             label: Text('Make'), hintText: 'e.g. Honda, Toyota, Suzuki'),
         onSaved: (value) {

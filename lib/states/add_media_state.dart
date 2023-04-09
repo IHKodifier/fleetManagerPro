@@ -8,10 +8,10 @@ class AddMediaState {
     required this.media,
   });
 
-  List<Media> media = [];
+  List<AppMedia> media = [];
 
   AddMediaState copyWith({
-    List<Media>? media,
+    List<AppMedia>? media,
   }) {
     return AddMediaState(
       media: media ?? this.media,
@@ -19,30 +19,28 @@ class AddMediaState {
   }
 }
 
-
-
-
-
-class Media {
-  Media(
-     this.file,{
+class AppMedia {
+  AppMedia(
+    this.mediaFile, {
     this.downloadUrl,
   });
 
   String? downloadUrl;
-  late File file;
+  late File mediaFile;
 
-  Media fromXfile(XFile xFile)=>Media(xFile as File);
+  AppMedia fromXfile(XFile xFile) => AppMedia(xFile as File);
 
-  Media copyWith({
-     File? file,
+  AppMedia copyWith({
+    File? file,
     String? downloadUrl,
   }) {
-    return Media(
-      file ?? this.file,
+    return AppMedia(
+      file ?? mediaFile,
       // downloadUrl ?? this.downloadUrl,
     );
   }
+
+  void setUrl(String url)=>downloadUrl=url;
 }
 
 final addMediaStateProvider =
@@ -50,20 +48,27 @@ final addMediaStateProvider =
   return AddMediaNotifier(AddMediaState(media: []));
 });
 
-
-
 class AddMediaNotifier extends StateNotifier<AddMediaState> {
   AddMediaNotifier(AddMediaState state) : super(state);
 
-  void addMedia(Media media){
+  void addMedia(AppMedia media) {
     var fileList = state.media;
     fileList.insert(0, media);
 
-    state=state.copyWith(media: fileList);
-    // state.media.insert(0, media);
+    state = state.copyWith(media: fileList);
     state = state;
   }
-  void setMedia(List <Media> media){
-    state=state.copyWith(media: media);
+
+  void setDownloadUrl(AppMedia appMedia, String downloadUrl){
+    for (var item in state.media) {
+      if (item.mediaFile==appMedia.mediaFile) {item.setUrl(downloadUrl);
+         
+      }
+      
+    }
+  }
+
+  void setMedia(List<AppMedia> media) {
+    state = state.copyWith(media: media);
   }
 }
