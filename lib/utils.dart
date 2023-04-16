@@ -99,7 +99,7 @@ class Utils {
     var cameraPermissionStatus = await Permission.camera.status;
     if (cameraPermissionStatus.isDenied) {
       await Permission.camera.request();
-      
+     }  
     xFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (xFile == null) {
       return [];
@@ -112,7 +112,7 @@ return pickedFiles;
     
     
       
-    }
+   
 
   // return Future.value([]);
   }
@@ -160,6 +160,7 @@ return pickedFiles;
     await file.writeAsBytes(bytes);
     return file;
   }
+
   static String thousandify(int number) {
     String str = number.toString();
   int len = str.length;

@@ -1,7 +1,5 @@
-import 'dart:io';
-
+import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddMediaState {
   AddMediaState({
@@ -19,31 +17,7 @@ class AddMediaState {
   }
 }
 
-class AppMedia {
-  AppMedia(
-    this.mediaFile, {
-    this.downloadUrl,
-  });
-
-  String? downloadUrl;
-  late File mediaFile;
-
-  AppMedia fromXfile(XFile xFile) => AppMedia(xFile as File);
-
-  AppMedia copyWith({
-    File? file,
-    String? downloadUrl,
-  }) {
-    return AppMedia(
-      file ?? mediaFile,
-      // downloadUrl ?? this.downloadUrl,
-    );
-  }
-
-  void setUrl(String url)=>downloadUrl=url;
-}
-
-final addMediaStateProvider =
+final addMediaProvider =
     StateNotifierProvider<AddMediaNotifier, AddMediaState>((ref) {
   return AddMediaNotifier(AddMediaState(media: []));
 });
@@ -59,12 +33,11 @@ class AddMediaNotifier extends StateNotifier<AddMediaState> {
     state = state;
   }
 
-  void setDownloadUrl(AppMedia appMedia, String downloadUrl){
+  void setDownloadUrl(AppMedia appMedia, String downloadUrl) {
     for (var item in state.media) {
-      if (item.mediaFile==appMedia.mediaFile) {item.setUrl(downloadUrl);
-         
+      if (item.mediaFile == appMedia.mediaFile) {
+        item.setUrl(downloadUrl);
       }
-      
     }
   }
 
