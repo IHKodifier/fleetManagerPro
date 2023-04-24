@@ -1,25 +1,21 @@
-import 'dart:io';
+///[MediaThumbnail]  displays a thumbnail of an image file
 
+import 'package:fleet_manager_pro/states/app_media.dart';
 import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
 
-class mediaThumbnail extends StatelessWidget {
-  const mediaThumbnail({
-    super.key,
-    required this.file});
+class MediaThumbnail extends StatelessWidget {
+  final Media appMedia;
 
-final File file;
+  MediaThumbnail({required this.appMedia});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
-      width: 50,
-      child: Container(
-        
-        
-        child: Image.file(
-          file,
-          fit: BoxFit.fill,
-        ),
+      width: 80,
+      height: 50,
+      child: Image.file(
+        appMedia.mediaFile,
+        fit: BoxFit.cover,
       ),
     );
   }

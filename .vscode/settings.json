@@ -17,6 +17,5 @@
     "errorLens.errorGutterIconColor": "",
     "errorLens.followCursor": "closestProblem",
     "errorLens.gutterIconsFollowCursorOverride": false,
-    "errorLens.gutterIconSize": "0",
-    "errorLens.infoGutterIconColor": ""
+    "errorLens.gutterIconSize": "0"
 }

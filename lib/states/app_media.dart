@@ -1,27 +1,26 @@
 import 'dart:io';
 
-import 'package:image_picker/image_picker.dart';
+import 'package:equatable/equatable.dart';
 
-class AppMedia {
-  AppMedia(
-    this.mediaFile, {
-    this.downloadUrl,
+class Media extends Equatable {
+  final File mediaFile;
+  final String? url;
+
+  const Media({
+    required this.mediaFile,
+    this.url,
   });
 
-  String? downloadUrl;
-  late File mediaFile;
+  @override
+  List<Object?> get props => [mediaFile, url];
 
-  AppMedia fromXfile(XFile xFile) => AppMedia(xFile as File);
-
-  AppMedia copyWith({
-    File? file,
-    String? downloadUrl,
+  Media copyWith({
+    File? mediaFile,
+    String? url,
   }) {
-    return AppMedia(
-      file ?? mediaFile,
-      // downloadUrl ?? this.downloadUrl,
+    return Media(
+      mediaFile: mediaFile ?? this.mediaFile,
+      url: url ?? this.url,
     );
   }
-
-  void setUrl(String url)=>downloadUrl=url;
 }

@@ -129,6 +129,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         .ref()
         .child('userdata/${appuser?.uuid}/images/$fileName');
     final UploadTask uploadTask = firebaseStorageRef.putFile(file);
+    
     await uploadTask.whenComplete(() async {
       final String downloadURL = await firebaseStorageRef.getDownloadURL();
       print('File uploaded to Firebase at $downloadURL');

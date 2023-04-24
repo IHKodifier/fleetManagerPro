@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fleet_manager_pro/states/add_media_state.dart';
+import 'package:fleet_manager_pro/states/added_media_state.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/states/vehicle_state.dart';
 import 'package:flutter/material.dart';

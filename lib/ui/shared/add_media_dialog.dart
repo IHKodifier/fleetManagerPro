@@ -9,16 +9,16 @@ class AddMediaDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(addMediaProvider);
-    final notifier = ref.read(addMediaProvider.notifier);
+    final state = ref.watch(addedMediaProvider);
+    final notifier = ref.read(addedMediaProvider.notifier);
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 12),
       child: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: const [
             AddedMediaContiner(),
             ButtonsBar(),
           ],
@@ -29,9 +29,11 @@ class AddMediaDialog extends ConsumerWidget {
 }
 
 class AddedMediaContiner extends ConsumerWidget {
+  const AddedMediaContiner({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(addMediaProvider);
+    final state = ref.watch(addedMediaProvider);
     final vehicle = ref.read(currentVehicleProvider);
     final appUser = ref.read(appUserProvider);
 
@@ -39,21 +41,23 @@ class AddedMediaContiner extends ConsumerWidget {
       // flex: 1,
       fit: FlexFit.loose,
       child: Container(
-        child: state.media.isNotEmpty
+        child: state.addedMedia.isNotEmpty
             ? ListView(
                 shrinkWrap: true,
                 // alignment: WrapAlignment.start,
                 // crossAxisAlignment: WrapCrossAlignment.center,
                 // spacing: 20,
-                children: state.media
+                children: state.addedMedia
                     .map(
                       (e) => Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          MediaUploadItem(
+                          MediaUploadItemWidget(
                             appMedia: e,
+                            // onRemove:(e) {
+                            //   state.addedMedia.remove(e);},
                           ),
-                          Divider(),
+                          const Divider(),
                         ],
                       ),
                     )
@@ -72,7 +76,7 @@ class ButtonsBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mediaNotifier = ref.read(addMediaProvider.notifier);
+    final mediaNotifier = ref.read(addedMediaProvider.notifier);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -89,7 +93,7 @@ class ButtonsBar extends ConsumerWidget {
                 var croppedImageFile =
                     await Utils().createFileFromCroppedFile(croppedImage!);
 
-                mediaNotifier.addMedia(AppMedia(croppedImageFile));
+                mediaNotifier.addMedia(Media(mediaFile: croppedImageFile));
                 // for (var file in pickedMedia) {
                 //   mediaNotifier.addMedia(Media(file));
                 // }
@@ -109,8 +113,9 @@ class ButtonsBar extends ConsumerWidget {
             IconButton(
               onPressed: () async {
                 final images = await Utils.pickMediafromGallery();
-                final selectedmedia = images.map((e) => AppMedia(e)).toList();
-                mediaNotifier.setMedia(selectedmedia);
+                final selectedmedia =
+                    images.map((e) => Media(mediaFile: e)).toList();
+                mediaNotifier.setAddedMedia(selectedmedia);
               },
               icon: const Icon(
                 Icons.photo_album,
