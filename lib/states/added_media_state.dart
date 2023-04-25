@@ -39,13 +39,17 @@ class AddedMediaNotifier extends StateNotifier<AddedMedia> {
     state = state.copyWith(addedMedia: mediaList);
   }
 
-  void setUrl(String url, String fileName) {
-    final updatedMediaList = state.addedMedia.map((media) {
-      if (media.mediaFile.path.contains(fileName)) {
-        return media.copyWith(url: url);
-      }
-      return media;
-    }).toList();
-    state = state.copyWith(addedMedia: updatedMediaList);
+void clearMedia(){
+  state.addedMedia.clear();
+  state= state;
+
+}
+ 
+  void updateMediaUrl(Media media){
+    int index = state.addedMedia.indexOf(media);
+    print('at index of  $index existing url quals ${state.addedMedia[index].url}');
+    state.addedMedia.replaceRange(index, index,[ media ]);
+    print('at index of $index new url quals ${state.addedMedia[index].url}');
+    state..copyWith();
   }
 }

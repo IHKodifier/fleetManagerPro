@@ -4,15 +4,15 @@ import 'package:equatable/equatable.dart';
 
 class Media extends Equatable {
   final File mediaFile;
-  final String? url;
+  late  String? url;
 
-  const Media({
+   Media({
     required this.mediaFile,
     this.url,
   });
 
   @override
-  List<Object?> get props => [mediaFile, url];
+  List<Object?> get props => [mediaFile];
 
   Media copyWith({
     File? mediaFile,

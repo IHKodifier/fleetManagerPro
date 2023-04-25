@@ -66,7 +66,7 @@ class MediaUploadProgressWidget extends ConsumerWidget {
           ),
           Column(
             children: [
-              Icon(Icons.delete_forever,color: Colors.red,),
+              Icon(Icons.delete_forever,color: Color.fromARGB(255, 112, 8, 1),),
               Text('Delete',
                style: const TextStyle(fontSize: 12),)
             ],

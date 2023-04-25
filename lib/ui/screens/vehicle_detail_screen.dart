@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
+import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:fleet_manager_pro/states/vehicle_state.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => const Dialog(
+                        builder: (context) =>  Dialog(
                           child: AddMediaDialog(),
                         ),
                       );
@@ -113,38 +114,42 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
     );
   }
 
-  void _pickImage({required ImageSource imageSource}) async {
-    final pickedFile = await ImagePicker().pickImage(source: imageSource);
-    if (pickedFile != null) {
-      final file = File(pickedFile.path);
-      _uploadImage(file);
-    }
-  }
-
-  void _uploadImage(File file) async {
-    final appuser = ref.read(appUserProvider);
-    final vehicle = ref.read(currentVehicleProvider);
-    final fileName = Path.basename(file.path);
-    final Reference firebaseStorageRef = FirebaseStorage.instance
-        .ref()
-        .child('userdata/${appuser?.uuid}/images/$fileName');
-    final UploadTask uploadTask = firebaseStorageRef.putFile(file);
+  // void _pickImage({required ImageSource imageSource}) async {
+  //   final pickedFile = await ImagePicker().pickImage(source: imageSource);
+  //   if (pickedFile != null) {
+  //     final file = File(pickedFile.path);
+      // _uploadImage(file);
+    // }
+  // }
+// TODO: inveestigate this code. is it being used or its redundant ...?
+  // void _uploadImage(File file) async {
+  //   final appuser = ref.read(appUserProvider);
+  //   final vehicle = ref.read(currentVehicleProvider);
+  //   final fileName = Path.basename(file.path);
+  //   final Reference firebaseStorageRef = FirebaseStorage.instance
+  //       .ref()
+  //       .child('userdata/${appuser?.uuid}/images/$fileName');
+  //   final UploadTask uploadTask = firebaseStorageRef.putFile(file);
     
-    await uploadTask.whenComplete(() async {
-      final String downloadURL = await firebaseStorageRef.getDownloadURL();
-      print('File uploaded to Firebase at $downloadURL');
-      final DocumentReference docRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(appuser?.uuid)
-          .collection('vehicles')
-          .doc(vehicle.id);
-      final List<String> imagesList = List<String>.from(state.images ?? []);
-      imagesList.add(downloadURL);
-      await docRef.update({'images': imagesList});
-      ref.refresh(currentVehicleProvider);
-      Navigator.pop(context);
-    });
-  }
+  //   await uploadTask.whenComplete(() async {
+  //     final String downloadURL = await firebaseStorageRef.getDownloadURL();
+  //     print('File uploaded to Firebase at $downloadURL');
+  //     final DocumentReference docRef = FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(appuser?.uuid)
+  //         .collection('vehicles')
+  //         .doc(vehicle.id);
+  //     final List<String> imagesList = List<String>.from(state.images ?? []);
+  //     for (var media  in ref.read(addedMediaProvider).addedMedia) {
+  //       imagesList.insert(0, media.url!);
+  //     }
+  //     // imagesList.add(downloadURL);
+
+  //     await docRef.update({'images': imagesList});
+  //     ref.refresh(currentVehicleProvider);
+  //     Navigator.pop(context);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

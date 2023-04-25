@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,11 +7,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../utils.dart';
 
 class AddMediaDialog extends ConsumerWidget {
-  const AddMediaDialog({super.key});
+   AddMediaDialog({super.key});
+   var  vehicle ;
+    var appUser ;
+    late AddedMedia state;
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(addedMediaProvider);
+      vehicle = ref.read(currentVehicleProvider);
+     appUser = ref.read(appUserProvider);
+     state= ref.watch(addedMediaProvider);
+     
+
     final notifier = ref.read(addedMediaProvider.notifier);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -18,14 +28,46 @@ class AddMediaDialog extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children:  [
             AddedMediaContiner(),
             ButtonsBar(),
+            buildDoneButton(context,ref),
           ],
         ),
       ),
     );
   }
+  buildDoneButton(context,ref)=>Row(children: [
+    Expanded(child: ElevatedButton.icon(onPressed: (){
+      var imageList = state.addedMedia.map((e) => e.url).toList();
+      updateVehicleDoc(imagesList: imageList);
+      ref.refresh(currentVehicleProvider);
+      ref.read(addedMediaProvider.notifier).clear();
+      Navigator.pop(context);
+    }, icon: Icon(Icons.check,size: 40,), label: Text('Done')))
+
+  ],);
+
+  updateVehicleDoc({required List<String?> imagesList}) async {
+      final DocumentReference docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(appUser?.uuid)
+          .collection('vehicles')
+          .doc(vehicle.id);
+          await docRef.update({'images': imagesList});
+     
+
+  }
+
+
+
+
+
+
+
+
+
+
 }
 
 class AddedMediaContiner extends ConsumerWidget {
@@ -34,9 +76,7 @@ class AddedMediaContiner extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(addedMediaProvider);
-    final vehicle = ref.read(currentVehicleProvider);
-    final appUser = ref.read(appUserProvider);
-
+   
     return Flexible(
       // flex: 1,
       fit: FlexFit.loose,
@@ -71,11 +111,15 @@ class AddedMediaContiner extends ConsumerWidget {
   }
 }
 
+
 class ButtonsBar extends ConsumerWidget {
-  const ButtonsBar({Key? key}) : super(key: key);
+   ButtonsBar({Key? key}) : super(key: key);
+  var appUser, vehicle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    appUser= ref.read(appUserProvider);
+    vehicle= ref.read( currentVehicleProvider);
     final mediaNotifier = ref.read(addedMediaProvider.notifier);
 
     return Row(
@@ -131,4 +175,5 @@ class ButtonsBar extends ConsumerWidget {
     //   ),
     // );
   }
+
 }

@@ -93,6 +93,7 @@ TextStyle SafeGoogleFont(
 }
 
 class Utils {
+  /// pick precisely One Image using camera after checking for permissions
   static Future<List<File>?> pickMediafromCamera() async {
     final pickedFiles = <File>[];
     final XFile? xFile;
@@ -107,16 +108,10 @@ class Utils {
       pickedFiles.insert(0, File(xFile.path));
 return pickedFiles;
         
-      }
-     
-    
-    
-      
-   
-
-  // return Future.value([]);
+      }  
   }
 
+  /// picks multiple Images from Gallery
   static Future<List<File>> pickMediafromGallery() async {
     var pickedFiles = <XFile>[];
 

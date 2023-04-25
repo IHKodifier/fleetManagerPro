@@ -48,15 +48,16 @@ final mediaUploadProgressProviderFamily = StateNotifierProvider.family<
       MediaUploadProgressState(
         progress: 0.0,
       ),
+      ref,
       media: media,
       userId: userId);
 });
 
 class MediaUploadProgressNotifier
     extends StateNotifier<MediaUploadProgressState> {
-  MediaUploadProgressNotifier(super.state,
+  MediaUploadProgressNotifier(super.state, this.ref,
       {required this.media, required this.userId});
-
+final StateNotifierProviderRef ref;
   final Media media;
   final String userId;
   final _uploadProgressStreamController = StreamController<double>();
@@ -64,7 +65,7 @@ class MediaUploadProgressNotifier
   Stream<double> get uploadProgressStream =>
       _uploadProgressStreamController.stream;
 
-  Future<void> startUpload() async {
+  Future<String?> startUpload() async {
     _setStarted();
     final file = File(media.mediaFile.path);
     final fileName = file.path.split('/').last;
@@ -80,10 +81,13 @@ class MediaUploadProgressNotifier
       _uploadProgressStreamController.sink.add(progress);
     });
 
-    await _uploadTask!.whenComplete(() {
+    await _uploadTask!.whenComplete(() async {
       // _uploadTask.
       _uploadProgressStreamController.close();
+      media.url = await storageRef.getDownloadURL();
+      ref.read(addedMediaProvider.notifier).updateMediaUrl(media);
       _setCompleted();
+      
     });
   }
 
