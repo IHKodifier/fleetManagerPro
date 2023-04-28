@@ -56,6 +56,7 @@ dependencies:
   image_cropper: ^3.0.2
   permission_handler: ^10.2.0
   fast_cached_network_image: ^1.1.1
+  page_view_dot_indicator: ^2.1.0
   
 
 dev_dependencies:

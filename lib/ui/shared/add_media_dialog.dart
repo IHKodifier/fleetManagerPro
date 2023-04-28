@@ -8,7 +8,7 @@ import '../../utils.dart';
 
 class AddMediaDialog extends ConsumerWidget {
    AddMediaDialog({super.key});
-   var  vehicle ;
+   late Vehicle vehicle ;
     var appUser ;
     late AddedMedia state;
 
@@ -31,7 +31,9 @@ class AddMediaDialog extends ConsumerWidget {
           children:  [
             AddedMediaContiner(),
             ButtonsBar(),
-            buildDoneButton(context,ref),
+            state.addedMedia.isNotEmpty?
+            buildDoneButton(context,ref):Container(),
+
           ],
         ),
       ),
@@ -39,22 +41,29 @@ class AddMediaDialog extends ConsumerWidget {
   }
   buildDoneButton(context,ref)=>Row(children: [
     Expanded(child: ElevatedButton.icon(onPressed: (){
+      if (state.addedMedia.isEmpty) {
+        return;
+        
+      }
       var imageList = state.addedMedia.map((e) => e.url).toList();
       updateVehicleDoc(imagesList: imageList);
-      ref.refresh(currentVehicleProvider);
-      ref.read(addedMediaProvider.notifier).clear();
+      // ref.refresh(currentVehicleProvider);
+      ref.read(addedMediaProvider.notifier).clearMedia();
       Navigator.pop(context);
+      ref.refresh(currentVehicleProvider);
     }, icon: Icon(Icons.check,size: 40,), label: Text('Done')))
 
   ],);
 
   updateVehicleDoc({required List<String?> imagesList}) async {
+    vehicle.images?.insertAll(0, imagesList);
+   
       final DocumentReference docRef = FirebaseFirestore.instance
           .collection('users')
           .doc(appUser?.uuid)
           .collection('vehicles')
           .doc(vehicle.id);
-          await docRef.update({'images': imagesList});
+          await docRef.update(vehicle.toMap());
      
 
   }

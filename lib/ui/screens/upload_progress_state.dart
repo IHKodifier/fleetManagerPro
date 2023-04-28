@@ -41,7 +41,7 @@ class MediaUploadProgressState extends Equatable {
   }
 }
 
-final mediaUploadProgressProviderFamily = StateNotifierProvider.family<
+final mediaUploadProgressProviderFamily = StateNotifierProvider.family.autoDispose<
     MediaUploadProgressNotifier, MediaUploadProgressState, Media>((ref, media) {
   final userId = ref.read(appUserProvider)!.uuid;
   return MediaUploadProgressNotifier(
@@ -85,7 +85,7 @@ final StateNotifierProviderRef ref;
       // _uploadTask.
       _uploadProgressStreamController.close();
       media.url = await storageRef.getDownloadURL();
-      ref.read(addedMediaProvider.notifier).updateMediaUrl(media);
+      // ref.read(addedMediaProvider.notifier).updateMediaUrl(media);
       _setCompleted();
       
     });
