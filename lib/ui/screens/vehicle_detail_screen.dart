@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 
 import '../shared/add_media_dialog.dart';
+import '../shared/fab_with_dialog.dart';
 
 class VehicleDetailScreen extends ConsumerStatefulWidget {
   const VehicleDetailScreen({super.key});
@@ -24,20 +25,19 @@ class VehicleDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
-   late final imagePageController;
+  late final imagePageController;
   late int selectedPage;
   late Vehicle state;
 
   late BuildContext _context;
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
-        selectedPage=0;
-        imagePageController=PageController(initialPage: selectedPage);
+    selectedPage = 0;
+    imagePageController = PageController(initialPage: selectedPage);
 
     super.initState();
-
   }
 
   void onFABPressed() {}
@@ -56,69 +56,56 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             child: Stack(
               // mainAxisSize: MainAxisSize.min,
               children: [
+                imagePageViewContainer(pageCount),
                 Container(
-                  height: 350,
-                  child: Stack(
-                    children: [
-                      state.images!.isEmpty?
-                      Container(color: Colors.blueGrey.shade300,):
-                      PageView(
-                        onPageChanged: (value) => setState(() {
-                          selectedPage=value;
-                        }),
-                        controller: imagePageController,
-                        children: state.images!
-                            .map(
-                              (e) => e == ''
-                                  ? Container(
-                                      color: Color.fromARGB(255, 216, 225, 230),
-                                    )
-                                  : Image.network(
-                                      fit: BoxFit.fitHeight,
-                                      e!,
-                                    ),
-                            )
-                            .toList(),
-                            
-                      ),
-                      state.images!.isEmpty?
-                      Container(color: Colors.blueGrey.shade50,):Positioned(
-                        bottom: 8, right: 0,left: 0,
-                        child: PageViewDotIndicator(
-                                currentItem: selectedPage, 
-                                count: pageCount, 
-                                selectedColor: Theme.of(context).colorScheme.primary,
-                                 unselectedColor: Theme.of(context).colorScheme.secondary,
-                                 duration: const Duration(milliseconds: 200),
-                                 boxShape: BoxShape.circle,
-                              ),
-                      ),
-
-                    ],
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [Colors.transparent, Colors.black87],
+                    ),
                   ),
-                ),
-                ListTile(
-                  tileColor: Colors.transparent,
-                  //todo change to cached network image
-                  leading: Image.network(
-                      'https://www.citypng.com/public/uploads/small/116622223421szbtwasfjdtlwhmbltou4fgm2aixci0syqz9gfsweyschieb1peugcreblyogaewk8uzuybcsojxm8s4stve8e8adipzqa7fapq.png'),
-                  title: Text(
-                    state.model!,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  subtitle: Text(
-                    state.year!,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                  trailing: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        state.driven.toString(),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      Text('Kms'),
-                    ],
+                  child: ListTile(
+                    // color: Colors.black87,
+                    // tileColor: Colors.white24,
+                    //todo change to cached network image
+                    leading: const ManufacLogo(),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ModelNameWidget(state: state),
+                        TextButton(
+                          onPressed: () {
+                            _updateMileage();
+                          },
+                          child: Text(
+                            state.driven.toString() + '  kms',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.white70),
+                            // );,
+                            // ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // subtitle: YearWidget(state: state),
+                    // trailing: SizedBox(
+                    //   width: 10,
+                    //   child: Row(
+                    //     // crossAxisAlignment: CrossAxisAlignment.end,
+                    //     children: [
+                    //       TextButton(
+                    //           onPressed: _updateMileage,
+                    //           child: const Icon(
+                    //             Icons.edit,
+                    //             size: 10,
+                    //           )),
+                    //     ],
+                    //   ),
+                    // ),
                   ),
                 ),
                 Positioned(
@@ -129,14 +116,14 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                     child: Container(
                       color: Colors.white,
                       child: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.add_a_photo,
                           size: 45,
                         ),
                         onPressed: () {
                           showDialog(
                             context: context,
-                            builder: (context) =>  Dialog(
+                            builder: (context) => Dialog(
                               child: AddMediaDialog(),
                             ),
                           );
@@ -154,6 +141,85 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
     );
   }
 
+  Container imagePageViewContainer(int pageCount) {
+    return Container(
+      height: 362,
+      child: Stack(
+        children: [
+          state.images!.isEmpty
+              ? Container(
+                  color: Colors.blueGrey.shade300,
+                  child: const Center(
+                      child: Text(
+                          'No Media added for this car , click the camer Icon below to add Media for this car')),
+                )
+              : imagePageView(),
+          state.images!.isEmpty
+              ? Container()
+              : ImadePageViewDotIndicator(
+                  selectedPage: selectedPage, pageCount: pageCount),
+        ],
+      ),
+    );
+  }
+
+  PageView imagePageView() {
+    return PageView(
+      onPageChanged: (value) => setState(() {
+        selectedPage = value;
+      }),
+      controller: imagePageController,
+      children: state.images!
+          .map(
+            (e) => Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.network(
+                  fit: BoxFit.fitHeight,
+                  e!,
+                ),
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  _updateMileage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            icon: ClipOval(
+                child: Image.network(
+              'https://static.vecteezy.com/system/resources/previews/009/933/333/non_2x/speedometer-kilometers-icon-outline-illustration-vector.jpg',
+            )),
+            title: Text('Update Total  Kilometers '),
+            content: TextField(
+              // controller: _textController,
+              decoration: InputDecoration(
+                hintText: 'enter Total Kilometers',
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () => Navigator.pop(context),
+              ),
+              TextButton(
+                child: Text('Save'),
+                onPressed: () {
+                  // TODO: Implement save functionality
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     state = ref.watch(currentVehicleProvider);
@@ -164,14 +230,95 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
       ),
       body: body(context),
       //  body: ,
-      floatingActionButton: FloatingActionButton(
-          onPressed: onFABPressed,
-          child: Icon(
-            Icons.add,
-            size: 40,
-          ),
-          tooltip: 'Add Maintenance'),
+      floatingActionButton: FabWithDialog(
+  icon: Icons.add,
+  label: "Add Maintenance ",
+)
+,
     );
+  }
+}
+
+class ImadePageViewDotIndicator extends StatelessWidget {
+  const ImadePageViewDotIndicator({
+    super.key,
+    required this.selectedPage,
+    required this.pageCount,
+  });
+
+  final int pageCount;
+  final int selectedPage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 8,
+      right: 0,
+      left: 0,
+      child: PageViewDotIndicator(
+        currentItem: selectedPage,
+        count: pageCount,
+        size: const Size(16, 16),
+        unselectedSize: const Size(6, 6),
+        selectedColor: Theme.of(context).colorScheme.primary,
+        unselectedColor: Colors.blueGrey.shade200,
+        duration: const Duration(milliseconds: 200),
+        boxShape: BoxShape.circle,
+      ),
+    );
+  }
+}
+
+class YearWidget extends StatelessWidget {
+  const YearWidget({
+    super.key,
+    required this.state,
+  });
+
+  final Vehicle state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      state.year!,
+      style: Theme.of(context)
+          .textTheme
+          .labelSmall
+          ?.copyWith(color: Colors.white70),
+    );
+    // );
+  }
+}
+
+class ModelNameWidget extends StatelessWidget {
+  const ModelNameWidget({
+    super.key,
+    required this.state,
+  });
+
+  final Vehicle state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      state.model!,
+      style: Theme.of(context)
+          .textTheme
+          .titleLarge
+          ?.copyWith(color: Colors.white70),
+    );
+  }
+}
+
+class ManufacLogo extends StatelessWidget {
+  const ManufacLogo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.network(
+        'https://www.citypng.com/public/uploads/small/116622223421szbtwasfjdtlwhmbltou4fgm2aixci0syqz9gfsweyschieb1peugcreblyogaewk8uzuybcsojxm8s4stve8e8adipzqa7fapq.png');
   }
 }
 

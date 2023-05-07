@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:fleet_manager_pro/ui/shared/add_maintenance_form.dart';
+import 'package:fleet_manager_pro/ui/screens/add_maintenance_screen.dart';
+
 import 'package:fleet_manager_pro/ui/shared/add_vehicle_form.dart';
 import 'package:fleet_manager_pro/ui/shared/vehicles_list.dart';
 import 'package:flutter/material.dart';
@@ -130,6 +131,6 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
         builder: (context) => const AlertDialog(
             // actions: [ElevatedButton(onPressed: (){}, child: Text('Save'))],
 
-            content: AddMaintenanceForm()));
+            content: AddMaintenanceScreen()));
   }
 }
