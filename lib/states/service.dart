@@ -8,12 +8,12 @@ import 'package:equatable/equatable.dart';
 class Service extends Equatable {
   final String name;
   //  Timestamp? timestamp;
-  final int cost;
+  int cost;
 
   Service(
-    this.name,
+    {required this.name,
     // this.timestamp,
-    this.cost,
+    this.cost=0,}
   );
 
   Service copyWith({
@@ -22,9 +22,9 @@ class Service extends Equatable {
     int? cost,
   }) {
     return Service(
-      name ?? this.name,
+      name:name ?? this.name,
       // timestamp ?? this.timestamp,
-      cost ?? this.cost,
+      cost: cost ?? this.cost,
     );
   }
 
@@ -42,9 +42,9 @@ class Service extends Equatable {
 
   factory Service.fromMap(Map<String, dynamic> map) {
     return Service(
-      map['name'] ?? '',
+      name:map['name'] ?? '',
       // map['timestamp'] ?? 0,
-      map['cost']?.toInt() ?? 0,
+      cost:map['cost']?.toInt() ?? 0,
     );
   }
 

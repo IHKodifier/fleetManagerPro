@@ -18,7 +18,7 @@ class ServiceListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef  ref) {
     this.ref= ref;
-    final services = ref.watch(servicesProvider);
+    final services = ref.watch(allServicesProvider);
     final selectedServices = ref.watch(selectedServicesProvider);
 
     return Wrap(
