@@ -27,3 +27,13 @@ class SelectedServicesNotifier extends StateNotifier<List<Service>> {
     state = state.where((s) => s != service).toList();
   }
 }
+final locationStreamProvider = StreamProvider<List<String>>((ref) {
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(ref.read(appUserProvider)?.uuid)
+      .collection('locations')
+      .snapshots()
+      .map((querySnapshot) {
+    return querySnapshot.docs.map((doc) => doc.data()['name'] as String).toList();
+  });
+});

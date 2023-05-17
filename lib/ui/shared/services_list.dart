@@ -1,5 +1,4 @@
 import 'package:fleet_manager_pro/states/service_selection_state.dart';
-import 'package:fleet_manager_pro/ui/shared/service_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,17 +29,33 @@ class ServiceListWidget extends ConsumerWidget {
   List<Widget> onData(List<Service> data) {
     return data.
 map((service) {
-        return ChoiceChip(
-          label: Text(service.name),
-          selected: selectedServices.contains(service),
-          onSelected: (isSelected) {
-            // final servicesProviderNotifier = ref.read(servicesProvider.notifier);
-            // servicesProviderNotifier.toggleServiceSelection(service);
-
-            // final newSelectedServices = servicesProviderNotifier.selectedServices;
-            // onSelectionChanged(newSelectedServices);
+       return ChoiceChip(
+  label: ListTile(
+    title: Text(service.name),
+    trailing: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            // Perform edit action here
           },
-        );
+        ),
+        IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () {
+            // Perform delete action here
+          },
+        ),
+      ],
+    ),
+  ),
+  selected: selectedServices.contains(service),
+  onSelected: (isSelected) {
+    // Handle selection here
+  },
+);
+
       }).toList();
   }
 
