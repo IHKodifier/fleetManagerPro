@@ -70,6 +70,7 @@ class Maintenance extends Equatable {
     if (cost != null) {
       result.addAll({'cost': cost});
     }
+    result.addAll({'services':services!.map((e) => e!.toMap()).toList()});
 
     return result;
   }
@@ -78,7 +79,7 @@ class Maintenance extends Equatable {
     return Maintenance(
       id: map['id'] ?? '',
       location: map['location'],
-     timestamp:  map['timestamp'] != null ? Timestamp.fromDate(map['timestamp']) : null,
+     timestamp:  map['timestamp'] != null ? map['timestamp'] : null,
      cost:  map['cost']?.toInt(),
     );
   }

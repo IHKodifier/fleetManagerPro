@@ -5,12 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final allServicesProvider = StreamProvider<List<Service>>((ref) async* {
   final user = ref.read(appUserProvider); // replace this with your own user id
-  final servicesCollection =
-      FirebaseFirestore.instance.collection('users').doc(user!.uuid).collection('services');
-  final servicesSnapshot = await servicesCollection.get();
-  final services = servicesSnapshot.docs.map((doc) => Service.fromMap(doc.data())).toList();
-  yield services;
+ final servicesCollection = FirebaseFirestore.instance.collection('users').doc(user!.uuid).collection('services');
+  yield* servicesCollection.snapshots().map((snapshot) => snapshot.docs.map((doc) => Service.fromMap(doc.data())).toList());
 });
+
+
+
+//   final servicesCollection =
+//       FirebaseFirestore.instance.collection('users').doc(user!.uuid).collection('services');
+//   final servicesSnapshot = await servicesCollection.get();
+//   final services = servicesSnapshot.docs.map((doc) => Service.fromMap(doc.data())).toList();
+//   yield services;
+// });
 
 
 final selectedServicesProvider =
