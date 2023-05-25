@@ -18,8 +18,8 @@ Other
 class Maintenance extends Equatable {
   String? id;
   String? location;
-  Timestamp? timestamp;
-  MaintenanceType type;
+  DateTime? timestamp;
+  // MaintenanceType type;
   int kmsDriven;
   int? cost;
   List<Service?>? services;
@@ -31,58 +31,60 @@ class Maintenance extends Equatable {
     this.kmsDriven = 0,
     this.cost,
     this.services,
-    this.type=MaintenanceType.Regular_Scheduled,
+    // this.type=MaintenanceType.Regular_Scheduled,
   });
 
   Maintenance copyWith({
     String? id,
     String? location,
-    Timestamp? timestamp,
+    DateTime? timestamp,
     int?  kmsDriven,
     int? cost,
-    MaintenanceType? type ,
+    // MaintenanceType? type ,
     int? ki
   }) {
     return Maintenance(
       id: id ?? this.id,
       location: location ?? this.location,
-      timestamp: timestamp ?? this.timestamp,
+      timestamp: timestamp ?? this.timestamp!,
       cost: cost ?? this.cost,
-      type: type?? this.type
+      // type: type?? this.type
     );
   }
 
-  Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
+Map<String, dynamic> toMap() {
+  return {
+    'id': id,
+    'location': location,
+    'timestamp': timestamp != null ? Timestamp.fromDate(timestamp!) : null,
+    // 'type': type.index,
+    'kmsDriven': kmsDriven,
+    'cost': cost,
+    'services': services?.map((e) => e?.toMap()).toList(),
+  };
+}
 
-    result.addAll({'id': id});
-    if (location != null) {
-      result.addAll({'location': location});
-    }
-    if (timestamp != null) {
-      result.addAll({
-        'timestamp': {
-          'seconds': timestamp!.seconds,
-          'nanoseconds': timestamp!.nanoseconds,
-        }
-      });
-    }
-    if (cost != null) {
-      result.addAll({'cost': cost});
-    }
-    result.addAll({'services':services!.map((e) => e!.toMap()).toList()});
 
-    return result;
+factory Maintenance.fromMap(Map<String, dynamic> map) {
+  DateTime? parsedTimestamp;
+  if (map['timestamp'] is Timestamp) {
+    parsedTimestamp = (map['timestamp'] as Timestamp).toDate();
   }
 
-  factory Maintenance.fromMap(Map<String, dynamic> map) {
-    return Maintenance(
-      id: map['id'] ?? '',
-      location: map['location'],
-     timestamp:  map['timestamp'] != null ? map['timestamp'] : null,
-     cost:  map['cost']?.toInt(),
-    );
-  }
+  return Maintenance(
+    id: map['id'] as String?,
+    location: map['location'] as String?,
+    timestamp: parsedTimestamp,
+    // type: MaintenanceType.values[map['type'] as int],
+    kmsDriven: map['kmsDriven'] as int,
+    cost: map['cost'] as int?,
+    services: (map['services'] as List<dynamic>?)
+        ?.map((e) => e != null ? Service.fromMap(e as Map<String, dynamic>) : null)
+        .toList(),
+  );
+}
+
+
 
   String toJson() => json.encode(toMap());
 

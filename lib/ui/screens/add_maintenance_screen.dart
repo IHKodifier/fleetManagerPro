@@ -121,7 +121,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
     if (form != null && form.validate()) {
       form.save();
 
-      newMaintenanceState.timestamp = Timestamp.fromDate(DateTime.now());
+      newMaintenanceState.timestamp = DateTime.now();
 newMaintenanceState.location=_location;
 newMaintenanceState.cost=_cost;
 newMaintenanceState.services=ref.read(selectedServicesProvider);

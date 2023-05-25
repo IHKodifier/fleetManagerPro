@@ -15,6 +15,7 @@ import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 
 import '../shared/add_media_dialog.dart';
 import '../shared/fab_with_dialog.dart';
+import '../shared/maintenance_list.dart';
 
 class VehicleDetailScreen extends ConsumerStatefulWidget {
   const VehicleDetailScreen({super.key});
@@ -136,6 +137,9 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             ),
           ),
           //
+          SizedBox(
+            height: 150,
+            child: MaintenanceList(vehicleId: ref.read(currentVehicleProvider).id)),
         ],
       ),
     );
