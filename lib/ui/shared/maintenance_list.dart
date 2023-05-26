@@ -1,13 +1,31 @@
 import 'package:fleet_manager_pro/states/maintenances.dart';
+import 'package:fleet_manager_pro/ui/shared/maintenance_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../../states/maintenance_state.dart';
 
 class MaintenanceList extends ConsumerWidget {
+  MaintenanceList({required this.vehicleId});
+
   final String vehicleId;
 
-  MaintenanceList({required this.vehicleId});
+  Widget onError(Object error, StackTrace stackTrace) {
+    print(error.toString());
+    print(stackTrace.toString());
+    return Text('Error: $error');
+  }
+
+  Widget onData(List<Maintenance> maintenances) {
+    return ListView.builder(
+      itemCount: maintenances.length,
+      itemBuilder: (context, index) {
+        final maintenance = maintenances[index];
+        return MaintenanceCard(maintenance: maintenance);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,25 +37,5 @@ class MaintenanceList extends ConsumerWidget {
       data: onData,
     );
   }
-
-  Widget onError(Object error, StackTrace stackTrace) {
-    
-        print(error.toString());
-        print(stackTrace.toString());
-        return Text('Error: $error');
-      
-  }
-
-  Widget onData(List<Maintenance> maintenances) {
-    return ListView.builder(
-        itemCount: maintenances.length,
-        itemBuilder: (context, index) {
-          final maintenance = maintenances[index];
-          return ListTile(
-            title: Text(maintenance.location!),
-            // Add more details about the maintenance object as needed
-          );
-        },
-      );
-  }
 }
+

@@ -57,6 +57,8 @@ dependencies:
   permission_handler: ^10.2.0
   fast_cached_network_image: ^1.1.1
   page_view_dot_indicator: ^2.1.0
+  timeago: ^3.4.0
+  intl: ^0.18.1
   
 
 dev_dependencies:

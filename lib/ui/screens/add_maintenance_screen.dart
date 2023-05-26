@@ -7,6 +7,7 @@ import 'package:fleet_manager_pro/states/service_selection_state.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../states/maintenances.dart';
 import '../shared/service_edit_form.dart';
@@ -124,7 +125,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
       newMaintenanceState.timestamp = DateTime.now();
 newMaintenanceState.location=_location;
 newMaintenanceState.cost=_cost;
+newMaintenanceState.kmsDriven= _kmsDriven!;
 newMaintenanceState.services=ref.read(selectedServicesProvider);
+var formatter = NumberFormat('#,##,000');
 
       //TODO save to proper collection path and create a function for it
       final user = ref.read(appUserProvider);
