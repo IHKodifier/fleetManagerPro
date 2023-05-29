@@ -1,3 +1,4 @@
+import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/maintenances.dart';
 import 'package:fleet_manager_pro/ui/shared/maintenance_card.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +9,12 @@ import '../../states/maintenance_state.dart';
 
 class MaintenanceList extends ConsumerWidget {
   MaintenanceList({required this.vehicleId});
+  var _ref;
 
   final String vehicleId;
 
   Widget onError(Object error, StackTrace stackTrace) {
+  
     print(error.toString());
     print(stackTrace.toString());
     return Text('Error: $error');
@@ -22,13 +25,15 @@ class MaintenanceList extends ConsumerWidget {
       itemCount: maintenances.length,
       itemBuilder: (context, index) {
         final maintenance = maintenances[index];
-        return MaintenanceCard(maintenance: maintenance);
+        return MaintenanceCard(maintenance: maintenance,
+        totalDriven: _ref.read(currentVehicleProvider).driven,);
       },
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    _ref=ref;
     final maintenanceAsync = ref.watch(maintenanceStreamProvider(vehicleId));
 
     return maintenanceAsync.when(

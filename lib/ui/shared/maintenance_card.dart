@@ -1,14 +1,17 @@
 
+import 'package:fleet_manager_pro/states/barrel_states.dart';
+
 import '../../states/barrel_models.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class MaintenanceCard extends StatelessWidget {
   const MaintenanceCard({
     super.key,
-    required this.maintenance,
+    required this.maintenance, required this.totalDriven,
   });
 
   final Maintenance maintenance;
+  final int totalDriven;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,9 @@ class MaintenanceCard extends StatelessWidget {
         children: [
           Row(
             children: [
+              ListTile(
+                leading: Text('${(totalDriven-maintenance.kmsDriven).toString()} Kms ago'),
+              ),
               Text('${timeago.format(maintenance.timestamp!)} at '),
               // Spacer(),
               Text(maintenance.location!),

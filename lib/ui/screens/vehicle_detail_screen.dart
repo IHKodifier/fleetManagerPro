@@ -59,7 +59,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               children: [
                 imagePageViewContainer(pageCount),
                 Container(
-                  height: 100,
+                  height: 80,
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomCenter,
@@ -147,7 +147,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
   Container imagePageViewContainer(int pageCount) {
     return Container(
-      height: 362,
+      height: 320,
       child: Stack(
         children: [
           state.images!.isEmpty

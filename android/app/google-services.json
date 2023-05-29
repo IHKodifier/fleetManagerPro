@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "315625800053-maoab4pn9t6tang2oqh7isjbth10rmeo.apps.googleusercontent.com",
+          "client_id": "315625800053-9tum24slabfdne3krgf1ff0j2pa9oguj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ccom.enigmatek.fleet_manager_pro",
+            "certificate_hash": "69fa3fec6279215b6a01701f1fbd3c2a9e4855b6"
+          }
+        },
+        {
+          "client_id": "315625800053-e2bl9icjps9169sgfufkkmogm2tlq48u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "315625800053-maoab4pn9t6tang2oqh7isjbth10rmeo.apps.googleusercontent.com",
+              "client_id": "315625800053-e2bl9icjps9169sgfufkkmogm2tlq48u.apps.googleusercontent.com",
               "client_type": 3
             },
             {

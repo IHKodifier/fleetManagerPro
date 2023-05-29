@@ -59,6 +59,7 @@ dependencies:
   page_view_dot_indicator: ^2.1.0
   timeago: ^3.4.0
   intl: ^0.18.1
+  google_sign_in: ^6.1.2
   
 
 dev_dependencies:

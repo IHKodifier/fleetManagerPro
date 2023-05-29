@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 
 import '../../states/maintenances.dart';
 import '../shared/service_edit_form.dart';
+import '../shared/valu_indicator_dlidershape.dart';
 
 class AddMaintenanceScreen extends ConsumerStatefulWidget {
   const AddMaintenanceScreen({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
   String? _id;
   int? _kmsDriven;
   String? _location;
-   int? _rangeStart;
+  int? _rangeStart;
   final TextEditingController _serviceCostController = TextEditingController();
   final TextEditingController _serviceNameController = TextEditingController();
   MaintenanceType? _type;
@@ -42,9 +43,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
     super.initState();
     vehicleState = ref.read(currentVehicleProvider);
     newMaintenanceState = Maintenance();
-     _kmsDriven = vehicleState.driven;
-     _rangeStart= _kmsDriven!;
-     _cost=0;
+    _kmsDriven = vehicleState.driven;
+    _rangeStart = _kmsDriven!;
+    _cost = 0;
   }
 
   void onAddServicePressed() {
@@ -114,7 +115,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
 
   void onLocationsDropdownChanged(value) => setState(() {
         newMaintenanceState.location = value;
-        _location= value;
+        _location = value;
       });
 
   void _submitAddMaintenanceForm() {
@@ -123,41 +124,40 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
       form.save();
 
       newMaintenanceState.timestamp = DateTime.now();
-newMaintenanceState.location=_location;
-newMaintenanceState.cost=_cost;
-newMaintenanceState.kmsDriven= _kmsDriven!;
-newMaintenanceState.services=ref.read(selectedServicesProvider);
-var formatter = NumberFormat('#,##,000');
+      newMaintenanceState.location = _location;
+      newMaintenanceState.cost = _cost;
+      newMaintenanceState.kmsDriven = _kmsDriven!;
+      newMaintenanceState.services = ref.read(selectedServicesProvider);
+      var formatter = NumberFormat('#,##,000');
 
       //TODO save to proper collection path and create a function for it
       final user = ref.read(appUserProvider);
       final Vehicle vehicle = ref.read(currentVehicleProvider);
-      final docRef= FirebaseFirestore.instance
-       .collection('users')
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
           .doc(user?.uuid)
           .collection('vehicles')
           .doc(vehicle.id)
           .collection('maintenances')
           .doc();
-          newMaintenanceState.id= docRef.id;
+      newMaintenanceState.id = docRef.id;
 
       docRef
           .set(newMaintenanceState.toMap())
           // .add(newMaintenanceState.toMap())
           .then((value) async {
-
         //TODO dispose controllers
         ref.invalidate(selectedServicesProvider);
         //todo update [driven] on vehicle objet
         // ref.read(currentVehicleProvider.notifier).updateDriven(_kmsDriven!);
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(ref.read(appUserProvider)?.uuid)
-          .collection('vehicles')
-          .doc(ref.read(currentVehicleProvider).id)
-          .set({'driven':_kmsDriven},SetOptions(merge: true)).then((value) {
-                    Navigator.pop(context);
-          });
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(ref.read(appUserProvider)?.uuid)
+            .collection('vehicles')
+            .doc(ref.read(currentVehicleProvider).id)
+            .set({'driven': _kmsDriven}, SetOptions(merge: true)).then((value) {
+          Navigator.pop(context);
+        });
       });
     }
   }
@@ -168,7 +168,6 @@ var formatter = NumberFormat('#,##,000');
     final locationStreamAsyncValue = ref.watch(locationStreamProvider);
     newMaintenanceState = Maintenance();
     final vehicleState = ref.read(currentVehicleProvider);
- 
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add Maintenance')),
@@ -197,10 +196,9 @@ var formatter = NumberFormat('#,##,000');
                         onChanged: (selectedLocation) {
                           //todo Handle the selected location
                           setState(() {
-                             newMaintenanceState.location = selectedLocation;
-                          _location= selectedLocation;
+                            newMaintenanceState.location = selectedLocation;
+                            _location = selectedLocation;
                           });
-                         
                         },
                       ),
                     ),
@@ -215,15 +213,15 @@ var formatter = NumberFormat('#,##,000');
                   return Text('Error loading locations: $error');
                 },
               ),
-              SizedBox(height: 12,),
+              SizedBox(
+                height: 12,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Spacer(),
-                  Text(
-                    _kmsDriven.toString(),
-                    style: Theme.of(context).textTheme.displayMedium
-                  ),
+                  Text(_kmsDriven.toString(),
+                      style: Theme.of(context).textTheme.displayMedium),
                   SizedBox(
                     width: 8,
                   ),
@@ -233,19 +231,41 @@ var formatter = NumberFormat('#,##,000');
                   ),
                 ],
               ),
-              Slider(
-                // theme
-                value: _kmsDriven!.toDouble(),
-                min: _rangeStart!.toDouble(),
-                // label: _kmsDriven.toString(),
-                max: _rangeStart!<300000.0?300000.0:500000.0,
-                // divisions: 10,
-                onChanged: (value) {
-                  setState(() {
-                    _kmsDriven = value.round();
-                  });
-                },
+
+              // Slider(
+              //   // theme
+              //   value: _kmsDriven!.toDouble(),
+              //   min: _rangeStart!.toDouble(),
+              //   label: _kmsDriven?.round().toString(),
+              //   max: _rangeStart!<100000.0?120000.0:250000.0,
+              //   // divisions: 10,
+              //   onChanged: (value) {
+              //     setState(() {
+              //       _kmsDriven = value.round();
+              //     });
+              //   },
+              // ),
+
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  thumbShape: ValueIndicatorThumbShape(
+                    minValue: _rangeStart!.toDouble(),
+                    maxValue: _rangeStart! < 100000.0 ? 120000.0 : 250000.0,
+                  ),
+                  // Other properties...
+                ),
+                child: Slider(
+                  value: _kmsDriven!.toDouble(),
+                  min: _rangeStart!.toDouble(),
+                  max: _rangeStart! < 100000.0 ? 120000.0 : 250000.0,
+                  onChanged: (value) {
+                    setState(() {
+                      _kmsDriven = value.round();
+                    });
+                  },
+                ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -357,23 +377,17 @@ var formatter = NumberFormat('#,##,000');
                                       if (isSelected) {
                                         selectedServicesNotifier.add(service);
                                         setState(() {
-                                           
-                                        _cost =
-                                            (_cost! +
-                                                service.cost);
+                                          _cost = (_cost! + service.cost);
                                         });
-                                       
+
                                         print(
                                             '${service.name} has been selected');
                                       } else {
                                         selectedServicesNotifier
                                             .remove(service);
-                                            setState(() {
-                                           _cost =
-                                            _cost! -
-                                                service.cost;   
-                                            });
-                                        
+                                        setState(() {
+                                          _cost = _cost! - service.cost;
+                                        });
 
                                         print(
                                             '${service.name} has been UN-selected');

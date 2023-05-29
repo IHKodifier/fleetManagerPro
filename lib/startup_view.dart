@@ -33,7 +33,7 @@ class StartUpResolver extends ConsumerWidget {
     if (user == null) {
 
       //go to login Page
-      return const LoginScreen();
+      return  LoginScreen();
     } else {
       ///grab [AppUser] from db and set in [AppUserState]
 // final  notifier = thisRef.watch(appUserProvider.notifier);
