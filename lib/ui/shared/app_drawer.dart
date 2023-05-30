@@ -203,13 +203,13 @@ class AboutTile extends StatelessWidget {
   }
 }
 
-class SignOutTile extends StatelessWidget {
+class SignOutTile extends ConsumerWidget {
   const SignOutTile({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     return ListTile(
       leading: Icon(
         (Icons.logout),
@@ -220,7 +220,9 @@ class SignOutTile extends StatelessWidget {
         'Sign out',
         style: Theme.of(context).textTheme.titleMedium,
       ),
-      onTap: (){FirebaseAuth.instance.signOut();},
+      onTap: () async {await FirebaseAuth.instance.signOut();
+      ref.read(appUserProvider.notifier).clearUser();
+      },
     );
   }
 }

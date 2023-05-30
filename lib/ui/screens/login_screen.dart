@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_models.dart';
+import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,6 +53,7 @@ Future<User?> _signInWithGoogle() async {
         appUser.profileType= 'Individual';
         appUser.photoUrl=user.photoURL;
        await  FirebaseFirestore.instance.collection('users').doc(appUser.uuid).set(appUser.toMap(),SetOptions(merge: true));
+       ref.read(appUserProvider.notifier).setAppUser(appUser);
 
       }
 
