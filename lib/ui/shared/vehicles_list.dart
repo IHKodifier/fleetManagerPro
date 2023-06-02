@@ -9,8 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../states/vehicle.dart';
 
 final vehicleStreamProvider = StreamProvider<List<Vehicle>>((ref) async* {
-  await ref.read(appUserProvider.notifier).refreshAppUser();
-  final user = ref.read(appUserProvider);
+  final user = ref.watch(appUserProvider);
   final vehiclesCollection = FirebaseFirestore.instance
       .collection('users')
       .doc(user?.uuid)

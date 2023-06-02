@@ -1,18 +1,18 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fleet_manager_pro/states/added_media_state.dart';
-import 'package:fleet_manager_pro/states/app_user_state.dart';
-import 'package:fleet_manager_pro/states/vehicle_state.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:fleet_manager_pro/states/added_media_state.dart';
+// import 'package:fleet_manager_pro/states/app_user_state.dart';
+// import 'package:fleet_manager_pro/states/vehicle_state.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:intl/intl.dart';
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
@@ -156,26 +156,9 @@ return pickedFiles;
     return file;
   }
 
-  static String thousandify(int number) {
-    String str = number.toString();
-  int len = str.length;
-  if (len <= 3) {
-    return str;
-  }
-  String result = '';
-  int i = 0;
-  int remaining = len % 3;
-  if (remaining > 0) {
-    result = str.substring(0, remaining);
-    i = remaining;
-  }
-  while (i < len) {
-    if (result.isNotEmpty) {
-      result += ',';
-    }
-    result += str.substring(i, i + 3);
-    i += 3;
-  }
-  return result;
+
+static String thousandify(int number) {
+  final formatter = NumberFormat('#,###');
+  return formatter.format(number);
 }
 }

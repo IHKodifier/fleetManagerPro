@@ -51,9 +51,9 @@ class CustomDrawer extends ConsumerWidget {
           const Divider(),
           const AboutTile(),
           const Divider(),
-          const SizedBox(
-            height: 35,
-          ),
+          // const SizedBox(
+          //   height: 15,
+          // ),
           const SignOutTile(),
           // const Divider(),
         ],
@@ -83,7 +83,7 @@ class ThemeModeTile extends ConsumerWidget {
       leading: Icon(
         (Icons.dark_mode),
         color: Theme.of(context).colorScheme.primary,
-        size: 40,
+        // size: 40,
       ),
       title: Text(
         'Dark Mode',
@@ -106,7 +106,7 @@ class FavoritesTile extends StatelessWidget {
       leading: Icon(
         (Icons.favorite),
         color: Theme.of(context).colorScheme.primary,
-        size: 40,
+        // size: 40,
       ),
       title: Text(
         'Favorites',
@@ -151,7 +151,7 @@ class ProfileTile extends StatelessWidget {
       leading: Icon(
         (Icons.person),
         color: Theme.of(context).colorScheme.primary,
-        size: 40,
+        // size: 40,
       ),
       title: Text(
         'profile',
@@ -172,7 +172,7 @@ class ShareTile extends StatelessWidget {
       leading: Icon(
         (Icons.share),
         color: Theme.of(context).colorScheme.primary,
-        size: 40,
+        // size: 40,
       ),
       title: Text(
         'Share',
@@ -193,7 +193,7 @@ class AboutTile extends StatelessWidget {
       leading: Icon(
         (Icons.info_outline),
         color: Theme.of(context).colorScheme.primary,
-        size: 40,
+        // size: 40,
       ),
       title: Text(
         'About',
@@ -214,14 +214,14 @@ class SignOutTile extends ConsumerWidget {
       leading: Icon(
         (Icons.logout),
         color: Theme.of(context).colorScheme.primary,
-        size: 40,
+        // size: 40,
       ),
       title: Text(
         'Sign out',
         style: Theme.of(context).textTheme.titleMedium,
       ),
       onTap: () async {await FirebaseAuth.instance.signOut();
-      ref.read(appUserProvider.notifier).clearUser();
+      // ref.read(appUserProvider.notifier).clearUser();
       },
     );
   }
@@ -240,7 +240,7 @@ class MyCarsTile extends StatelessWidget {
       leading: Icon(
         (Icons.car_rental),
         color: Theme.of(context).colorScheme.primary,
-        size: 40,
+        // size: 40,
       ),
       title: Text(
         'My Cars',

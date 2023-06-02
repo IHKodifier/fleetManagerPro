@@ -25,8 +25,10 @@ class MaintenanceList extends ConsumerWidget {
       itemCount: maintenances.length,
       itemBuilder: (context, index) {
         final maintenance = maintenances[index];
-        return MaintenanceCard(maintenance: maintenance,
-        totalDriven: _ref.read(currentVehicleProvider).driven,);
+        return Container(height: 150,
+          child: MaintenanceCard(maintenance: maintenance,
+          totalDriven: _ref.read(currentVehicleProvider).driven,),
+        );
       },
     );
   }
