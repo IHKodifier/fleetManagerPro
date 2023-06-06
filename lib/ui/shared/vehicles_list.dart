@@ -34,78 +34,80 @@ class VehicleList extends ConsumerWidget {
   }
 
   Widget data(List<Vehicle> data) {
-    return ListView(
-      children: data
-          .map((e) => InkWell(
-                onTap: () {
-                  final CurrentVehicleNotifier =
-                      _ref.read(currentVehicleProvider.notifier);
-                  CurrentVehicleNotifier.setVehicle(e);
-                  Navigator.of(_context).push(MaterialPageRoute(
-                      builder: (context) => VehicleDetailScreen()));
-                },
-                child: Card(
-                    margin: const EdgeInsets.all(8),
-                    // color: Theme.of(_context).colorScheme.inverseSurface,
-                    elevation: 2,
-                    // height:150,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RichText(
-                                text: TextSpan(
-                                    style: DefaultTextStyle.of(_context).style,
-                                    children: [
-                                      TextSpan(
-                                        text: e.make,
-                                        style: Theme.of(_context)
-                                            .textTheme
-                                            .headlineLarge!
-                                            .copyWith(
-                                                // color: Theme.of(_context)
-                                                //     .colorScheme
-                                                //     .secondaryContainer,
-                                                ),
-                                      ),
-                                      const TextSpan(text: '  '),
-                                      TextSpan(
-                                        text: e.model,
-                                        style: Theme.of(_context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(
-                                            //   color: Theme.of(_context)
-                                            //       .colorScheme
-                                            //       .secondary,
-                                            ),
-                                      ),
-                                      TextSpan(text: '   '),
-                                      TextSpan(
-                                        text: e.year.toString(),
-                                        style: Theme.of(_context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .copyWith(
-                                                // color: Theme.of(_context)
-                                                //     .colorScheme
-                                                //     .secondary,
-                                                    ),
-                                      ),
-                                    ]),
-                              ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((context,index){
+        final e = data[index];
+        return InkWell(
+              onTap: () {
+                final CurrentVehicleNotifier =
+                    _ref.read(currentVehicleProvider.notifier);
+                CurrentVehicleNotifier.setVehicle(e);
+                Navigator.of(_context).push(MaterialPageRoute(
+                    builder: (context) => VehicleDetailScreen()));
+              },
+              child: Card(
+                  margin: const EdgeInsets.all(8),
+                  // color: Theme.of(_context).colorScheme.inverseSurface,
+                  elevation: 2,
+                  // height:150,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: RichText(
+                              text: TextSpan(
+                                  style: DefaultTextStyle.of(_context).style,
+                                  children: [
+                                    TextSpan(
+                                      text: e.make,
+                                      style: Theme.of(_context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(
+                                              // color: Theme.of(_context)
+                                              //     .colorScheme
+                                              //     .secondaryContainer,
+                                              ),
+                                    ),
+                                    const TextSpan(text: '  '),
+                                    TextSpan(
+                                      text: e.model,
+                                      style: Theme.of(_context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .copyWith(
+                                              //   color: Theme.of(_context)
+                                              //       .colorScheme
+                                              //       .secondary,
+                                              ),
+                                    ),
+                                    TextSpan(text: '   '),
+                                    TextSpan(
+                                      text: e.year.toString(),
+                                      style: Theme.of(_context)
+                                          .textTheme
+                                          .labelSmall!
+                                          .copyWith(
+                                              // color: Theme.of(_context)
+                                              //     .colorScheme
+                                              //     .secondary,
+                                              ),
+                                    ),
+                                  ]),
                             ),
-                          ],
-                        ),
-                        RegPlate(state: e),
-                      ],
-                    )),
-              ))
-          .toList(),
+                          ),
+                        ],
+                      ),
+                      RegPlate(state: e),
+                    ],
+                  )),
+            );
+      
+      }),
     );
   }
 

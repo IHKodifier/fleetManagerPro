@@ -17,5 +17,6 @@
     "errorLens.errorGutterIconColor": "",
     "errorLens.followCursor": "closestProblem",
     "errorLens.gutterIconsFollowCursorOverride": false,
-    "errorLens.gutterIconSize": "0"
+    "errorLens.gutterIconSize": "0",
+    "cmake.configureOnOpen": false
 }

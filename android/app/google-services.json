@@ -48,6 +48,50 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315625800053:android:0e7b901b2bd5c55241533c",
+        "android_client_info": {
+          "package_name": "com.enigmatek.fleet_manager_pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315625800053-g436r60nbn3deh44k6ai4iabr66ru3qh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enigmatek.fleet_manager_pro",
+            "certificate_hash": "69fa3fec6279215b6a01701f1fbd3c2a9e4855b6"
+          }
+        },
+        {
+          "client_id": "315625800053-e2bl9icjps9169sgfufkkmogm2tlq48u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJlIPYhAB2zoLZAZ2N1_rZw5Vpz2rHjbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315625800053-e2bl9icjps9169sgfufkkmogm2tlq48u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "315625800053-njgm8dqgeheoc5gmnh1u75j61hs56osr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fleetManagerPro"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

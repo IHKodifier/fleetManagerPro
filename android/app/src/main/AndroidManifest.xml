@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ccom.enigmatek.fleet_manager_pro">
+    package="com.enigmatek.fleet_manager_pro">
    <application
         android:label="fleet_manager_pro"
         android:name="${applicationName}"

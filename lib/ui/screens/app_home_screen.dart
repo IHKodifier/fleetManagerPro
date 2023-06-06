@@ -44,8 +44,8 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
   ];
   List<Widget> appBarTitles = [
     const Text('Home'),
-    const Text('My Cars'),
-    const Text('Maintenance'),
+    const Text('MarketPlace'),
+    const Text('Settings'),
     // const Text('Settings'),
     // const Text('Messages'),
   ];
@@ -53,14 +53,14 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
   double opacity = 0;
   int pageIndex = 0;
   List<Widget> pages = [
-    Container(
-      color: Colors.red,
-      child: const Text('20'),
-    ),
     VehicleList(),
     Container(
-      color: Colors.green,
-      child: const Text('2'),
+      // color: Colors.red,
+      child: const Text('Market Place'),
+    ),
+    Container(
+      // color: Colors.green,
+      child: const Text('Settings'),
     ),
     // Container(
     //   color: Colors.blue,
@@ -76,23 +76,27 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
   Widget build(BuildContext context) {
     _context = context;
     List<Widget> fabs = [
-      Container(),
+      // Container(),
+      // vehicle FAB
       FloatingActionButton(
-          onPressed: onVehicleAddFAB,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          tooltip: 'Add vehicle',
-          child: const FaIcon(
-            FontAwesomeIcons.plus,
-            size: 35,
-          )),
+        onPressed: onVehicleAddFAB,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        tooltip: 'Add vehicle',
+        child: const FaIcon(
+          FontAwesomeIcons.plus,
+          size: 35,
+        ),
+      ),
+      //Maintenance FAB
       FloatingActionButton(
-          onPressed: onMaintenanceAddFAB,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          tooltip: 'Add Maintennce ',
-          child: const FaIcon(
-            FontAwesomeIcons.plus,
-            size: 35,
-          )),
+        onPressed: onMaintenanceAddFAB,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        tooltip: 'Add Maintennce ',
+        child: const FaIcon(
+          FontAwesomeIcons.plus,
+          size: 35,
+        ),
+      ),
       Container(),
       Container(),
     ];
@@ -103,8 +107,19 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
         title: appBarTitles[pageIndex],
       ),
       drawer: const CustomDrawer(),
-      body: Center(
-        child: pages[pageIndex],
+      body: CustomScrollView(
+        slivers:[
+         pages[pageIndex],
+          SliverList(
+    delegate: SliverChildListDelegate(
+      [
+        // Container(color: Colors.red, height: 190.0),
+        // Container(color: Colors.purple, height: 150.0),
+        // Container(color: Colors.green, height: 150.0),
+      ],
+    ),
+)
+        ],
       ),
       bottomNavigationBar: CurvedNavigationBar(
         animationDuration: const Duration(milliseconds: 300),
