@@ -103,19 +103,20 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      appBar: AppBar(
-        title: appBarTitles[pageIndex],
-      ),
+      // appBar: AppBar(
+      //   title: appBarTitles[pageIndex],
+      // ),
       drawer: const CustomDrawer(),
       body: CustomScrollView(
         slivers:[
+          SliverAppBar(title: Text('Sliver AppBar')),
          pages[pageIndex],
           SliverList(
     delegate: SliverChildListDelegate(
       [
-        // Container(color: Colors.red, height: 190.0),
-        // Container(color: Colors.purple, height: 150.0),
-        // Container(color: Colors.green, height: 150.0),
+        Container(color: Colors.red, height: 190.0),
+        Container(color: Colors.purple, height: 150.0),
+        Container(color: Colors.green, height: 150.0),
       ],
     ),
 )

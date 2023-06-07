@@ -30,7 +30,7 @@ class VehicleList extends ConsumerWidget {
   }
 
   Widget loading() {
-    return const CircularProgressIndicator();
+    return SliverToBoxAdapter(child: const CircularProgressIndicator());
   }
 
   Widget data(List<Vehicle> data) {
