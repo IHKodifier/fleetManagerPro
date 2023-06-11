@@ -21,39 +21,73 @@ class MaintenanceCard extends StatelessWidget {
       height: 120,
       width: double.infinity,
       child: Card(
+        // elevation:15,
         margin: EdgeInsets.all(8),
-        elevation: 5,
+        elevation: 15,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ListTile(
-                //   leading: Text('${(totalDriven-maintenance.kmsDriven).toString()} Kms ago'),
-                //   title: Container(width: 20,
-                //     child: Column(
-                //       mainAxisSize: MainAxisSize.min,
-                //       children: [
-                //         Text('time'),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                Text('${Utils.thousandify(totalDriven-maintenance.kmsDriven) } Kms ago '),
-                Text('${timeago.format(maintenance.timestamp!)} at '),
+               Container(
+                // backgroundColor:Colors.green,
+                // radius: 60,
+                height: 120,
+               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                 children: [
+                   Container(
+                    padding: EdgeInsets.fromLTRB(8, 12, 8, 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.green,
+                        width: 2.5
+                      ),
+                    ),
+                
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Spacer(),
+                        Text(Utils.thousandify(totalDriven-maintenance.kmsDriven),style: Theme.of(context).textTheme.headlineLarge),
+                         Text('Kms ago',style: TextStyle(color: Colors.black,fontSize: 12),),
+                        // Spacer(),
+                      ],
+                    )),
+                   
+                 ],
+               ),),
+              //  Expanded(child: Container(color:Colors.red)),
+                Container(
+                  child: Expanded(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(maintenance.location!),
+                      ),
+
+
+                Text('${timeago.format(maintenance.timestamp!)} '),
+                    ],
+                  )),
+                ),
+                
                 // Spacer(),
-                Text(maintenance.location!),
               ],
             ),
-            ...maintenance.services!.map((e) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(e!.name),
-                Text(e.cost.toString()),
-              ],
-            ))
+            // ...maintenance.services!.map((e) => Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     Text(e!.name),
+            //     Text(e.cost.toString()),
+            //   ],
+            // ))
           ],
     
           // Add more details about the maintenance object as needed
