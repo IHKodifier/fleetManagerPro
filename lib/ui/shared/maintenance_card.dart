@@ -18,7 +18,7 @@ class MaintenanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,
+      height: 85,
       width: double.infinity,
       child: Card(
         // elevation:15,
@@ -29,57 +29,72 @@ class MaintenanceCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-               Container(
-                // backgroundColor:Colors.green,
-                // radius: 60,
-                height: 120,
-               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                 children: [
-                   Container(
-                    padding: EdgeInsets.fromLTRB(8, 12, 8, 12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Colors.green,
-                        width: 2.5
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                   children: [
+                     Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                          Theme.of(context).colorScheme.secondary,
+                          Theme.of(context).colorScheme.onError,
+                          
+                        ]),
+                        border: Border.all(
+                          color:  Theme.of(context).colorScheme.onSecondary,
+                          width: 0.75,
+                        ),
                       ),
-                    ),
-                
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Spacer(),
+                            Text(Utils.thousandify(totalDriven-maintenance.kmsDriven),style: Theme.of(context).textTheme.headlineSmall),
+                             Text('Kms ago',style: TextStyle(color: Colors.black,fontSize: 12),),
+                            // Spacer(),
+                          ],
+                        ),
+                      )),
+                     
+                   ],
+                 ),
+                //  Expanded(child: Container(color:Colors.red)),
+                  Container(
+                    child: Expanded(child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Spacer(),
-                        Text(Utils.thousandify(totalDriven-maintenance.kmsDriven),style: Theme.of(context).textTheme.headlineLarge),
-                         Text('Kms ago',style: TextStyle(color: Colors.black,fontSize: 12),),
-                        // Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4,0,4,0),
+                          child: Text(maintenance.location!),
+                        ),
+            
+            
+                  Padding(
+                    padding: const EdgeInsets.only(left:4.0),
+                    child: Text('${timeago.format(maintenance.timestamp!)} '),
+                  ),
                       ],
                     )),
-                   
-                 ],
-               ),),
-              //  Expanded(child: Container(color:Colors.red)),
-                Container(
-                  child: Expanded(child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Text(maintenance.location!),
-                      ),
-
-
-                Text('${timeago.format(maintenance.timestamp!)} '),
-                    ],
-                  )),
-                ),
-                
-                // Spacer(),
-              ],
+                  ),
+                  
+                  // Spacer(),
+                ],
+              ),
             ),
             // ...maintenance.services!.map((e) => Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

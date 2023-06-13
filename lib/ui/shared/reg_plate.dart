@@ -10,12 +10,13 @@ class RegPlate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     print(state.toString());
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        width: MediaQuery.of(context).size.width/2,
-        height: 120,
+        width: 220,
+        height: 96,
         child: Card(
           
           color: Colors.white,
@@ -26,28 +27,21 @@ class RegPlate extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Spacer(flex: 1,),
-               Transform.rotate(angle: -math.pi/2,
-               child:Container(
-                 width: 100,
-                 height: 40,
-                  color:Colors.deepOrange,
-                  child: Center(child: FittedBox(child: Text('Khyber PakhtoonKhwa'),fit: BoxFit.contain,)),
-                ), ),
+          
                 
-              Spacer(flex: 3,),
+            
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(state.reg!,
-                        style: Theme.of(context).textTheme.displayLarge!.copyWith(fontWeight: FontWeight.w400,
+                        style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.w400,
                         color: Colors.black)),
                     Text(state.regCity!,
                         style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w400,
                         color: Colors.black)),
                   ],
                 ),
-              Spacer(flex: 4,),
+              // Spacer(flex: 4,),
               ],
             ),
           ),

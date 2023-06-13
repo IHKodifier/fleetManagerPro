@@ -24,8 +24,10 @@ class MaintenanceList extends ConsumerWidget {
     return ListView.builder(
       itemCount: maintenances.length,
       itemBuilder: (context, index) {
+        print('length of msintenances = ${maintenances.length.toString()}');
         final maintenance = maintenances[index];
-        return Container(height: 150,
+        return Container(
+          height: 150,
           child: MaintenanceCard(maintenance: maintenance,
           totalDriven: _ref.read(currentVehicleProvider).driven,),
         );
@@ -39,7 +41,7 @@ class MaintenanceList extends ConsumerWidget {
     final maintenanceAsync = ref.watch(maintenanceStreamProvider(vehicleId));
 
     return maintenanceAsync.when(
-      loading: () => const CircularProgressIndicator(),
+      loading: () => Center(child: const CircularProgressIndicator()),
       error: onError,
       data: onData,
     );
