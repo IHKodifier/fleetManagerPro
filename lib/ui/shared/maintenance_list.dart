@@ -13,12 +13,7 @@ class MaintenanceList extends ConsumerWidget {
 
   final String vehicleId;
 
-  Widget onError(Object error, StackTrace stackTrace) {
-  
-    print(error.toString());
-    print(stackTrace.toString());
-    return Text('Error: $error');
-  }
+
 
   Widget onData(List<Maintenance> maintenances) {
     return ListView.builder(
