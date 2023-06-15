@@ -1,15 +1,12 @@
 import 'dart:math';
 
-import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/service_selection_state.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
-import '../../states/maintenances.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 import '../shared/service_edit_form.dart';
 import '../shared/valu_indicator_dlidershape.dart';
 
@@ -35,7 +32,6 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
   int? _rangeStart;
   final TextEditingController _serviceCostController = TextEditingController();
   final TextEditingController _serviceNameController = TextEditingController();
-  MaintenanceType? _type;
 
   @override
   void initState() {
@@ -170,13 +166,18 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
     final vehicleState = ref.read(currentVehicleProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Maintenance')),
+      appBar: AppBar(title: const Text('Add Maintenance'),
+      backgroundColor: Theme.of(context).colorScheme.secondary,),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
+              // Spacer(),
+              SizedBox(
+                height: 50,
+              ),
               locationStreamAsyncValue.when(
                 data: (locations) {
                   return Padding(
@@ -216,53 +217,45 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
               SizedBox(
                 height: 12,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Spacer(),
-                  Text(_kmsDriven.toString(),
-                      style: Theme.of(context).textTheme.displayMedium),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    'Kms',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
-              ),
-
-              // Slider(
-              //   // theme
-              //   value: _kmsDriven!.toDouble(),
-              //   min: _rangeStart!.toDouble(),
-              //   label: _kmsDriven?.round().toString(),
-              //   max: _rangeStart!<100000.0?120000.0:250000.0,
-              //   // divisions: 10,
-              //   onChanged: (value) {
-              //     setState(() {
-              //       _kmsDriven = value.round();
-              //     });
-              //   },
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     // Spacer(),
+              //     Text(_kmsDriven.toString(),
+              //         style: Theme.of(context).textTheme.displayMedium),
+              //     SizedBox(
+              //       width: 8,
+              //     ),
+              //     Text(
+              //       'Kms',
+              //       style: Theme.of(context).textTheme.labelMedium,
+              //     ),
+              //   ],
               // ),
 
-              SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  thumbShape: ValueIndicatorThumbShape(
-                    minValue: _rangeStart!.toDouble(),
-                    maxValue: _rangeStart! < 100000.0 ? 120000.0 : 250000.0,
-                  ),
-                  // Other properties...
-                ),
-                child: Slider(
-                  value: _kmsDriven!.toDouble(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(48,12,48,12),
+                child: SpinBox(
                   min: _rangeStart!.toDouble(),
-                  max: _rangeStart! < 100000.0 ? 120000.0 : 250000.0,
+                  max: 500000,
+                  value: _kmsDriven!.toDouble(),
+                  iconSize: 45,
+                  textStyle: Theme.of(context).textTheme.displaySmall!.copyWith(fontSize: 16),
+                  incrementIcon: Icon(Icons.add_circle,
+                  // size: 35,
+                  color: Theme.of(context).colorScheme.primary,
+                  ),
+                  decrementIcon: Icon(Icons.remove_circle,
+                  // size: 35,
+                  color: Theme.of(context).colorScheme.primary,
+                  ),
+                  spacing: 16,
                   onChanged: (value) {
                     setState(() {
                       _kmsDriven = value.round();
                     });
                   },
+                  // showButtons: false,
                 ),
               ),
 
@@ -407,9 +400,17 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                   );
                 },
               ),
-              ElevatedButton(
-                onPressed: _submitAddMaintenanceForm,
-                child: const Text('Submit'),
+
+              Spacer(
+                flex: 1,
+              ),
+              Container(
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _submitAddMaintenanceForm,
+                  child: const Text('Submit'),
+                  
+                ),
               ),
             ],
           ),

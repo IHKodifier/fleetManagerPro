@@ -47,7 +47,7 @@ class MaintenanceCard extends StatelessWidget {
                           end: Alignment.bottomCenter,
                           colors: [
                           Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.onError,
+                          Theme.of(context).colorScheme.primary,
                           
                         ]),
                         border: Border.all(

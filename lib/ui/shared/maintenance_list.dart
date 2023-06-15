@@ -37,7 +37,7 @@ class MaintenanceList extends ConsumerWidget {
 
     return maintenanceAsync.when(
       loading: () => Center(child: const CircularProgressIndicator()),
-      error: onError,
+      error: (error, stackTrace) => Text(error.toString()),
       data: onData,
     );
   }

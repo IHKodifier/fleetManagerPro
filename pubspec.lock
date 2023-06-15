@@ -237,10 +237,10 @@ packages:
     dependency: "direct main"
     description:
       name: flex_color_scheme
-      sha256: "5be124fa61821a684c0628ca5f687a8512db06738f784516278688eb727a3ef1"
+      sha256: "03a0ad67cc224b20aab9f9a775a6cef76c8f884887902a2d94635c187858b31b"
       url: "https://pub.dev"
     source: hosted
-    version: "7.1.2"
+    version: "6.1.2"
   flex_seed_scheme:
     dependency: transitive
     description:
@@ -334,6 +334,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  flutter_spinbox:
+    dependency: "direct main"
+    description:
+      name: flutter_spinbox
+      sha256: "38d8c1a3a39f0fa72823d4470785f5e165f2deb53531ca7803b54ba45e4dbd46"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -814,5 +822,5 @@ packages:
     source: hosted
     version: "1.0.0"
 sdks:
-  dart: ">=3.0.0 <4.0.0"
-  flutter: ">=3.10.0"
+  dart: ">=3.0.0-0 <4.0.0"
+  flutter: ">=3.7.0"

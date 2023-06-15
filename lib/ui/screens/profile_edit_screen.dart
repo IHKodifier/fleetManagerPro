@@ -124,7 +124,21 @@ class ProfileBanner extends ConsumerWidget {
     return AspectRatio(
         aspectRatio: 1.618,
         child: Image.network(
-            'https://picsum.photos/${size.width.toInt().toString()}/${curatedHeight.toInt().toString()}'));
+            'https://picsum.photos/${size.width.toInt().toString()}/${curatedHeight.toInt().toString()}',
+            loadingBuilder: (context, child, loadingProgress) {
+               if (loadingProgress == null) {
+      return child;
+    } else {
+      return Center(
+        child: CircularProgressIndicator(
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+              : null,
+        ),
+      );
+    }
+            },),
+            );
   }
 }
 
@@ -138,7 +152,20 @@ class ProfileAvatar extends ConsumerWidget {
       backgroundColor: Colors.white,
       child: CircleAvatar(
         radius: 80,
-        child: ClipOval(child: Image.network('https://i.pravatar.cc/300')),
+        child: ClipOval(child: Image.network('https://i.pravatar.cc/300',
+        loadingBuilder: (context, child, loadingProgress) {
+           if (loadingProgress == null) {
+      return child;
+    } else {
+      return Center(
+        child: CircularProgressIndicator(
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+              : null,
+        ),
+      );
+    }
+        },)),
       ),
     );
   }

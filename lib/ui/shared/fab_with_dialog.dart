@@ -62,7 +62,7 @@ class _FabWithDialogState extends State<FabWithDialog> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-      onPressed: () => _showBottomSheet(context),
+      onPressed: ()  =>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>  const AddMaintenanceScreen())),
       icon: Icon(widget.icon),
       label: Text(widget.label),
     );

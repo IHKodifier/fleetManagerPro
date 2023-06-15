@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:fleet_manager_pro/states/vehicle_state.dart';
+import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:image_picker/image_picker.dart';
@@ -30,6 +31,7 @@ class VehicleDetailScreen extends ConsumerStatefulWidget {
 
 class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
   late final imagePageController;
+  late AsyncValue<List<Maintenance>> maintenanceAsync;
   late int selectedPage;
   late Vehicle state;
 
@@ -66,111 +68,43 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         ),
         maintenanceAsync.when(
           error: (error, stackTrace) {
-              print(error.toString());
-    print(stackTrace.toString());
-    return Text('Error: $error');
+            print(error.toString());
+            print(stackTrace.toString());
+            return Text('Error: $error');
           },
-          loading: () {return ListView.builder(itemBuilder: (context, index) => const CircularProgressIndicator(),
-          itemCount: 5,);
-            
+          loading: () {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) =>
+                    Center(child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const CircularProgressIndicator(),
+                    )),
+                childCount: 5,
+              ),
+            );
           },
-          data: (maintenances) { 
-            return ListView.builder(
-      itemCount: maintenances.length,
-      itemBuilder: (context, index) {
-        print('length of msintenances = ${maintenances.length.toString()}');
-        final maintenance = maintenances[index];
-        return Container(
-          height: 150,
-          child: MaintenanceCard(maintenance: maintenance,
-          totalDriven: ref.read(currentVehicleProvider).driven!,),
-        );
-      },
-    );
-            
+          data: (maintenances) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  print(
+                      'length of msintenances = ${maintenances.length.toString()}');
+                  final maintenance = maintenances[index];
+                  return Container(
+                    height: 150,
+                    child: MaintenanceCard(
+                      maintenance: maintenance,
+                      totalDriven: ref.read(currentVehicleProvider).driven!,
+                    ),
+                  );
+                },
+                childCount: maintenances.length,
+              ),
+            );
           },
-        ), 
-        SliverToBoxAdapter(
-          child: Container(
-              height: 350,
-              // height: double.infinity,
-              child: MaintenanceList(
-                  vehicleId: ref.read(currentVehicleProvider).id)),
         ),
-
-        //   SliverToBoxAdapter(
-        //   child: Column(
-        //     // mainAxisSize: MainAxisSize.,
-        //     children: [
-        //       Card(
-        //         elevation: 2,
-        //         // margin: EdgeInsets.all(16),
-        //         child: Stack(
-        //           // mainAxisSize: MainAxisSize.min,
-        //           children: [
-        //             // imagePageViewContainer(pageCount),
-        //             Container(
-        //               height: 80,
-        //               decoration: const BoxDecoration(
-        //                 gradient: LinearGradient(
-        //                   begin: Alignment.bottomCenter,
-        //                   end: Alignment.topCenter,
-        //                   colors: [Colors.transparent, Colors.black87],
-        //                 ),
-        //               ),
-        //               child: ListTile(
-        //                 // color: Colors.black87,
-        //                 // tileColor: Colors.white24,
-        //                 //todo change to cached network image
-        //                 leading: const ManufacLogo(),
-        //                 title: Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                   children: [
-        //                     ModelNameWidget(state: state),
-
-        //                   ],
-        //                 ),
-        //                 // subtitle: YearWidget(state: state),
-        //                 // trailing: SizedBox(
-        //                 //   width: 10,
-        //                 //   child: Row(
-        //                 //     // crossAxisAlignment: CrossAxisAlignment.end,
-        //                 //     children: [
-        //                 //       TextButton(
-        //                 //           onPressed: _updateMileage,
-        //                 //           child: const Icon(
-        //                 //             Icons.edit,
-        //                 //             size: 10,
-        //                 //           )),
-        //                 //     ],
-        //                 //   ),
-        //                 // ),
-        //               ),
-        //             ),
-        //             Positioned(
-        //               bottom: 8,
-        //               right: 8,
-        //               // left: 8,
-        //               child: ClipOval(
-        //                 child: Container(
-        //                   color: Colors.white,
-        //                   child: Center(
-        //                     child:
-        //                   ),
-        //                 ),
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //       //
-        //       Container(
-        //         height: 350,
-        //         // height: double.infinity,
-        //         child: MaintenanceList(vehicleId: ref.read(currentVehicleProvider).id)),
-        //     ],
-        //   ),
-        // ),
+        //
       ],
     );
   }
@@ -212,6 +146,19 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                 child: Image.network(
                   fit: BoxFit.fitHeight,
                   e!,
+                  loadingBuilder: (context, child, loadingProgress) {
+                     if (loadingProgress == null) {
+      return child;
+    } else {
+      return Center(
+        child: CircularProgressIndicator(
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+              : null,
+        ),
+      );
+    }
+                  },
                 ),
               ),
             ),
@@ -219,16 +166,17 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
           .toList(),
     );
   }
-late AsyncValue<List<Maintenance>> maintenanceAsync;
+
   @override
   Widget build(BuildContext context) {
     state = ref.watch(currentVehicleProvider);
-     maintenanceAsync = ref.watch(maintenanceStreamProvider(state.id));
+    maintenanceAsync = ref.watch(maintenanceStreamProvider(state.id));
     return Scaffold(
       body: body(context),
-      floatingActionButton: FabWithDialog(
-        icon: Icons.add,
-        label: "Add Maintenance ",
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.add),
+        label: Text('Add Maintenance'), 
+        onPressed:  ()=>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>  const AddMaintenanceScreen())),
       ),
     );
   }
@@ -335,7 +283,20 @@ class ManufacLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.network(
-        'https://www.citypng.com/public/uploads/small/116622223421szbtwasfjdtlwhmbltou4fgm2aixci0syqz9gfsweyschieb1peugcreblyogaewk8uzuybcsojxm8s4stve8e8adipzqa7fapq.png');
+        'https://www.citypng.com/public/uploads/small/116622223421szbtwasfjdtlwhmbltou4fgm2aixci0syqz9gfsweyschieb1peugcreblyogaewk8uzuybcsojxm8s4stve8e8adipzqa7fapq.png',
+        loadingBuilder: (context, child, loadingProgress) {
+           if (loadingProgress == null) {
+      return child;
+    } else {
+      return Center(
+        child: CircularProgressIndicator(
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+              : null,
+        ),
+      );
+    }
+        },);
   }
 }
 
@@ -389,25 +350,6 @@ class PositionedYearWidget extends StatelessWidget {
 class UpdateMileageButton extends ConsumerWidget {
   const UpdateMileageButton({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(currentVehicleProvider);
-    return TextButton(
-      onPressed: () {
-        _updateMileage(context);
-      },
-      child: Text(
-        state.driven.toString() + '  kms',
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(color: Colors.white70),
-        // );,
-        // ),
-      ),
-    );
-  }
-
   _updateMileage(BuildContext context) {
     showDialog(
         context: context,
@@ -416,6 +358,19 @@ class UpdateMileageButton extends ConsumerWidget {
             icon: ClipOval(
                 child: Image.network(
               'https://static.vecteezy.com/system/resources/previews/009/933/333/non_2x/speedometer-kilometers-icon-outline-illustration-vector.jpg',
+              loadingBuilder: (context, child, loadingProgress) {
+                 if (loadingProgress == null) {
+      return child;
+    } else {
+      return Center(
+        child: CircularProgressIndicator(
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+              : null,
+        ),
+      );
+    }
+              },
             )),
             title: Text('Update Total  Kilometers '),
             content: TextField(
@@ -440,5 +395,24 @@ class UpdateMileageButton extends ConsumerWidget {
             ],
           );
         });
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(currentVehicleProvider);
+    return TextButton(
+      onPressed: () {
+        _updateMileage(context);
+      },
+      child: Text(
+        state.driven.toString() + '  kms',
+        style: Theme.of(context)
+            .textTheme
+            .titleMedium
+            ?.copyWith(color: Colors.white70),
+        // );,
+        // ),
+      ),
+    );
   }
 }

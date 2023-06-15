@@ -49,8 +49,8 @@ class VehicleList extends ConsumerWidget {
                 },
                 child: Card(
                     // margin: const EdgeInsets.all(8),
-                    color: Theme.of(_context).colorScheme.outlineVariant,
-                    // elevation: 3,
+                    color: Theme.of(_context).colorScheme.onInverseSurface,
+                    elevation: 3,
                     // height:150,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,

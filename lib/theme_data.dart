@@ -1,13 +1,12 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-
 final appLightTheme = FlexThemeData.light(
   scheme: FlexScheme.bigStone,
   surfaceMode: FlexSurfaceMode.highScaffoldLevelSurface,
   blendLevel: 15,
   appBarStyle: FlexAppBarStyle.primary,
   appBarOpacity: 0.95,
-  appBarElevation: 0,
+  appBarElevation: 5,
   transparentStatusBar: true,
   tabBarStyle: FlexTabBarStyle.forAppBar,
   tooltipsMatchBackground: true,
@@ -38,7 +37,7 @@ final appLightTheme = FlexThemeData.light(
 
 final appDarkTheme = FlexThemeData.dark(
   colors: const FlexSchemeColor(
-    primary: Color(0xff1a2c42),
+    primary: Color.fromARGB(255, 26, 66, 41),
     // primaryVariant: Color(0xff0c1115),
     secondary: Color(0xffe59a18),
     // secondaryVariant: Color(0xfff0b03f),
@@ -77,9 +76,3 @@ appBarStyle: FlexAppBarStyle.primary,
     popupMenuOpacity: 0.95,
   ),
 );
-
-
-
-
-
-
