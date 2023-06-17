@@ -199,21 +199,22 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                               isExpanded: true,
                               items: locations.map((location) {
                                 List<String> firstLetters = [];
-                                var initials ='';
+                                var initials = '';
                                 if (location.contains(' ')) {
-                                  
                                   List<String> words = location
                                       .split(' ')
                                       .where((element) => element.isNotEmpty)
                                       .toList();
                                   for (String word in words) {
                                     firstLetters.add(word[0].toUpperCase());
-                                 initials = firstLetters.join(' ');
+                                    initials = firstLetters.join(' ');
+                                    if (initials.length > 2) {
+                                      initials = initials.substring(0, 3);
+                                    }
                                   }
                                 } else {
-                                   initials = location[0].toUpperCase();
+                                  initials = location[0].toUpperCase();
                                 }
-
 
                                 return DropdownMenuItem(
                                   value: location,
@@ -223,8 +224,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                       child: FittedBox(
                                           child: Padding(
                                         padding: const EdgeInsets.all(4.0),
-                                        child: Text(
-                                            initials),
+                                        child: Text(initials),
                                       )),
                                     ),
                                   ),
@@ -255,6 +255,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           TextField(
+                                            maxLength: 30,
                                             controller: controller,
                                             decoration: InputDecoration(
                                               hintText: 'Name of location',
@@ -300,6 +301,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                                           'name':
                                                               controller.text
                                                         });
+                                                        controller.dispose();
                                                         Navigator.pop(context);
                                                       },
                                                       icon: Icon(
@@ -313,7 +315,17 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                   },
                                 );
                               },
-                              icon: const Icon(Icons.add_circle_outline)),
+                              icon: Tooltip(
+                                message: 'Add Location',
+                                child: Center(
+                                  child: Icon(
+                                    Icons.add_circle,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    size: 45,
+                                  ),
+                                ),
+                              )),
                           const Spacer(flex: 3),
                         ],
                       ),
@@ -358,14 +370,31 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                       width: 300,
                       child: IntrinsicWidth(
                         child: SpinBox(
+                          textStyle: TextStyle(fontSize: 20)
+                              .copyWith(fontWeight: FontWeight.w600),
+                          decoration: InputDecoration(
+                            hintText: 'Hint',
+                            labelText: 'Kilometers Driven',
+                            labelStyle: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(fontSize: 12),
+                            suffix: Text('Kms'),
+                            border: OutlineInputBorder(),
+                            suffixStyle: TextStyle(fontSize: 14).copyWith(
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.italic),
+                            contentPadding: const EdgeInsets.all(24),
+                          ),
+                          // textAlign: TextAlign.center,
                           min: _rangeStart!.toDouble(),
                           max: 500000,
                           value: _kmsDriven!.toDouble(),
                           iconSize: 45,
-                          textStyle: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(fontSize: 16),
+                          // textStyle: Theme.of(context)
+                          //     .textTheme
+                          //     .displaySmall!
+                          //     .copyWith(fontSize: 16),
                           incrementIcon: Icon(
                             Icons.add_circle,
                             // size: 35,
