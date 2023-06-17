@@ -166,8 +166,10 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
     final vehicleState = ref.read(currentVehicleProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Maintenance'),
-      backgroundColor: Theme.of(context).colorScheme.secondary,),
+      appBar: AppBar(
+        title: const Text('Add Maintenance'),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
         child: Form(
@@ -183,24 +185,60 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
                     child: SizedBox(
-                      // width: double.infinity,
-                      child: DropdownButton(
-                        hint: Text('select location'),
-                        value: _location,
-                        isExpanded: true,
-                        items: locations.map((location) {
-                          return DropdownMenuItem(
-                            value: location,
-                            child: Text(location),
-                          );
-                        }).toList(),
-                        onChanged: (selectedLocation) {
-                          //todo Handle the selected location
-                          setState(() {
-                            newMaintenanceState.location = selectedLocation;
-                            _location = selectedLocation;
-                          });
-                        },
+                      width: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Spacer(
+                            flex: 3,
+                          ),
+                          IntrinsicWidth(
+                            child: DropdownButton(
+                              hint: Text('select location'),
+                              value: _location,
+                              isExpanded: true,
+                              items: locations.map((location) {
+                                List<String> words = location
+                                    .split(' ')
+                                    .where((element) => element.isNotEmpty)
+                                    .toList();
+                                List<String> firstLetters = [];
+                                for (String word in words) {
+                                  firstLetters.add(word[0].toUpperCase());
+                                }
+
+                                var initials = firstLetters.join('');
+
+                                return DropdownMenuItem(
+                                  value: location,
+                                  child: ListTile(
+                                    title: Text(location),
+                                    leading: CircleAvatar(
+                                      child: FittedBox(child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Text(initials[0]+' '+initials[1]),
+                                      )),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (selectedLocation) {
+                                //todo Handle the selected location
+                                setState(() {
+                                  newMaintenanceState.location =
+                                      selectedLocation;
+                                  _location = selectedLocation;
+                                });
+                              },
+                            ),
+                          ),
+                          // FloatingActionButton(onPressed: (){}),
+                          Spacer(),
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.add_circle_outline)),
+                          Spacer(flex: 3),
+                        ],
                       ),
                     ),
                   );
@@ -216,6 +254,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
               ),
               SizedBox(
                 height: 12,
+                width: 120,
               ),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.center,
@@ -234,28 +273,43 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
               // ),
 
               Padding(
-                padding: const EdgeInsets.fromLTRB(48,12,48,12),
-                child: SpinBox(
-                  min: _rangeStart!.toDouble(),
-                  max: 500000,
-                  value: _kmsDriven!.toDouble(),
-                  iconSize: 45,
-                  textStyle: Theme.of(context).textTheme.displaySmall!.copyWith(fontSize: 16),
-                  incrementIcon: Icon(Icons.add_circle,
-                  // size: 35,
-                  color: Theme.of(context).colorScheme.primary,
-                  ),
-                  decrementIcon: Icon(Icons.remove_circle,
-                  // size: 35,
-                  color: Theme.of(context).colorScheme.primary,
-                  ),
-                  spacing: 16,
-                  onChanged: (value) {
-                    setState(() {
-                      _kmsDriven = value.round();
-                    });
-                  },
-                  // showButtons: false,
+                padding: const EdgeInsets.fromLTRB(48, 12, 48, 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 250,
+                      child: IntrinsicWidth(
+                        child: SpinBox(
+                          min: _rangeStart!.toDouble(),
+                          max: 500000,
+                          value: _kmsDriven!.toDouble(),
+                          iconSize: 45,
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(fontSize: 16),
+                          incrementIcon: Icon(
+                            Icons.add_circle,
+                            // size: 35,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          decrementIcon: Icon(
+                            Icons.remove_circle,
+                            // size: 35,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          spacing: 16,
+                          onChanged: (value) {
+                            setState(() {
+                              _kmsDriven = value.round();
+                            });
+                          },
+                          // showButtons: false,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -409,7 +463,6 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                 child: ElevatedButton(
                   onPressed: _submitAddMaintenanceForm,
                   child: const Text('Submit'),
-                  
                 ),
               ),
             ],

@@ -55,7 +55,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          title: Text('vehicle details'),
+          // title: Text('vehicle details'),
           pinned: false,
           floating: true,
           backgroundColor: Colors.transparent,
@@ -65,6 +65,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               background: imagePageViewContainer(pageCount),
               collapseMode: CollapseMode.parallax,
               title: Text(state.reg!)),
+              centerTitle: true,
         ),
         maintenanceAsync.when(
           error: (error, stackTrace) {
@@ -223,9 +224,9 @@ class ImadePageViewDotIndicator extends StatelessWidget {
       child: PageViewDotIndicator(
         currentItem: selectedPage,
         count: pageCount,
-        size: const Size(16, 16),
+        size: const Size(18, 18),
         unselectedSize: const Size(6, 6),
-        selectedColor: Theme.of(context).colorScheme.primary,
+        selectedColor: Theme.of(context).colorScheme.secondary,
         unselectedColor: Colors.blueGrey.shade200,
         duration: const Duration(milliseconds: 200),
         boxShape: BoxShape.circle,
