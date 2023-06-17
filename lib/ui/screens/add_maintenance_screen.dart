@@ -177,7 +177,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
           child: ListView(
             children: [
               // Spacer(),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               locationStreamAsyncValue.when(
@@ -189,34 +189,42 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Spacer(
+                          const Spacer(
                             flex: 3,
                           ),
                           IntrinsicWidth(
                             child: DropdownButton(
-                              hint: Text('select location'),
+                              hint: const Text('select location'),
                               value: _location,
                               isExpanded: true,
                               items: locations.map((location) {
-                                List<String> words = location
-                                    .split(' ')
-                                    .where((element) => element.isNotEmpty)
-                                    .toList();
                                 List<String> firstLetters = [];
-                                for (String word in words) {
-                                  firstLetters.add(word[0].toUpperCase());
+                                var initials ='';
+                                if (location.contains(' ')) {
+                                  
+                                  List<String> words = location
+                                      .split(' ')
+                                      .where((element) => element.isNotEmpty)
+                                      .toList();
+                                  for (String word in words) {
+                                    firstLetters.add(word[0].toUpperCase());
+                                 initials = firstLetters.join(' ');
+                                  }
+                                } else {
+                                   initials = location[0].toUpperCase();
                                 }
 
-                                var initials = firstLetters.join('');
 
                                 return DropdownMenuItem(
                                   value: location,
                                   child: ListTile(
                                     title: Text(location),
                                     leading: CircleAvatar(
-                                      child: FittedBox(child: Padding(
+                                      child: FittedBox(
+                                          child: Padding(
                                         padding: const EdgeInsets.all(4.0),
-                                        child: Text(initials[0]+' '+initials[1]),
+                                        child: Text(
+                                            initials),
                                       )),
                                     ),
                                   ),
@@ -233,18 +241,87 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                             ),
                           ),
                           // FloatingActionButton(onPressed: (){}),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.add_circle_outline)),
-                          Spacer(flex: 3),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    TextEditingController controller =
+                                        TextEditingController();
+                                    return AlertDialog(
+                                      title: const Text('New Location'),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextField(
+                                            controller: controller,
+                                            decoration: InputDecoration(
+                                              hintText: 'Name of location',
+                                            ),
+                                          ),
+                                          // SizedBox(height: 16),
+                                          // Icon(Icons.check),
+                                        ],
+                                      ),
+                                      actions: <Widget>[
+                                        SizedBox(
+                                          height: 60,
+                                          width: 350,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('Close'),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                  child: ElevatedButton.icon(
+                                                      onPressed: () {
+                                                        final vehicle = ref.read(
+                                                            currentVehicleProvider);
+                                                        // ignore: avoid_single_cascade_in_expression_statements
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection('users')
+                                                            .doc(ref
+                                                                .read(
+                                                                    appUserProvider)
+                                                                ?.uuid)
+                                                            .collection(
+                                                                'locations')
+                                                            .doc()
+                                                            .set({
+                                                          'name':
+                                                              controller.text
+                                                        });
+                                                        Navigator.pop(context);
+                                                      },
+                                                      icon: Icon(
+                                                          Icons.save_sharp),
+                                                      label: Text('Save'))),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.add_circle_outline)),
+                          const Spacer(flex: 3),
                         ],
                       ),
                     ),
                   );
                 },
                 loading: () {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 },
@@ -252,7 +329,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                   return Text('Error loading locations: $error');
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
                 width: 120,
               ),
@@ -278,7 +355,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 250,
+                      width: 300,
                       child: IntrinsicWidth(
                         child: SpinBox(
                           min: _rangeStart!.toDouble(),
@@ -313,27 +390,34 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                 ),
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(' cost'),
-                  Spacer(
-                    flex: 1,
+              SizedBox(
+                width: 300,
+                child: IntrinsicWidth(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      const Text(' cost'),
+                      const Spacer(
+                        flex: 1,
+                      ),
+                      //todo get maintenance cost from state
+                      Text(
+                        _cost.toString(),
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                      // Spacer(flex: 1,),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        'Rs',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const Spacer(),
+                    ],
                   ),
-                  //todo get maintenance cost from state
-                  Text(
-                    _cost.toString(),
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                  // Spacer(flex: 1,),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    'Rs',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
+                ),
               ),
               Consumer(
                 builder: (context, watch, _) {
@@ -360,7 +444,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                   size: 40,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 16,
                               ),
 
@@ -372,7 +456,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                     showDialog(
                                         context: context,
                                         builder: (context) => AlertDialog(
-                                              title: Text('Edit Service'),
+                                              title: const Text('Edit Service'),
                                               // icon: Icon(Icons.edit),
                                               scrollable: true,
                                               content: Column(
@@ -455,7 +539,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                 },
               ),
 
-              Spacer(
+              const Spacer(
                 flex: 1,
               ),
               Container(
