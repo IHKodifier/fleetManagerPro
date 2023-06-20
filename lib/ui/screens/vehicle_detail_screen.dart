@@ -1,25 +1,19 @@
-import 'dart:io';
-
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:fleet_manager_pro/states/app_user_state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:fleet_manager_pro/states/vehicle_state.dart';
 import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:path/path.dart' as Path;
-// import 'package:fast_cached_network_image/fast_cached_network_image.dart';
-import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 
 import '../../states/maintenance_state.dart';
 import '../../states/maintenances.dart';
-import '../shared/add_media_dialog.dart';
-import '../shared/fab_with_dialog.dart';
+import '../shared/image_pageview.dart';
 import '../shared/maintenance_card.dart';
-import '../shared/maintenance_list.dart';
 
 class VehicleDetailScreen extends ConsumerStatefulWidget {
   const VehicleDetailScreen({super.key});
@@ -34,6 +28,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
   late AsyncValue<List<Maintenance>> maintenanceAsync;
   late int selectedPage;
   late Vehicle state;
+  double newDriven = 0;
 
   late BuildContext _context;
 
@@ -42,20 +37,20 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
     // TODO: implement initState
     selectedPage = 0;
     imagePageController = PageController(initialPage: selectedPage);
-
+    state = ref.read(currentVehicleProvider);
+    newDriven = state.driven!.toDouble();
     super.initState();
   }
 
   void onFABPressed() {}
 
   body(BuildContext context) {
-    state = ref.watch(currentVehicleProvider);
+    // state = ref.watch(currentVehicleProvider);
     final pageCount = state.images!.length;
     _context = context;
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          // title: Text('vehicle details'),
           pinned: false,
           floating: true,
           backgroundColor: Colors.transparent,
@@ -64,8 +59,92 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
           flexibleSpace: FlexibleSpaceBar(
               background: imagePageViewContainer(pageCount),
               collapseMode: CollapseMode.parallax,
-              title: Text(state.reg!)),
-              centerTitle: true,
+              title: DecoratedBox(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Colors.black87,
+                    Colors.transparent,
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  child: Text(state.reg!))),
+          centerTitle: true,
+        ),
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // displays the make and model of th vehicle
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.make!,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    state.model!,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ],
+              ),
+              // displays the year and doors of the vehicle
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.year!,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(fontSize: 20),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    '${state.doors.toString()} dr',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(fontSize: 20),
+                  ),
+                ],
+              ),
+              // displays the driven and button to update the driven  of the vehicle
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.driven.toString(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(fontSize: 18),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    ' Kms',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(fontSize: 18, fontStyle: FontStyle.italic),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: updateDrivenDialogBuilder);
+                      },
+                      icon: const Icon(Icons.edit))
+                ],
+              ),
+            ],
+          ),
         ),
         maintenanceAsync.when(
           error: (error, stackTrace) {
@@ -76,11 +155,11 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
           loading: () {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) =>
-                    Center(child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const CircularProgressIndicator(),
-                    )),
+                (context, index) => const Center(
+                    child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                )),
                 childCount: 5,
               ),
             );
@@ -92,7 +171,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                   print(
                       'length of msintenances = ${maintenances.length.toString()}');
                   final maintenance = maintenances[index];
-                  return Container(
+                  return SizedBox(
                     height: 150,
                     child: MaintenanceCard(
                       maintenance: maintenance,
@@ -110,8 +189,8 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
     );
   }
 
-  Container imagePageViewContainer(int pageCount) {
-    return Container(
+  Widget imagePageViewContainer(int pageCount) {
+    return SizedBox(
       height: 300,
       child: Stack(
         children: [
@@ -125,7 +204,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               : imagePageView(),
           state.images!.isEmpty
               ? Container()
-              : ImadePageViewDotIndicator(
+              : ImagePageViewDotIndicator(
                   selectedPage: selectedPage, pageCount: pageCount),
         ],
       ),
@@ -148,23 +227,54 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                   fit: BoxFit.fitHeight,
                   e!,
                   loadingBuilder: (context, child, loadingProgress) {
-                     if (loadingProgress == null) {
-      return child;
-    } else {
-      return Center(
-        child: CircularProgressIndicator(
-          value: loadingProgress.expectedTotalBytes != null
-              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-              : null,
-        ),
-      );
-    }
+                    if (loadingProgress == null) {
+                      return child;
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
             ),
           )
           .toList(),
+    );
+  }
+
+  Widget updateDrivenDialogBuilder(BuildContext context) {
+    return AlertDialog(
+      title: Text('Update  driven'),
+      content: SpinBox(
+        min: state.driven!.toDouble(),
+        max: 2000000,
+        value: newDriven,
+        onChanged: (value) => setState(() {
+          newDriven = value;
+          state = state.copyWith(driven: newDriven.toInt());
+        }),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: TextButton(
+              onPressed: () => Navigator.pop(context), child: Text('Cancel')),
+        ),
+        Spacer(),
+        ElevatedButton(
+            onPressed: _updateDriven,
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Text('Save'),
+            )),
+      ],
+      actionsAlignment: MainAxisAlignment.center,
     );
   }
 
@@ -175,245 +285,46 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
     return Scaffold(
       body: body(context),
       floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.add),
-        label: Text('Add Maintenance'), 
-        onPressed:  ()=>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>  const AddMaintenanceScreen())),
+        icon: const Icon(Icons.add),
+        label: const Text('Add Maintenance'),
+        onPressed: () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) => const AddMaintenanceScreen())),
       ),
     );
   }
-}
 
-class AddCameraButton extends ConsumerWidget {
-  const AddCameraButton({super.key});
+  Future<void> _updateDriven() async {
+    if (kDebugMode) {
+      print(state.driven.toString());
+    }
+    final vehicledocRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(ref.read(appUserProvider)?.uuid)
+        .collection('vehicles')
+        .doc(ref.read(currentVehicleProvider).id);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return IconButton(
-      icon: const Icon(
-        Icons.add_a_photo,
-        size: 45,
-      ),
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => Dialog(
-            child: AddMediaDialog(),
-          ),
-        );
-      },
-    );
+    await vehicledocRef
+        .set({'driven': newDriven.toInt()}, SetOptions(merge: true));
+    Navigator.of(context).pop();
+   
+    ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
   }
 }
 
-class ImadePageViewDotIndicator extends StatelessWidget {
-  const ImadePageViewDotIndicator({
-    super.key,
-    required this.selectedPage,
-    required this.pageCount,
-  });
-
-  final int pageCount;
-  final int selectedPage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 8,
-      right: 0,
-      left: 0,
-      child: PageViewDotIndicator(
-        currentItem: selectedPage,
-        count: pageCount,
-        size: const Size(18, 18),
-        unselectedSize: const Size(6, 6),
-        selectedColor: Theme.of(context).colorScheme.secondary,
-        unselectedColor: Colors.blueGrey.shade200,
-        duration: const Duration(milliseconds: 200),
-        boxShape: BoxShape.circle,
-      ),
-    );
-  }
-}
-
-class YearWidget extends StatelessWidget {
-  const YearWidget({
-    super.key,
-    required this.state,
-  });
-
-  final Vehicle state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      state.year!,
+@override
+Widget build(BuildContext context, WidgetRef ref) {
+  final state = ref.watch(currentVehicleProvider);
+  return TextButton(
+    onPressed: () {},
+    child: Text(
+      '${state.driven}  kms',
       style: Theme.of(context)
           .textTheme
-          .labelSmall
+          .titleMedium
           ?.copyWith(color: Colors.white70),
-    );
-    // );
-  }
-}
-
-class ModelNameWidget extends StatelessWidget {
-  const ModelNameWidget({
-    super.key,
-    required this.state,
-  });
-
-  final Vehicle state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      state.model!,
-      style: Theme.of(context)
-          .textTheme
-          .titleLarge
-          ?.copyWith(color: Colors.white70),
-    );
-  }
-}
-
-class ManufacLogo extends StatelessWidget {
-  const ManufacLogo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.network(
-        'https://www.citypng.com/public/uploads/small/116622223421szbtwasfjdtlwhmbltou4fgm2aixci0syqz9gfsweyschieb1peugcreblyogaewk8uzuybcsojxm8s4stve8e8adipzqa7fapq.png',
-        loadingBuilder: (context, child, loadingProgress) {
-           if (loadingProgress == null) {
-      return child;
-    } else {
-      return Center(
-        child: CircularProgressIndicator(
-          value: loadingProgress.expectedTotalBytes != null
-              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-              : null,
-        ),
-      );
-    }
-        },);
-  }
-}
-
-class PositionedModelWidget extends StatelessWidget {
-  const PositionedModelWidget({
-    super.key,
-    required this.state,
-  });
-
-  final Vehicle state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      // bottom: ,
-      right: 10,
-      // left: ,
-      top: 10,
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Text(
-          state.model!,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-      ),
-    );
-  }
-}
-
-class PositionedYearWidget extends StatelessWidget {
-  const PositionedYearWidget({
-    super.key,
-    required this.state,
-  });
-
-  final Vehicle state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 10,
-      right: 8,
-      child: Text(
-        state.year!,
-        style: Theme.of(context).textTheme.headlineSmall,
-      ),
-    );
-  }
-}
-
-class UpdateMileageButton extends ConsumerWidget {
-  const UpdateMileageButton({super.key});
-
-  _updateMileage(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            icon: ClipOval(
-                child: Image.network(
-              'https://static.vecteezy.com/system/resources/previews/009/933/333/non_2x/speedometer-kilometers-icon-outline-illustration-vector.jpg',
-              loadingBuilder: (context, child, loadingProgress) {
-                 if (loadingProgress == null) {
-      return child;
-    } else {
-      return Center(
-        child: CircularProgressIndicator(
-          value: loadingProgress.expectedTotalBytes != null
-              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-              : null,
-        ),
-      );
-    }
-              },
-            )),
-            title: Text('Update Total  Kilometers '),
-            content: TextField(
-              // controller: _textController,
-              decoration: InputDecoration(
-                hintText: 'enter Total Kilometers',
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Cancel'),
-                onPressed: () => Navigator.pop(context),
-              ),
-              TextButton(
-                child: Text('Save'),
-                onPressed: () {
-                  // TODO: Implement save functionality
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(currentVehicleProvider);
-    return TextButton(
-      onPressed: () {
-        _updateMileage(context);
-      },
-      child: Text(
-        state.driven.toString() + '  kms',
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(color: Colors.white70),
-        // );,
-        // ),
-      ),
-    );
-  }
+      // );,
+      // ),
+    ),
+  );
 }
