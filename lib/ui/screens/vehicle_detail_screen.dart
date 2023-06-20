@@ -59,13 +59,30 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
           flexibleSpace: FlexibleSpaceBar(
               background: imagePageViewContainer(pageCount),
               collapseMode: CollapseMode.parallax,
-              title: DecoratedBox(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                    Colors.black87,
-                    Colors.transparent,
-                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-                  child: Text(state.reg!))),
+              title: Container(
+                width: double.infinity,
+                child: DecoratedBox(
+                    decoration:  BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.background,
+                          Colors.transparent,
+                        ],
+                        begin: Alignment.centerRight,
+                         end: Alignment.center,
+                      ),
+                    ),
+                    child: Row(
+                      
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Spacer(),
+                        Text(state.reg!,
+                        style: Theme.of(context).textTheme.titleMedium,),
+SizedBox(width: 8,),
+                      ],
+                    )),
+              )),
           centerTitle: true,
         ),
         SliverToBoxAdapter(
@@ -171,11 +188,14 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                   print(
                       'length of msintenances = ${maintenances.length.toString()}');
                   final maintenance = maintenances[index];
-                  return SizedBox(
-                    height: 150,
-                    child: MaintenanceCard(
-                      maintenance: maintenance,
-                      totalDriven: ref.read(currentVehicleProvider).driven!,
+                  return Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SizedBox(
+                      height: 150,
+                      child: MaintenanceCard(
+                        state: maintenance,
+                        totalDriven: ref.read(currentVehicleProvider).driven!,
+                      ),
                     ),
                   );
                 },
@@ -307,7 +327,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
     await vehicledocRef
         .set({'driven': newDriven.toInt()}, SetOptions(merge: true));
     Navigator.of(context).pop();
-   
+
     ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
   }
 }
