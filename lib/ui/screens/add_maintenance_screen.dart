@@ -171,7 +171,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -183,11 +183,11 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
               locationStreamAsyncValue.when(
                 data: (locations) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: SizedBox(
-                      width: 100,
+                      width: 300,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Spacer(
                             flex: 3,
@@ -241,7 +241,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                             ),
                           ),
                           // FloatingActionButton(onPressed: (){}),
-                          const Spacer(),
+                          const SizedBox(width:8),
                           IconButton(
                               onPressed: () {
                                 showDialog(
@@ -255,7 +255,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           TextField(
-                                            maxLength: 30,
+                                            maxLength: 20,
                                             controller: controller,
                                             decoration: InputDecoration(
                                               hintText: 'Name of location',
@@ -367,10 +367,10 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 300,
+                      width: 280,
                       child: IntrinsicWidth(
                         child: SpinBox(
-                          textStyle: TextStyle(fontSize: 20)
+                          textStyle: TextStyle(fontSize: 22)
                               .copyWith(fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
                             hintText: 'Hint',

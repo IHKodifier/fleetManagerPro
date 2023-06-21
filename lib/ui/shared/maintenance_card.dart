@@ -93,9 +93,15 @@ class MaintenanceCard extends StatelessWidget {
                         Positioned(
                           top: 8,
                           left: 8,
-                          child: Text(
-                            state.location!,
-                            style: Theme.of(context).textTheme.titleLarge,
+                          child: Column(
+                            children: [
+                              Text(                                  
+                                state.location!,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                            ],
                           ),
                         ),
                         Positioned(
@@ -190,8 +196,8 @@ class MaintenanceCard extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.secondary,
             Theme.of(context).colorScheme.onPrimary,
+            Theme.of(context).colorScheme.secondary,
           ]),
       border: Border.all(
         color: Theme.of(context).colorScheme.onSecondary,
