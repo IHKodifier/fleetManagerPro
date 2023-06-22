@@ -12,7 +12,7 @@ final maintenanceStreamProvider =
       .doc(user?.uuid)
       .collection('vehicles')
       .doc(vehicleId)
-      .collection('maintenances')
+      .collection('maintenances').orderBy('kmsDriven',descending: true)
       .snapshots();
   return vehicleStream.map((querySnapshot) => querySnapshot.docs
       .map((doc) => Maintenance.fromMap(doc.data()))

@@ -188,10 +188,12 @@ SizedBox(width: 8,),
                   print(
                       'length of msintenances = ${maintenances.length.toString()}');
                   final maintenance = maintenances[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: SizedBox(
-                      height: 150,
+                  return Flexible(
+                    // padding: const EdgeInsets.all(8),
+                    fit: FlexFit.tight,
+                    flex: 2,
+                    child: Container(
+                      // height: 180,
                       child: MaintenanceCard(
                         state: maintenance,
                         totalDriven: ref.read(currentVehicleProvider).driven!,

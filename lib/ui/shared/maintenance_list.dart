@@ -22,9 +22,15 @@ class MaintenanceList extends ConsumerWidget {
         print('length of msintenances = ${maintenances.length.toString()}');
         final maintenance = maintenances[index];
         return Container(
-          height: 150,
-          child: MaintenanceCard(state: maintenance,
-          totalDriven: _ref.read(currentVehicleProvider).driven,),
+          // height: 150,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              // minHeight: 120,
+              // maxHeight: double.infinity,
+            ),
+            child: MaintenanceCard(state: maintenance,
+            totalDriven: _ref.read(currentVehicleProvider).driven,),
+          ),
         );
       },
     );
