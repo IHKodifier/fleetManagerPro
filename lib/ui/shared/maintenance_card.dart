@@ -1,10 +1,7 @@
-import 'package:fleet_manager_pro/states/barrel_states.dart';
+import 'package:fleet_manager_pro/utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../states/barrel_models.dart';
-import 'package:timeago/timeago.dart' as timeago;
-
-import '../../utils.dart';
 
 class MaintenanceCard extends StatelessWidget {
   const MaintenanceCard({
@@ -18,22 +15,21 @@ class MaintenanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-    // return LayoutBuilder(builder: (context, constraints) 
+    // return LayoutBuilder(builder: (context, constraints)
     // // {
     //   minHeight = constraints.minHeight;
     //   minWwidth = constraints.minWidth;
     //   maxHeight = constraints.maxHeight;
     //   maxWwidth = constraints.maxWidth;
-      return IntrinsicHeight(
-        child: Card(
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Row(
-              children: [
-                Container(
+    return IntrinsicHeight(
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            children: [
+              IntrinsicHeight(
+                child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(
@@ -63,7 +59,8 @@ class MaintenanceCard extends StatelessWidget {
                                 fit: BoxFit.fitWidth,
                                 child: Text(
                                   '${totalDriven - state.kmsDriven}',
-                                  style: Theme.of(context).textTheme.displayLarge,
+                                  style:
+                                      Theme.of(context).textTheme.displayLarge,
                                 ),
                               ),
                               Padding(
@@ -83,94 +80,102 @@ class MaintenanceCard extends StatelessWidget {
                     ),
                   ),
                 ),
-      
-                Flexible(
-                  
-                  child: Stack(
-                    clipBehavior: Clip.antiAlias,
-                    children: [
-                      buildMaintenanceLocationText(context),
-                      buildTimeAgoText(context),
-                      buildServicesTable(context)
-                    ],
-                  ),
+              ),
+
+              Flexible(
+                child: Column(
+                  // clipBehavior: Clip.antiAlias,
+                  children: [
+                    buildMaintenanceLocationText(context),
+                    buildTimeAgoText(context),
+                    buildServicesTable(context)
+                  ],
                 ),
-      
-                // Text('max Height = ${maxHeight.toString()}'),
-                // Text('min Width = ${minWwidth.toString()}'),
-                // Text('max Height = ${maxWwidth.toString()}'),
-              ],
-            ),
+              ),
+
+              // Text('max Height = ${maxHeight.toString()}'),
+              // Text('min Width = ${minWwidth.toString()}'),
+              // Text('max Height = ${maxWwidth.toString()}'),
+            ],
           ),
         ),
-      );
+      ),
+    );
     // },
     // );
   }
 
   Positioned buildServicesTable(BuildContext context) {
     return Positioned(
-                      top: 50,
-                      left: 8,
-                      // child: Container(color: Colors.teal,
-                      width: 270,
-                      // height: do
-                      child: Flex(
-                          // shrinkWrap: true,
-                          
-                          direction: Axis.vertical,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            ...state.services!
-                                .map(
-                                  (e) => Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(e!.name),
-                                      // SizedBox(width: 150),
-                                      Spacer(),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 8.0),
-                                        child: Text(e.cost.toString()),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                            // Spacer(),
-                            // SizedBox(height: 6,),
-                                    
-                            totalsRow(context),
-                                      SizedBox(height: 12,),
-                          ]
-                          )
-                          );
+        top: 50,
+        left: 80,
+
+        // child: Container(color: Colors.teal,
+        width: 270,
+        // height: do
+        child: Column(
+            // shrinkWrap: true,
+
+            // direction: Axis.vertical,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              ...state.services!
+                  .map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 2, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(e!.name),
+                          // SizedBox(width: 150),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text(Utils.thousandify(e.cost)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              // Spacer(),
+              // SizedBox(height: 6,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Divider(
+                  thickness: 1.5,
+                  color: Colors.black87,
+                ),
+              ),
+              totalsRow(context),
+              const SizedBox(
+                height: 4,
+              ),
+            ]));
   }
 
   Positioned buildTimeAgoText(BuildContext context) {
     return Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Text(
-                      '${timeago.format(state.timestamp!)} ',
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  );
+      top: 8,
+      right: 8,
+      child: Text(
+        '${timeago.format(state.timestamp!)} ',
+        style: Theme.of(context).textTheme.labelSmall,
+      ),
+    );
   }
 
   Positioned buildMaintenanceLocationText(BuildContext context) {
     return Positioned(
-                    top: 8,
-                    left: 8,
-                    child: Text(
-                      state.location!,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  );
+      top: 8,
+      left: 8,
+      child: Text(
+        state.location!,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
+    );
   }
 
   Column buildLeadingWidget(BuildContext context) {
@@ -185,17 +190,17 @@ class MaintenanceCard extends StatelessWidget {
 
   Container buildLeadingText(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(4),
+      padding: const EdgeInsets.all(4),
       decoration: buildLeadingDecoration(context),
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
+      child: const Padding(
+        padding: EdgeInsets.all(4.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
             // Spacer(),
             // Text(Utils.thousandify(totalDriven-maintenance.kmsDriven),style: Theme.of(context).textTheme.headlineSmall),
-            const Text(
+            Text(
               'Kms ago',
               style: TextStyle(color: Colors.black, fontSize: 12),
             ),
@@ -234,15 +239,15 @@ class MaintenanceCard extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .bodyLarge
-              ?.copyWith(fontSize: 20, fontWeight: FontWeight.w700),
+              ?.copyWith(fontSize: 18, fontWeight: FontWeight.w700),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 40),
         // Spacer(),
 
         Padding(
-          padding: const EdgeInsets.only(right: 8.0),
+          padding: const EdgeInsets.only(right: 4.0),
           child: Text(
-            state.cost.toString(),
+            Utils.thousandify(state.cost!),
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge

@@ -192,12 +192,9 @@ SizedBox(width: 8,),
                     // padding: const EdgeInsets.all(8),
                     fit: FlexFit.tight,
                     flex: 2,
-                    child: Container(
-                      // height: 180,
-                      child: MaintenanceCard(
-                        state: maintenance,
-                        totalDriven: ref.read(currentVehicleProvider).driven!,
-                      ),
+                    child: MaintenanceCard(
+                      state: maintenance,
+                      totalDriven: ref.read(currentVehicleProvider).driven!,
                     ),
                   );
                 },
