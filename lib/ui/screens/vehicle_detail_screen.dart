@@ -7,6 +7,7 @@ import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:fleet_manager_pro/states/vehicle_state.dart';
 import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 
@@ -62,24 +63,27 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               title: Container(
                 width: double.infinity,
                 child: DecoratedBox(
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).colorScheme.background,
                           Colors.transparent,
                         ],
                         begin: Alignment.centerRight,
-                         end: Alignment.center,
+                        end: Alignment.center,
                       ),
                     ),
                     child: Row(
-                      
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Spacer(),
-                        Text(state.reg!,
-                        style: Theme.of(context).textTheme.titleMedium,),
-SizedBox(width: 8,),
+                        Text(
+                          state.reg!,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
                       ],
                     )),
               )),
@@ -303,12 +307,48 @@ SizedBox(width: 8,),
     maintenanceAsync = ref.watch(maintenanceStreamProvider(state.id));
     return Scaffold(
       body: body(context),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        label: const Text('Add Maintenance'),
-        onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) => const AddMaintenanceScreen())),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        duration: Duration(milliseconds: 120),
+        fanAngle: 90,
+        distance: 100,
+        expandedFabSize: ExpandableFabSize.small,
+        collapsedFabSize: ExpandableFabSize.regular,
+        overlayStyle: ExpandableFabOverlayStyle(
+          blur: 3.0,
+          // color: Colors.blueGrey.shade50,
+        ),
+        children: [
+          FloatingActionButton(
+            heroTag: null,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: const Icon(
+                Icons.local_gas_station_sharp,
+                size: 50,
+              ),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: ((context) => AlertDialog(
+                      title: Text('Add Fuel Stop'),
+                    )),
+              );
+            },
+          ),
+          FloatingActionButton(
+            heroTag: null,
+            child: const Icon(
+              Icons.car_repair_outlined,
+              size: 50,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const AddMaintenanceScreen(),),);
+            },
+          ),
+        ],
       ),
     );
   }

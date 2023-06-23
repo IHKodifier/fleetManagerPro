@@ -141,7 +141,7 @@ class MaintenanceCard extends StatelessWidget {
               // Spacer(),
               // SizedBox(height: 6,),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0), 
                 child: Divider(
                   thickness: 1.5,
                   color: Colors.black87,
@@ -173,8 +173,7 @@ class MaintenanceCard extends StatelessWidget {
         state.location!,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
+        style: Theme.of(context).textTheme.displaySmall,),
     );
   }
 
