@@ -4,22 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:fleet_manager_pro/states/service.dart';
-enum MaintenanceType {
-  Regular_Scheduled,
-Regular_Unscheduled,
-One_Off,
-tuneUp_ECM,
-BodyWorks,
-Polish_Detailing,
-Repairs,
-Other
-}
+
 
 class Maintenance extends Equatable {
   String? id;
   String? location;
   DateTime? timestamp;
-  // MaintenanceType type;
+double? litres;
   int kmsDriven;
   int? cost;
   List<Service?>? services;
@@ -31,7 +22,7 @@ class Maintenance extends Equatable {
     this.kmsDriven = 0,
     this.cost,
     this.services,
-    // this.type=MaintenanceType.Regular_Scheduled,
+    this.litres,
   });
 
   Maintenance copyWith({
@@ -40,15 +31,14 @@ class Maintenance extends Equatable {
     DateTime? timestamp,
     int?  kmsDriven,
     int? cost,
-    // MaintenanceType? type ,
-    int? ki
+    double? litres,
   }) {
     return Maintenance(
       id: id ?? this.id,
       location: location ?? this.location,
       timestamp: timestamp ?? this.timestamp!,
       cost: cost ?? this.cost,
-      // type: type?? this.type
+      litres: litres?? this.litres
     );
   }
 
@@ -57,6 +47,7 @@ Map<String, dynamic> toMap() {
     'id': id,
     'location': location,
     'timestamp': timestamp != null ? Timestamp.fromDate(timestamp!) : null,
+    'litres': litres != null ? litres : null,
     // 'type': type.index,
     'kmsDriven': kmsDriven,
     'cost': cost,
@@ -77,6 +68,7 @@ factory Maintenance.fromMap(Map<String, dynamic> map) {
     timestamp: parsedTimestamp,
     // type: MaintenanceType.values[map['type'] as int],
     kmsDriven: map['kmsDriven'] as int,
+    litres: map['litres'],
     cost: map['cost'] as int?,
     services: (map['services'] as List<dynamic>?)
         ?.map((e) => e != null ? Service.fromMap(e as Map<String, dynamic>) : null)

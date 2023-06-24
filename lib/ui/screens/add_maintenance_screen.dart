@@ -373,7 +373,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                           textStyle: TextStyle(fontSize: 22)
                               .copyWith(fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
-                            hintText: 'Hint',
+                            
                             labelText: 'Kilometers Driven',
                             labelStyle: Theme.of(context)
                                 .textTheme
@@ -455,6 +455,12 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
 
                   return allServices.when(
                     data: (services) {
+                      for (var service in services) {
+                        if (service.name=='Fuel') {
+                          services.remove(service);                          
+                        }
+                        
+                      }
                       return Card(
                         // color: Colors.transparent,
                         elevation: 10,

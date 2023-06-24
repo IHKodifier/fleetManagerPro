@@ -13,6 +13,7 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 
 import '../../states/maintenance_state.dart';
 import '../../states/maintenances.dart';
+import '../shared/add_fuelstop_dialog.dart';
 import '../shared/image_pageview.dart';
 import '../shared/maintenance_card.dart';
 
@@ -331,9 +332,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: ((context) => AlertDialog(
-                      title: Text('Add Fuel Stop'),
-                    )),
+                builder: ((context) => AddFuelStopDialog()),
               );
             },
           ),
@@ -344,8 +343,12 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               size: 50,
             ),
             onPressed: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const AddMaintenanceScreen(),),);
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => const AddMaintenanceScreen(),
+                ),
+              );
             },
           ),
         ],
@@ -371,19 +374,4 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
   }
 }
 
-@override
-Widget build(BuildContext context, WidgetRef ref) {
-  final state = ref.watch(currentVehicleProvider);
-  return TextButton(
-    onPressed: () {},
-    child: Text(
-      '${state.driven}  kms',
-      style: Theme.of(context)
-          .textTheme
-          .titleMedium
-          ?.copyWith(color: Colors.white70),
-      // );,
-      // ),
-    ),
-  );
-}
+
