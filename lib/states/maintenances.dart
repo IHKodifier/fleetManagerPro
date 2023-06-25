@@ -68,8 +68,8 @@ factory Maintenance.fromMap(Map<String, dynamic> map) {
     timestamp: parsedTimestamp,
     // type: MaintenanceType.values[map['type'] as int],
     kmsDriven: map['kmsDriven'] as int,
-    litres: map['litres'],
-    cost: map['cost'] as int?,
+    litres: map['litres']?.toDouble(),
+    cost: map['cost'].toInt(),
     services: (map['services'] as List<dynamic>?)
         ?.map((e) => e != null ? Service.fromMap(e as Map<String, dynamic>) : null)
         .toList(),

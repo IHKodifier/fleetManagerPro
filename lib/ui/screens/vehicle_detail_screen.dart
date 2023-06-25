@@ -4,7 +4,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
-import 'package:fleet_manager_pro/states/vehicle_state.dart';
 import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -28,27 +27,32 @@ class VehicleDetailScreen extends ConsumerStatefulWidget {
 class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
   late final imagePageController;
   late AsyncValue<List<Maintenance>> maintenanceAsync;
-  late int selectedPage;
-  late Vehicle state;
+  late int selectedImagePage;
+  late Vehicle vehicleState;
   double newDriven = 0;
-
+  bool showFuelstops = true;
+  List<Maintenance> allMaintenances=<Maintenance>[];
+  List<Maintenance> filteredMaintenances=<Maintenance>[];
+  List<Maintenance> activeListofMaintenances= <Maintenance>[];
   late BuildContext _context;
+
 
   @override
   void initState() {
     // TODO: implement initState
-    selectedPage = 0;
-    imagePageController = PageController(initialPage: selectedPage);
-    state = ref.read(currentVehicleProvider);
-    newDriven = state.driven!.toDouble();
     super.initState();
+    selectedImagePage = 0;
+    imagePageController = PageController(initialPage: selectedImagePage);
+    vehicleState = ref.read(currentVehicleProvider);
+    newDriven = vehicleState.driven!.toDouble();
   }
 
   void onFABPressed() {}
 
   body(BuildContext context) {
     // state = ref.watch(currentVehicleProvider);
-    final pageCount = state.images!.length;
+    final pageCount = vehicleState.images!.length;
+
     _context = context;
     return CustomScrollView(
       slivers: [
@@ -61,7 +65,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
           flexibleSpace: FlexibleSpaceBar(
               background: imagePageViewContainer(pageCount),
               collapseMode: CollapseMode.parallax,
-              title: Container(
+              title: SizedBox(
                 width: double.infinity,
                 child: DecoratedBox(
                     decoration: BoxDecoration(
@@ -77,12 +81,12 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Spacer(),
+                        const Spacer(),
                         Text(
-                          state.reg!,
+                          vehicleState.reg!,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 8,
                         ),
                       ],
@@ -90,6 +94,8 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               )),
           centerTitle: true,
         ),
+
+        // displays the make and model of the vehicle
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,14 +105,14 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    state.make!,
+                    vehicleState.make!,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const SizedBox(
                     width: 12,
                   ),
                   Text(
-                    state.model!,
+                    vehicleState.model!,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
@@ -116,7 +122,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    state.year!,
+                    vehicleState.year!,
                     style: Theme.of(context)
                         .textTheme
                         .labelLarge!
@@ -126,7 +132,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                     width: 12,
                   ),
                   Text(
-                    '${state.doors.toString()} dr',
+                    '${vehicleState.doors.toString()} dr',
                     style: Theme.of(context)
                         .textTheme
                         .labelLarge!
@@ -140,7 +146,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    state.driven.toString(),
+                    vehicleState.driven.toString(),
                     style: Theme.of(context)
                         .textTheme
                         .labelLarge!
@@ -165,9 +171,25 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                       icon: const Icon(Icons.edit))
                 ],
               ),
+              SwitchListTile(
+                title: Text(
+                    'Show Fuels Stops'),
+                value: showFuelstops,
+                controlAffinity: ListTileControlAffinity.leading,
+                onChanged: (value) {
+                  setState(() {
+                    showFuelstops = value;
+
+                    toggleFilters();
+                  });
+                },
+              ),
             ],
           ),
         ),
+       
+       
+       
         maintenanceAsync.when(
           error: (error, stackTrace) {
             print(error.toString());
@@ -187,12 +209,17 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             );
           },
           data: (maintenances) {
+            allMaintenances=List.from(maintenances);
+            filteredMaintenances= List.from(allMaintenances);
+            filteredMaintenances.removeWhere((element) => element.location=='Fuel Station 1');
+            activeListofMaintenances=allMaintenances;
+            toggleFilters();
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   print(
-                      'length of msintenances = ${maintenances.length.toString()}');
-                  final maintenance = maintenances[index];
+                      'length of active maintenances = ${activeListofMaintenances.length.toString()}');
+                  final maintenance = activeListofMaintenances[index];
                   return Flexible(
                     // padding: const EdgeInsets.all(8),
                     fit: FlexFit.tight,
@@ -203,7 +230,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                     ),
                   );
                 },
-                childCount: maintenances.length,
+                childCount: activeListofMaintenances.length,
               ),
             );
           },
@@ -218,7 +245,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
       height: 300,
       child: Stack(
         children: [
-          state.images!.isEmpty
+          vehicleState.images!.isEmpty
               ? Container(
                   color: Colors.blueGrey.shade300,
                   child: const Center(
@@ -226,10 +253,10 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                           'No Media added for this car , click the camer Icon below to add Media for this car')),
                 )
               : imagePageView(),
-          state.images!.isEmpty
+          vehicleState.images!.isEmpty
               ? Container()
               : ImagePageViewDotIndicator(
-                  selectedPage: selectedPage, pageCount: pageCount),
+                  selectedPage: selectedImagePage, pageCount: pageCount),
         ],
       ),
     );
@@ -238,10 +265,10 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
   PageView imagePageView() {
     return PageView(
       onPageChanged: (value) => setState(() {
-        selectedPage = value;
+        selectedImagePage = value;
       }),
       controller: imagePageController,
-      children: state.images!
+      children: vehicleState.images!
           .map(
             (e) => Padding(
               padding: const EdgeInsets.all(2.0),
@@ -274,27 +301,28 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
   Widget updateDrivenDialogBuilder(BuildContext context) {
     return AlertDialog(
-      title: Text('Update  driven'),
+      title: const Text('Update  driven'),
       content: SpinBox(
-        min: state.driven!.toDouble(),
+        min: vehicleState.driven!.toDouble(),
         max: 2000000,
         value: newDriven,
         onChanged: (value) => setState(() {
           newDriven = value;
-          state = state.copyWith(driven: newDriven.toInt());
+          vehicleState = vehicleState.copyWith(driven: newDriven.toInt());
         }),
       ),
       actions: [
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: TextButton(
-              onPressed: () => Navigator.pop(context), child: Text('Cancel')),
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
         ),
-        Spacer(),
+        const Spacer(),
         ElevatedButton(
             onPressed: _updateDriven,
-            child: Padding(
-              padding: const EdgeInsets.all(6.0),
+            child: const Padding(
+              padding: EdgeInsets.all(6.0),
               child: Text('Save'),
             )),
       ],
@@ -304,13 +332,13 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    state = ref.watch(currentVehicleProvider);
-    maintenanceAsync = ref.watch(maintenanceStreamProvider(state.id));
+    vehicleState = ref.watch(currentVehicleProvider);
+    maintenanceAsync = ref.watch(maintenanceStreamProvider(vehicleState.id));
     return Scaffold(
       body: body(context),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
-        duration: Duration(milliseconds: 120),
+        duration: const Duration(milliseconds: 220),
         fanAngle: 90,
         distance: 100,
         expandedFabSize: ExpandableFabSize.small,
@@ -322,9 +350,9 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         children: [
           FloatingActionButton(
             heroTag: null,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: const Icon(
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
                 Icons.local_gas_station_sharp,
                 size: 50,
               ),
@@ -332,7 +360,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: ((context) => AddFuelStopDialog()),
+                builder: ((context) => const AddFuelStopDialog()),
               );
             },
           ),
@@ -358,7 +386,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
   Future<void> _updateDriven() async {
     if (kDebugMode) {
-      print(state.driven.toString());
+      print(vehicleState.driven.toString());
     }
     final vehicledocRef = FirebaseFirestore.instance
         .collection('users')
@@ -372,6 +400,19 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
     ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
   }
+  
+  void toggleFilters() {
+    if (showFuelstops) {
+      setState(() {
+      
+             activeListofMaintenances= allMaintenances;
+      });
+ 
+      
+    } else {
+      setState(() {
+        activeListofMaintenances=filteredMaintenances;
+      });
+    }
+  }
 }
-
-
