@@ -257,6 +257,24 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               ? Container()
               : ImagePageViewDotIndicator(
                   selectedPage: selectedImagePage, pageCount: pageCount),
+        Positioned(
+                  bottom: 8,
+                  left: 8,
+                  // left: 8,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.add_a_photo,
+                      size: 45,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) =>  Dialog(
+                          child: AddMediaDialog(),
+                        ),
+                      );
+                    },
+                  ),),
         ],
       ),
     );
