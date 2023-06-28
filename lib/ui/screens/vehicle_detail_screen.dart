@@ -324,6 +324,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         min: vehicleState.driven!.toDouble(),
         max: 2000000,
         value: newDriven,
+        step: 10,
         onChanged: (value) => setState(() {
           newDriven = value;
           vehicleState = vehicleState.copyWith(driven: newDriven.toInt());
@@ -362,7 +363,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         expandedFabSize: ExpandableFabSize.small,
         collapsedFabSize: ExpandableFabSize.regular,
         overlayStyle: ExpandableFabOverlayStyle(
-          blur: 3.0,
+          blur: 1.5,
           // color: Colors.blueGrey.shade50,
         ),
         children: [

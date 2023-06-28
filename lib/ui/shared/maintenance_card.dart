@@ -22,87 +22,206 @@ class MaintenanceCard extends StatelessWidget {
     //   maxHeight = constraints.maxHeight;
     //   maxWwidth = constraints.maxWidth;
     return IntrinsicHeight(
-      child: Card(
-        elevation: 5,
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Row(
-            children: [
-              IntrinsicHeight(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 2,
-                      style: BorderStyle.solid,
-                    ),
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.onPrimary,
-                        ]),
-                  ),
-                  width: 92,
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                  '${totalDriven - state.kmsDriven}',
-                                  style:
-                                      Theme.of(context).textTheme.displayLarge,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FittedBox(
-                                  child: Text(
-                                    'Km ago ',
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              Flexible(
-                child: Column(
-                  // clipBehavior: Clip.antiAlias,
-                  children: [
-                    buildMaintenanceLocationText(context),
-                    buildTimeAgoText(context),
-                    buildServicesTable(context)
-                  ],
-                ),
-              ),
-
-              // Text('max Height = ${maxHeight.toString()}'),
-              // Text('min Width = ${minWwidth.toString()}'),
-              // Text('max Height = ${maxWwidth.toString()}'),
-            ],
-          ),
-        ),
-      ),
+      child: state.location != 'Fuel Station 1'
+          ? _maintenanceCard(context)
+          : _fuelstopCard(context),
     );
     // },
     // );
+  }
+
+  Card _maintenanceCard(BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          children: [
+            IntrinsicHeight(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                    style: BorderStyle.solid,
+                  ),
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.onPrimary,
+                      ]),
+                ),
+                width: 92,
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Positioned(
+                            //     // left: 0,
+                            //     top: 0,
+                            //     right: 0,
+                            //     // bottom:0,
+                            //     child: state.location == 'Fuel Station 1'
+                            //         ? Icon(Icons.local_gas_station,size: 40,)
+                            //         : Icon(Icons.car_repair,size: 40,)),
+                            FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                '${totalDriven - state.kmsDriven}',
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FittedBox(
+                                child: Text(
+                                  'Km ago ',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            Flexible(
+              child: Column(
+                // clipBehavior: Clip.antiAlias,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.car_repair,
+                        size: 40,
+                      ),
+                      buildMaintenanceLocationText(context),
+                    ],
+                  ),
+                  buildTimeAgoText(context),
+                  buildServicesTable(context)
+                ],
+              ),
+            ),
+
+            // Text('max Height = ${maxHeight.toString()}'),
+            // Text('min Width = ${minWwidth.toString()}'),
+            // Text('max Height = ${maxWwidth.toString()}'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Card _fuelstopCard(BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          children: [
+            IntrinsicHeight(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                    style: BorderStyle.solid,
+                  ),
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.onPrimary,
+                      ]),
+                ),
+                width: 92,
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                '${totalDriven - state.kmsDriven}',
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FittedBox(
+                                child: Text(
+                                  'Km ago ',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                // clipBehavior: Clip.antiAlias,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  buildTimeAgoText(context),
+
+                  buildMaintenanceLocationText(context),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        Utils.thousandify(state.cost!),
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Text('Rs'),
+                    ],
+                  ),
+                  // buildServicesTable(context)
+                ],
+              ),
+            ),
+
+            // Text('max Height = ${maxHeight.toString()}'),
+            // Text('min Width = ${minWwidth.toString()}'),
+            // Text('max Height = ${maxWwidth.toString()}'),
+          ],
+        ),
+      ),
+    );
   }
 
   Positioned buildServicesTable(BuildContext context) {
@@ -111,53 +230,58 @@ class MaintenanceCard extends StatelessWidget {
         left: 80,
 
         // child: Container(color: Colors.teal,
-        width: 270,
+        width: 270, 
         // height: do
-        child: Column(
-            // shrinkWrap: true,
-
-            // direction: Axis.vertical,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              ...state.services!
-                  .map(
-                    (e) => Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 2, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(e!.name),
-                          // SizedBox(width: 150),
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text(Utils.thousandify(e.cost)),
-                          ),
-                        ],
+        child: Card (
+          color: Colors.white54,
+          elevation: 50,
+          margin: EdgeInsets.all(4),
+          child: Column(
+              // shrinkWrap: true,
+        
+              // direction: Axis.vertical,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                ...state.services!
+                    .map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 2, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(child: Text(e!.name)),
+                            // SizedBox(width: 150),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(Utils.thousandify(e.cost)),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
-              // Spacer(),
-              // SizedBox(height: 6,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0), 
-                child: Divider(
-                  thickness: 1.5,
-                  color: Colors.black87,
+                    )
+                    .toList(),
+                // Spacer(),
+                // SizedBox(height: 6,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Divider(
+                    thickness: 1.5,
+                    color: Colors.black87,
+                  ),
                 ),
-              ),
-              totalsRow(context),
-              const SizedBox(
-                height: 4,
-              ),
-            ]));
+                totalsRow(context),
+                const SizedBox(
+                  height: 4,
+                ),
+              ]),
+        ));
   }
 
   Positioned buildTimeAgoText(BuildContext context) {
     return Positioned(
-      top: 8,
-      right: 8,
+      // top: 8,
+      // right: 8,
       child: Text(
         '${timeago.format(state.timestamp!)} ',
         style: Theme.of(context).textTheme.labelSmall,
@@ -169,11 +293,17 @@ class MaintenanceCard extends StatelessWidget {
     return Positioned(
       top: 8,
       left: 8,
-      child: Text(
-        state.location!,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.displaySmall,),
+      child: state.location != 'Fuel Station 1'
+          ? Text(
+              state.location!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.titleLarge,
+            )
+          : Icon(
+              Icons.local_gas_station,
+              size: 70,
+            ),
     );
   }
 

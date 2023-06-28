@@ -241,7 +241,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                             ),
                           ),
                           // FloatingActionButton(onPressed: (){}),
-                          const SizedBox(width:8),
+                          const SizedBox(width: 8),
                           IconButton(
                               onPressed: () {
                                 showDialog(
@@ -319,10 +319,10 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                 message: 'Add Location',
                                 child: Center(
                                   child: Icon(
-                                    Icons.add_circle,
+                                    Icons.add_circle, 
                                     color:
                                         Theme.of(context).colorScheme.primary,
-                                    size: 45,
+                                    size: 35,
                                   ),
                                 ),
                               )),
@@ -362,35 +362,35 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
               // ),
 
               Padding(
-                padding: const EdgeInsets.fromLTRB(48, 12, 48, 12),
+                padding: const EdgeInsets.fromLTRB(8, 12, 8, 24),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 280,
+                      width: 260,
                       child: IntrinsicWidth(
                         child: SpinBox(
-                          textStyle: TextStyle(fontSize: 22)
+                          step: 10,
+                          textStyle: TextStyle(fontSize: 20)
                               .copyWith(fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
-                            
                             labelText: 'Kilometers Driven',
                             labelStyle: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
                                 .copyWith(fontSize: 12),
-                            suffix: Text('Kms'),
+                            suffix: Text(' Kms'),
                             border: OutlineInputBorder(),
                             suffixStyle: TextStyle(fontSize: 14).copyWith(
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.italic),
-                            contentPadding: const EdgeInsets.all(24),
+                            contentPadding: const EdgeInsets.all(4),
                           ),
                           // textAlign: TextAlign.center,
                           min: _rangeStart!.toDouble(),
                           max: 500000,
                           value: _kmsDriven!.toDouble(),
-                          iconSize: 45,
+                          // iconSize: 45,
                           // textStyle: Theme.of(context)
                           //     .textTheme
                           //     .displaySmall!
@@ -456,10 +456,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                   return allServices.when(
                     data: (services) {
                       for (var service in services) {
-                        if (service.name=='Fuel') {
-                          services.remove(service);                          
+                        if (service.name == 'Fuel') {
+                          services.remove(service);
                         }
-                        
                       }
                       return Card(
                         // color: Colors.transparent,

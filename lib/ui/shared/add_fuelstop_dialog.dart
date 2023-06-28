@@ -56,88 +56,97 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
   addFuelStopForm() {
     oldDriven = ref.read(currentVehicleProvider).driven!;
     costPerLitre = cost / litres;
-     return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SpinBox(
-          min: 0,
-          max: double.infinity,
-          value: cost,
-          decoration: InputDecoration(
-            hintText: 'Hint',
-            labelText: 'TOTAL PRICE ',
-            labelStyle:
-                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
-            suffix: const Text('Rs'),
-            border: const OutlineInputBorder(),
-            suffixStyle: const TextStyle(fontSize: 14).copyWith(
-                fontWeight: FontWeight.w300, fontStyle: FontStyle.italic),
-            contentPadding: const EdgeInsets.all(16),
+     return SingleChildScrollView(
+       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SpinBox(
+            min: 0,
+            max: double.infinity,
+            value: cost,
+            step: 100,
+            decoration: InputDecoration(
+              hintText: 'Hint',
+              labelText: 'TOTAL PRICE ',
+              labelStyle:
+                  Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+              suffix: const Text('Rs'),
+              border: const OutlineInputBorder(),
+              suffixStyle: const TextStyle(fontSize: 14).copyWith(
+                  fontWeight: FontWeight.w300, fontStyle: FontStyle.italic),
+              contentPadding: const EdgeInsets.all(16),
+            ),
+            onChanged: (value) => setState(() {
+              cost = value;
+            }),
           ),
-          onChanged: (value) => setState(() {
-            cost = value;
-          }),
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        SpinBox(
-          min: 0,
-          max: double.infinity,
-          value: litres,
-          decimals: 2,
-          keyboardType: const TextInputType.numberWithOptions(
-            decimal: true,
-            signed: false,
+          const SizedBox(
+            height: 8,
           ),
-          decoration: InputDecoration(
-            labelText: 'Litres',
-            labelStyle:
-                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
-            suffix: const Text('Ltr.'),
-            // keyboardType:
-            border: const OutlineInputBorder(),
-            suffixStyle: const TextStyle(fontSize: 14).copyWith(
-                fontWeight: FontWeight.w300, fontStyle: FontStyle.italic),
-            contentPadding: const EdgeInsets.all(16),
+          SpinBox(
+            min: 0,
+            max: double.infinity,
+            value: litres,
+            step:1.5,
+            decimals: 1,
+            keyboardType: const TextInputType.numberWithOptions(
+              decimal: true,
+              signed: false,
+            ),
+            decoration: InputDecoration(
+              labelText: 'Litres',
+              labelStyle:
+                  Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+              suffix: const Text('Ltr.'),
+              border: const OutlineInputBorder(),
+              suffixStyle: const TextStyle(fontSize: 14).copyWith(
+                  fontWeight: FontWeight.w300, fontStyle: FontStyle.italic),
+              contentPadding: const EdgeInsets.all(16),
+            ),
+            onChanged: (value) => setState(() {
+              litres = value*1.0;
+            }),
           ),
-          onChanged: (value) => setState(() {
-            litres = value;
-          }),
-        ),
-        const SizedBox(
-          height: 6,
-        ),
-        (cost != 0 && litres != 0)
-            ? Text('@  Rs. ${costPerLitre.toStringAsFixed(3)} /Ltr')
-            : Container(),
-        const SizedBox(
-          height: 6,
-        ),
-        SpinBox(
-          min: oldDriven.toDouble(),
-          max: double.infinity,
-          value:
-              newDriven != 0 ? newDriven!.toDouble() : oldDriven.toDouble(),
-          onChanged: (value) => setState(() {
-            newDriven = value.round();
-          }),
-          decoration: InputDecoration(
-            hintText: 'Hint',
-            labelText: 'Kilometers Driven',
-            labelStyle:
-                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
-            suffix: const Text('Kms'),
-            border: const OutlineInputBorder(),
-            suffixStyle: const TextStyle(fontSize: 14).copyWith(
-                fontWeight: FontWeight.w300, fontStyle: FontStyle.italic),
-            contentPadding: const EdgeInsets.all(16),
+          const SizedBox(
+            height: 6,
           ),
-          
-        ),
-      ],
-    );
+          (cost != 0 && litres != 0)
+              ? Text('@  Rs. ${costPerLitre.toStringAsFixed(3)} /Ltr')
+              : Container(),
+          const SizedBox(
+            height: 6,
+          ),
+          SpinBox(
+           keyboardType: TextInputType.numberWithOptions(),
+            min: oldDriven.toDouble(),
+            max: double.infinity,
+            // decimals: true,
+            step: 10,
+
+            value:
+                newDriven != 0 ? newDriven!.toDouble() : oldDriven.toDouble(),
+            onChanged: (value) => setState(() {
+              newDriven = value.round();
+            }),
+            decoration: InputDecoration(
+             
+              hintText: 'Hint',
+              labelText: 'Kilometers Driven',
+              labelStyle:
+                  Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+              suffix: const Text('Kms'),
+              border: const OutlineInputBorder(),
+              suffixStyle: const TextStyle(fontSize: 14).copyWith(
+                  fontWeight: FontWeight.w300, fontStyle: FontStyle.italic),
+              contentPadding: const EdgeInsets.all(16),
+              
+            ),
+            
+          ),
+        ],
+         ),
+     );
   }
 
   Future<void> saveFuelStop() async {
