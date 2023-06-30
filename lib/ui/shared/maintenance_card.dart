@@ -233,8 +233,8 @@ class MaintenanceCard extends StatelessWidget {
         width: 270, 
         // height: do
         child: Card (
-          color: Colors.white54,
-          elevation: 50,
+          // color: Colors.white54,
+          elevation: 5,
           margin: EdgeInsets.all(4),
           child: Column(
               // shrinkWrap: true,
@@ -303,6 +303,7 @@ class MaintenanceCard extends StatelessWidget {
           : Icon(
               Icons.local_gas_station,
               size: 70,
+              color: Theme.of(context).colorScheme.primary,
             ),
     );
   }

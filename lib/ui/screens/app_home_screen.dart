@@ -99,7 +99,7 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
       // vehicle FAB
       FloatingActionButton(
         onPressed: onVehicleAddFAB,
-        // backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         tooltip: 'Add vehicle',
         child:  FaIcon(
           FontAwesomeIcons.plus,
@@ -130,7 +130,7 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
         child: CustomScrollView(
           slivers:[
             SliverAppBar(title: Text('Home'),
-            backgroundColor: Theme.of(context).colorScheme.secondary,
+            // backgroundColor: Theme.of(context).colorScheme.secondary,
             floating: true,),
            pages[pageIndex],
           
@@ -143,7 +143,7 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
           pageIndex = value;
           opacity = 1.0;
         }),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         height: 60,
         items: navBarItems,
       ),

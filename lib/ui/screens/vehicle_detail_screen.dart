@@ -31,11 +31,10 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
   late Vehicle vehicleState;
   double newDriven = 0;
   bool showFuelstops = true;
-  List<Maintenance> allMaintenances=<Maintenance>[];
-  List<Maintenance> filteredMaintenances=<Maintenance>[];
-  List<Maintenance> activeListofMaintenances= <Maintenance>[];
+  List<Maintenance> allMaintenances = <Maintenance>[];
+  List<Maintenance> filteredMaintenances = <Maintenance>[];
+  List<Maintenance> activeListofMaintenances = <Maintenance>[];
   late BuildContext _context;
-
 
   @override
   void initState() {
@@ -172,8 +171,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                 ],
               ),
               SwitchListTile(
-                title: Text(
-                    'Show Fuels Stops'),
+                title: Text('Show Fuels Stops'),
                 value: showFuelstops,
                 controlAffinity: ListTileControlAffinity.leading,
                 onChanged: (value) {
@@ -187,9 +185,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             ],
           ),
         ),
-       
-       
-       
+
         maintenanceAsync.when(
           error: (error, stackTrace) {
             print(error.toString());
@@ -209,10 +205,11 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             );
           },
           data: (maintenances) {
-            allMaintenances=List.from(maintenances);
-            filteredMaintenances= List.from(allMaintenances);
-            filteredMaintenances.removeWhere((element) => element.location=='Fuel Station 1');
-            activeListofMaintenances=allMaintenances;
+            allMaintenances = List.from(maintenances);
+            filteredMaintenances = List.from(allMaintenances);
+            filteredMaintenances
+                .removeWhere((element) => element.location == 'Fuel Station 1');
+            activeListofMaintenances = allMaintenances;
             toggleFilters();
             return SliverList(
               delegate: SliverChildBuilderDelegate(
@@ -257,24 +254,25 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
               ? Container()
               : ImagePageViewDotIndicator(
                   selectedPage: selectedImagePage, pageCount: pageCount),
-        Positioned(
-                  bottom: 8,
-                  left: 8,
-                  // left: 8,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.add_a_photo,
-                      size: 45,
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) =>  Dialog(
-                          child: AddMediaDialog(),
-                        ),
-                      );
-                    },
-                  ),),
+          Positioned(
+            bottom: 8,
+            left: 8,
+            // left: 8,
+            child: IconButton(
+              icon: Icon(
+                Icons.add_a_photo,
+                size: 45,
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    child: AddMediaDialog(),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -358,17 +356,19 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         duration: const Duration(milliseconds: 220),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         fanAngle: 90,
         distance: 100,
         expandedFabSize: ExpandableFabSize.small,
         collapsedFabSize: ExpandableFabSize.regular,
         overlayStyle: ExpandableFabOverlayStyle(
-          blur: 1.5,
-          // color: Colors.blueGrey.shade50,
+          blur: 1.1,
+          color: Colors.blueGrey.shade50,
         ),
         children: [
           FloatingActionButton(
-            heroTag: null,
+            heroTag: 'gas',
+            backgroundColor: Theme.of(context).colorScheme.primary,
             child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
@@ -384,7 +384,8 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             },
           ),
           FloatingActionButton(
-            heroTag: null,
+            heroTag: 'repair',
+            backgroundColor: Theme.of(context).colorScheme.primary,
             child: const Icon(
               Icons.car_repair_outlined,
               size: 50,
@@ -419,18 +420,15 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
     ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
   }
-  
+
   void toggleFilters() {
     if (showFuelstops) {
       setState(() {
-      
-             activeListofMaintenances= allMaintenances;
+        activeListofMaintenances = allMaintenances;
       });
- 
-      
     } else {
       setState(() {
-        activeListofMaintenances=filteredMaintenances;
+        activeListofMaintenances = filteredMaintenances;
       });
     }
   }
