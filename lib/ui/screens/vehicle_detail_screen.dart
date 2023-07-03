@@ -355,7 +355,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
       body: body(context),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
-        duration: const Duration(milliseconds: 220),
+        duration: const Duration(milliseconds: 300),
         backgroundColor: Theme.of(context).colorScheme.primary,
         fanAngle: 90,
         distance: 100,
