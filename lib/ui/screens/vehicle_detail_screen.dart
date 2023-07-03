@@ -363,7 +363,6 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         collapsedFabSize: ExpandableFabSize.regular,
         overlayStyle: ExpandableFabOverlayStyle(
           blur: 1.1,
-          color: Colors.blueGrey.shade50,
         ),
         children: [
           FloatingActionButton(
