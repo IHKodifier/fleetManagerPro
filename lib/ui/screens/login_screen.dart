@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
+import 'package:fleet_manager_pro/ui/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -234,6 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           // Navigate to SignUpScreen
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignupScreen(),));
                           print('naviga te sign up');
                         },
                         child: const Text('Sign Up'),

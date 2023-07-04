@@ -12,6 +12,8 @@ class SignupScreen extends ConsumerStatefulWidget {
 class _SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _displayNameController = TextEditingController();
+  final TextEditingController _locationCController = TextEditingController();
 
   Future<void> _signup(String email, String password) async {
     final auth = ref.read(firebaseAuthProvider);
@@ -24,36 +26,92 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Signup')),
+      // appBar: AppBar(title: Text('Signup')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Spacer(),
+            Text('Sign Up',
+            style: Theme.of(context)
+            .textTheme.headlineLarge,),
+            const Spacer(),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
-            SizedBox(height: 16.0),
+            const Spacer(),
             TextFormField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                _signup(_emailController.text, _passwordController.text);
-              },
-              child: Text('Signup'),
+            const Spacer(),
+        
+            TextFormField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Confirm Password'),
+              obscureText: true,
             ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to LoginScreen
-              },
-              child: Text('Already have an account?'),
+            const Spacer(),
+            TextFormField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Display Name',
+              hintText: 'optional'),
+              obscureText: true,
             ),
+            const Spacer(),
+            TextFormField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Location/City',
+              hintText: 'Optional'),
+              obscureText: true,
+            ),   
+            const Spacer(),
+                     Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _signup(_emailController.text, _passwordController.text);
+                    },
+                    child: const Text('Sign Up '),
+                  ),
+                ),
+              ],
+            ),
+        
+            // SizedBox(height: 16.0),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      _signup(_emailController.text, _passwordController.text);
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(flex: 2,),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(height: 10,),
+                Text('Powered by EnigmaTek Inc.'),
+                SizedBox(height: 10,),
+              ],
+            ),
+            // Text(''),
+            
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Navigate to LoginScreen
+            //   },
+            //   child: Text('Already have an account?'),
+            // ),
           ],
         ),
       ),
