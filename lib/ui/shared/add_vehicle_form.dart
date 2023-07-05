@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -63,16 +64,22 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
           .collection('vehicles')
           .doc();
       state.id = docId.id;
+      state.driven ??= 0; 
+      state.driven=state.driven?? 0;
+      // state.driven= _
       state.images = [];
-      var result = await FirebaseFirestore.instance
+      FirebaseFirestore.instance
           .collection('users')
           .doc(ref.read(appUserProvider)?.uuid)
           .collection('vehicles')
           .doc(docId.id)
-          .set(state.toMap());
+          .set(state.toMap()).then((value) { 
+            //  SystemNavigator.pop();
+             Navigator.pop(context);
+             });
 
       // print(result.toString());
-      Navigator.pop(_context);
+     
     }
   }
 
@@ -191,11 +198,15 @@ class YearTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 70,
       child: TextFormField(
         controller: yearController,
+        
         decoration:
-            const InputDecoration(label: Text('Year'), hintText: 'e.g. 2016'),
+            const InputDecoration(label: Text('Year'), hintText: 'e.g. 2016',
+            
+            ),
+            maxLength: 4,
         onSaved: (value) {
           state.year = value;
         },
@@ -217,9 +228,10 @@ class RegCityTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 70,
       child: TextFormField(
         controller: controller,
+        maxLength: 15,
         decoration: const InputDecoration(
             label: Text('Registration City '), hintText: 'e.g. Islamabad'),
         onSaved: (value) {
@@ -243,9 +255,10 @@ class RegTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 70,
       child: TextFormField(
         controller: controller,
+        maxLength: 8,
         decoration: const InputDecoration(
             label: Text('Registration '), hintText: 'e.g. AKT 057'),
         onSaved: (value) {
@@ -269,9 +282,10 @@ class ModelTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 70,
       child: TextFormField(
         controller: controller,
+        maxLength: 12,
         decoration: const InputDecoration(
             label: Text('Model'), hintText: 'e.g. Vezel Hybrid 1.8'),
         onSaved: (value) {
@@ -295,11 +309,12 @@ class MakeTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 70,
       child: TextFormField(
         controller: Controller,
         decoration: const InputDecoration(
             label: Text('Make'), hintText: 'e.g. Honda, Toyota, Suzuki'),
+            maxLength: 8,
         onSaved: (value) {
           state.make = value;
         },

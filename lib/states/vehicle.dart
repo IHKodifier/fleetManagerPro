@@ -33,7 +33,7 @@ class Vehicle extends Equatable {
     return [
       id,
       doors!,
-      maintenances!,
+      maintenances,
       make!,
       model!,
       year!,

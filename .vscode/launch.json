@@ -2,7 +2,7 @@
     "configurations": [
 
         {
-            "name": "Flutter use this",
+            "name": "Flutter Run debug",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
