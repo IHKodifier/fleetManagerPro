@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/app_user.dart';
+import 'package:fleet_manager_pro/states/app_user_state.dart';
+import 'package:fleet_manager_pro/ui/screens/app_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,11 +39,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       //create appUser
       newUser = AppUser(uuid: credential.user!.uid);
       newUser.email = _email;
-      newUser.displayName = _displayNameController.text ?? _email;
-      newUser.location = _locationController.text ?? 'not set by user';
+      newUser.displayName = _displayNameController.text.isEmpty? _email:_displayNameController.text;
+      newUser.location = _locationController.text.isNotEmpty? _locationController.text:'not set by user';
       newUser.phone = 'not set by user';
       //save to Firestore
-      FirebaseFirestore.instance.collection('users').doc(newUser.uuid).set(newUser.toMap()).then((value) => Navigator.of(context));
+      FirebaseFirestore.instance.collection('users').doc(newUser.uuid).set(newUser.toMap()).then((value) {
+        ref.read(appUserProvider.notifier).setAppUser(newUser);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => AppHomeScreen(),));
+      },);
 
     }
   }
@@ -57,9 +63,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              Text(
-                'Sign Up',
-                style: Theme.of(context).textTheme.headlineLarge,
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Sign Up',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
               ),
               const Spacer(),
               TextFormField(
@@ -93,10 +102,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               TextFormField(
                 controller: _password2Controller,
                 onSaved: (newValue) {
-                  newUser.email = newValue;
+                  // newUser.email = newValue;
                 },
                 validator: (value) {
-                  if (value!.isNotEmpty && value != _password) {
+                  if (value!.isNotEmpty && value != _passwordController.text) {
                     return 'passwords do not match';
                   }
                 },
@@ -124,8 +133,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        _signup(
+                        if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                          _signup(
                             _emailController.text, _passwordController.text);
+                        }
+                        
                       },
                       child: const Text('Sign Up '),
                     ),
