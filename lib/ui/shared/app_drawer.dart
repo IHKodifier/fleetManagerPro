@@ -220,8 +220,12 @@ class SignOutTile extends ConsumerWidget {
         'Sign out',
         style: Theme.of(context).textTheme.titleMedium,
       ),
-      onTap: () async {await FirebaseAuth.instance.signOut();
-      // ref.read(appUserProvider.notifier).clearUser();
+      onTap: () async {
+      //   await FirebaseAuth.instance.signOut();
+      // ref.read(appUserProvider.notifier).;
+      print('signing out user');
+      await ref.read(appUserProvider.notifier).signOut();
+      print('user signed out successffully');
       },
     );
   }

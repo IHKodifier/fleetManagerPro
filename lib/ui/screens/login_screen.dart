@@ -232,11 +232,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Expanded(
+                      flex: 2,
                       child: ElevatedButton(
                         onPressed: () {
                           // Navigate to SignUpScreen
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignupScreen(),));
-                          print('naviga te sign up');
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupScreen(),));
+                          // print('naviga te sign up');
                         },
                         child: const Text('Sign Up'),
                       ),
@@ -245,6 +246,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       width: 10,
                     ),
                     Expanded(
+                      flex: 3,
                       child: ElevatedButton(
                         onPressed: _login,
                         child: !isBusy

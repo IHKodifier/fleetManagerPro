@@ -23,11 +23,9 @@ class AppUserStateNotifier extends StateNotifier<AppUser?> {
             .collection('users')
             .doc(user?.uid)
             .get()
-          .then((value) 
-          
-          {
+            .then((value) {
           final appUser = AppUser.fromMap(value.data()!);
-         setAppUser(appUser);
+          setAppUser(appUser);
         });
       }
     });
@@ -36,24 +34,25 @@ class AppUserStateNotifier extends StateNotifier<AppUser?> {
   final StateNotifierProviderRef<AppUserStateNotifier, AppUser?> ref;
 
   void clearUser() {
-      state = null;
-    }
+    state = null;
+  }
 
-   void setAppUser(AppUser appUser) {
+  void setAppUser(AppUser appUser) {
+    state = appUser;
+  }
 
-      state = appUser;
-    }
-
-
-    Future<void> refreshAppUser()async {
+  Future<void> refreshAppUser() async {
 //TODO
-final authUser = FirebaseAuth.instance.currentUser;
+    final authUser = FirebaseAuth.instance.currentUser;
 
-final snapshhot = await FirebaseFirestore.instance.collection('users')
-.doc(authUser?.uid)
-.get();
-setAppUser(AppUser.fromMap(snapshhot.data()!));
+    final snapshhot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(authUser?.uid)
+        .get();
+    setAppUser(AppUser.fromMap(snapshhot.data()!));
+  }
 
-
-    }
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
