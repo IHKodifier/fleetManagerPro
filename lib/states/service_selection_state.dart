@@ -9,11 +9,6 @@ final allServicesProvider = StreamProvider<List<Service>>((ref) async* {
   yield* servicesCollection.snapshots().map((snapshot) => snapshot.docs.map((doc) => Service.fromMap(doc.data())).toList());
 });
 
-
-
-
-
-
 final selectedServicesProvider =
     StateNotifierProvider<SelectedServicesNotifier, List<Service>>((ref) => SelectedServicesNotifier());
 

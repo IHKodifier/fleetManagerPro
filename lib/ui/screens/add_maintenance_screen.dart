@@ -456,11 +456,19 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
 
                   return allServices.when(
                     data: (services) {
-                      for (var service in services) {
-                        if (service.name == 'Fuel') {
-                          services.remove(service);
+                      final listIterator = services.iterator;
+                      while (listIterator.moveNext()) {
+                        final currentService = listIterator.current;
+                        if (currentService.name=='Fuel') {
+                          // services.remove(currentService);
+                          
                         }
                       }
+                      // for (var service in services) {
+                      //   if (service.name == 'Fuel') {
+                      //     services.remove(service);
+                      //   }
+                      // }
                       return Card(
                         // color: Colors.transparent,
                         elevation: 10,
@@ -483,7 +491,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                 width: 16,
                               ),
 
-                              ...services.map((service) {
+                              ...services.toSet().map((service) {
                                 final isSelected =
                                     selectedServices.contains(service);
                                 return GestureDetector(
@@ -552,7 +560,10 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                         selectedServicesNotifier
                                             .remove(service);
                                         setState(() {
+                                          if (_cost!<0) {
                                           _cost = _cost! - service.cost;
+                                            
+                                          }
                                         });
 
                                         print(
