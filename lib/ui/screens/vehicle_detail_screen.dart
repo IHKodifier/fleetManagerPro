@@ -331,17 +331,26 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
       actions: [
         Padding(
           padding: const EdgeInsets.all(4.0),
-          child: TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel')),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel')),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: _updateDriven,
+                    child: const Padding(
+                      padding: EdgeInsets.all(6.0),
+                      child: Text('Save'),
+                    )),
+              ),
+            ],
+          ),
         ),
         const Spacer(),
-        ElevatedButton(
-            onPressed: _updateDriven,
-            child: const Padding(
-              padding: EdgeInsets.all(6.0),
-              child: Text('Save'),
-            )),
       ],
       actionsAlignment: MainAxisAlignment.center,
     );
@@ -415,6 +424,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
     await vehicledocRef
         .set({'driven': newDriven.toInt()}, SetOptions(merge: true));
+        ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
     Navigator.of(context).pop();
 
     ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());

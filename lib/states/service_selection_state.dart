@@ -11,12 +11,7 @@ final allServicesProvider = StreamProvider<List<Service>>((ref) async* {
 
 
 
-//   final servicesCollection =
-//       FirebaseFirestore.instance.collection('users').doc(user!.uuid).collection('services');
-//   final servicesSnapshot = await servicesCollection.get();
-//   final services = servicesSnapshot.docs.map((doc) => Service.fromMap(doc.data())).toList();
-//   yield services;
-// });
+
 
 
 final selectedServicesProvider =

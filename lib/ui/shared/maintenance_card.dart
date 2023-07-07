@@ -105,11 +105,15 @@ class MaintenanceCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
+                      Spacer(),
                       Icon(
                         Icons.car_repair,
-                        size: 40,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 70, 
                       ),
+                      Spacer(),
                       buildMaintenanceLocationText(context),
+                      Spacer(),
                     ],
                   ),
                   buildTimeAgoText(context),
@@ -202,7 +206,7 @@ class MaintenanceCard extends StatelessWidget {
                         state.litres.toString(),
                         style: Theme.of(context)
                             .textTheme
-                            .headlineSmall
+                            .labelLarge
                             ?.copyWith(fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(
@@ -224,7 +228,7 @@ class MaintenanceCard extends StatelessWidget {
                             .copyWith(color: Colors.blueGrey.shade800),
                       ),
                       Text(Utils.thousandify(state.cost!~/state.litres!),
-                          style: Theme.of(context).textTheme.headlineSmall),
+                          style: Theme.of(context).textTheme.labelLarge),
                       SizedBox(
                         width: 4,
                       ),

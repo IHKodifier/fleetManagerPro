@@ -168,12 +168,15 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
      );
      fuelStop.kmsDriven= newDriven!.toInt();
      fuelStop.litres= litres;
+
+     
      DocumentReference  docRef = FirebaseFirestore.instance
      .collection('users')
      .doc(ref.read(appUserProvider)!.uuid)
      .collection('vehicles')
      .doc(vehicle.id).collection('maintenances').doc();
      fuelStop.id=docRef.id;
+     ref.read(currentVehicleProvider.notifier).updateDriven(newDriven!);
      await docRef.set(fuelStop.toMap());
      await FirebaseFirestore.instance.collection('users').doc(ref.read(appUserProvider)?.uuid).collection('vehicles').doc(ref.read(currentVehicleProvider).id).set({'driven':newDriven},SetOptions(merge: true));
      setState(() {
@@ -181,7 +184,7 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
      });
     //  ref.invalidate(currentVehicleProvider);
     //  Navigator.pop(context);
-     ref.invalidate(currentVehicleProvider);
+    //  ref.refresh(currentVehicleProvider);
      Navigator.pushReplacement(context, MaterialPageRoute(builder:  (context) => VehicleDetailScreen()));
     //  Navigator.pop(context);
 

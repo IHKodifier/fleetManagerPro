@@ -123,6 +123,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
       newMaintenanceState.location = _location;
       newMaintenanceState.cost = _cost;
       newMaintenanceState.kmsDriven = _kmsDriven!;
+      newMaintenanceState.litres= 0.0;
       newMaintenanceState.services = ref.read(selectedServicesProvider);
       var formatter = NumberFormat('#,##,000');
 
@@ -143,7 +144,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
           // .add(newMaintenanceState.toMap())
           .then((value) async {
         //TODO dispose controllers
-        ref.invalidate(selectedServicesProvider);
+        ref.refresh(selectedServicesProvider);
         //todo update [driven] on vehicle objet
         // ref.read(currentVehicleProvider.notifier).updateDriven(_kmsDriven!);
         FirebaseFirestore.instance
@@ -163,7 +164,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
     final selectedServices = ref.watch(selectedServicesProvider);
     final locationStreamAsyncValue = ref.watch(locationStreamProvider);
     newMaintenanceState = Maintenance();
-    final vehicleState = ref.read(currentVehicleProvider);
+    final vehicleState = ref.watch(currentVehicleProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -529,7 +530,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                               .textTheme
                                               .labelSmall
                                               ?.copyWith(
-                                                  color: Colors.black54,
+                                                  color: Theme.of(context).colorScheme.tertiary,
                                                   fontSize: 10),
                                         ),
                                       ],
