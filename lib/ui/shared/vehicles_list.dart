@@ -30,87 +30,122 @@ class VehicleList extends ConsumerWidget {
   }
 
   Widget loading() {
-    return const SliverToBoxAdapter(child: Center(child: CircularProgressIndicator()));
+    return const SliverToBoxAdapter(
+        child: Center(child: CircularProgressIndicator()));
   }
 
   Widget data(List<Vehicle> data) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       sliver: SliverList(
-        delegate: SliverChildBuilderDelegate((context,index){
+        delegate: SliverChildBuilderDelegate((context, index) {
           final e = data[index];
           return InkWell(
-                onTap: () {
-                  final CurrentVehicleNotifier =
-                      _ref.read(currentVehicleProvider.notifier);
-                  CurrentVehicleNotifier.setVehicle(e);
-                  Navigator.of(_context).push(MaterialPageRoute(
-                      builder: (context) => const VehicleDetailScreen()));
-                },
-                child: Card(
-                    // margin: const EdgeInsets.all(8),
-                    color: Theme.of(_context).colorScheme.onInverseSurface,
-                    elevation: 3,
-                    // height:150,
-                    child: Column(
+            onTap: () {
+              final CurrentVehicleNotifier =
+                  _ref.read(currentVehicleProvider.notifier);
+              CurrentVehicleNotifier.setVehicle(e);
+              Navigator.of(_context).push(MaterialPageRoute(
+                  builder: (context) => const VehicleDetailScreen()));
+            },
+            child: Card(
+                // margin: const EdgeInsets.all(8),
+                color: Theme.of(_context).colorScheme.onInverseSurface,
+                elevation: 5,
+                // height:150,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RichText(
-                                text: TextSpan(
-                                    style: DefaultTextStyle.of(_context).style,
-                                    children: [
-                                      TextSpan(
-                                        text: e.make,
-                                        style: Theme.of(_context)
-                                            .textTheme
-                                            .headlineLarge!
-                                            .copyWith(
-                                                // color: Theme.of(_context)
-                                                //     .colorScheme
-                                                //     .secondaryContainer,
-                                                ),
-                                      ),
-                                      const TextSpan(text: '  '),
-                                      TextSpan(
-                                        text: e.model,
-                                        style: Theme.of(_context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(
-                                                //   color: Theme.of(_context)
-                                                //       .colorScheme
-                                                //       .secondary,
-                                                ),
-                                      ),
-                                      const TextSpan(text: '   '),
-                                      TextSpan(
-                                        text: e.year.toString(),
-                                        style: Theme.of(_context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .copyWith(
-                                                // color: Theme.of(_context)
-                                                //     .colorScheme
-                                                //     .secondary,
-                                                ),
-                                      ),
-                                    ]),
-                              ),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            e.make!,
+                            style: Theme.of(_context)
+                                .textTheme
+                                .headlineMedium!
+                                .copyWith(),
+                          ),
                         ),
-                        RegPlate(state: e),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            e.model!,
+                            style: Theme.of(_context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
+                                  textBaseline: TextBaseline.ideographic
+                                ),
+                                
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            e.year!,
+                            style: Theme.of(_context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
+                                  textBaseline: TextBaseline.ideographic,
+                                  fontStyle: FontStyle.italic
+                                ),
+                                
+                          ),
+                        ),
+                        // Expanded(
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: FittedBox(
+                        //       fit: BoxFit.contain,
+                        //       child: RichText(
+                        //         text: TextSpan(
+                        //             style: DefaultTextStyle.of(_context).style,
+                        //             children: [
+                        //               TextSpan(
+                        //                 text: e.make,
+                        //                 style: Theme.of(_context)
+                        //                     .textTheme
+                        //                     .headlineLarge!
+                        //                     .copyWith(
+
+                        //                         ),
+                        //               ),
+                        //               const TextSpan(text: ' '),
+                        //               TextSpan(
+                        //                 text: e.model,
+
+                        //                         //   color: Theme.of(_context)
+                        //                         //       .colorScheme
+                        //                         //       .secondary,
+                        //                         ),
+                        //               ),
+                        //               const TextSpan(text: ' '),
+                        //               TextSpan(
+                        //                 text: e.year.toString(),
+                        //                 style: Theme.of(_context)
+                        //                     .textTheme
+                        //                     .labelSmall!
+                        //                     .copyWith(
+                        //                        fontStyle: FontStyle.italic
+                        //                         ),
+                        //               ),
+                        //             ]),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
-                    )),
-              );
-        
-        },
-        childCount: data.length),
+                    ),
+                    RegPlate(state: e),
+                  ],
+                )),
+          );
+        }, childCount: data.length),
       ),
     );
   }

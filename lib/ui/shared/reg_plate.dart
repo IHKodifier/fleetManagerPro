@@ -33,12 +33,16 @@ class RegPlate extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(state.reg!,
-                        style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.w400,
-                        color: Colors.black)),
-                    Text(state.regCity!,
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w400,
-                        color: Colors.black)),
+                    FittedBox(
+                      child: Text(state.reg!,
+                          style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.w400,
+                          color: Colors.black)),
+                    ),
+                    FittedBox(
+                      child: Text(state.regCity!,
+                          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w400,
+                          color: Colors.black)),
+                    ),
                   ],
                 ),
               // Spacer(flex: 4,),

@@ -118,9 +118,7 @@ class MaintenanceCard extends StatelessWidget {
               ),
             ),
 
-            // Text('max Height = ${maxHeight.toString()}'),
-            // Text('min Width = ${minWwidth.toString()}'),
-            // Text('max Height = ${maxWwidth.toString()}'),
+            //
           ],
         ),
       ),
@@ -198,16 +196,39 @@ class MaintenanceCard extends StatelessWidget {
 
                   buildMaintenanceLocationText(context),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        Utils.thousandify(state.cost!),
-                        style: Theme.of(context).textTheme.displaySmall,
+                        state.litres.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.w500),
                       ),
+                      const SizedBox(
+                        width: 2,
+                      ),
+                      Text(
+                        'L  ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall!
+                            .copyWith(color: Colors.blueGrey.shade800),
+                      ),
+             
+                      Text(
+                        ' @  ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall!
+                            .copyWith(color: Colors.blueGrey.shade800),
+                      ),
+                      Text(Utils.thousandify(state.cost!~/state.litres!),
+                          style: Theme.of(context).textTheme.headlineSmall),
                       SizedBox(
-                        width: 12,
+                        width: 4,
                       ),
-                      Text('Rs'),
+                      Text('Rs/L'),
                     ],
                   ),
                   // buildServicesTable(context)
@@ -230,15 +251,15 @@ class MaintenanceCard extends StatelessWidget {
         left: 80,
 
         // child: Container(color: Colors.teal,
-        width: 270, 
+        width: 270,
         // height: do
-        child: Card (
+        child: Card(
           // color: Colors.white54,
           elevation: 5,
           margin: EdgeInsets.all(4),
           child: Column(
               // shrinkWrap: true,
-        
+
               // direction: Axis.vertical,
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -300,11 +321,36 @@ class MaintenanceCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleLarge,
             )
-          : Icon(
-              Icons.local_gas_station,
-              size: 70,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Spacer(),
+              Icon(
+                  Icons.local_gas_station,
+                  size: 70,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              Spacer(),
+                Text(
+                  Utils.thousandify(state.cost!),
+                  style: Theme.of(context)
+                      .textTheme
+                      .displaySmall
+                      ?.copyWith(fontWeight: FontWeight.w500),
+                ),
+                // SizedBox(
+                //   width: 4,
+                // ),
+                Text(
+                  'Rs ',
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall!
+                      .copyWith(color: Colors.blueGrey.shade800),
+                ),
+              Spacer(),
+            ],
+          ),
     );
   }
 

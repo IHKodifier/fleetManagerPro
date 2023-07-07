@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
+import 'package:fleet_manager_pro/ui/screens/vehicle_detail_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 
@@ -44,7 +45,12 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
                   child: FilledButton.icon(
                     onPressed: saveFuelStop,
                     icon: Icon(Icons.save),
-                    label: isBusy? CircularProgressIndicator(): Text('Save'),
+                    label: isBusy? Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ): Text('Save'),
                   ),
                 ),
               ],
@@ -161,6 +167,7 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
     location: 'Fuel Station 1'
      );
      fuelStop.kmsDriven= newDriven!.toInt();
+     fuelStop.litres= litres;
      DocumentReference  docRef = FirebaseFirestore.instance
      .collection('users')
      .doc(ref.read(appUserProvider)!.uuid)
@@ -169,8 +176,14 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
      fuelStop.id=docRef.id;
      await docRef.set(fuelStop.toMap());
      await FirebaseFirestore.instance.collection('users').doc(ref.read(appUserProvider)?.uuid).collection('vehicles').doc(ref.read(currentVehicleProvider).id).set({'driven':newDriven},SetOptions(merge: true));
-     Navigator.pop(context);
-     Navigator.pop(context);
+     setState(() {
+       isBusy=false;
+     });
+    //  ref.invalidate(currentVehicleProvider);
+    //  Navigator.pop(context);
+     ref.invalidate(currentVehicleProvider);
+     Navigator.pushReplacement(context, MaterialPageRoute(builder:  (context) => VehicleDetailScreen()));
+    //  Navigator.pop(context);
 
   }
 }
