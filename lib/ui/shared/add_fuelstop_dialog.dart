@@ -24,7 +24,7 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-          icon: Icon(Icons.local_gas_station,size: 50,),
+          icon: Icon(Icons.local_gas_station,size: 50,color: Theme.of(context).colorScheme.primary,),
           title: Text('Add Fuel Stop'),
           content: addFuelStopForm(),
           actionsAlignment: MainAxisAlignment.end,
@@ -68,7 +68,17 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SpinBox(
-            min: 0,
+             incrementIcon: Icon(
+              Icons.add_circle,
+              color: Theme.of(context).colorScheme.primary,
+              size: 35,
+            ),
+            decrementIcon: Icon(
+              Icons.remove_circle,
+              color: Theme.of(context).colorScheme.primary,
+              size: 35,
+            ),
+            
             max: double.infinity,
             value: cost,
             step: 100,
@@ -93,9 +103,11 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
           SpinBox(
             min: 0,
             max: double.infinity,
+            incrementIcon: Icon(Icons.add_circle,color: Theme.of(context).colorScheme.primary,size: 35,),
+            decrementIcon: Icon(Icons.remove_circle,color: Theme.of(context).colorScheme.primary,size: 35,),
             value: litres,
-            step:1.5,
-            decimals: 1,
+            step:1.12, 
+            decimals: 2,
             keyboardType: const TextInputType.numberWithOptions(
               decimal: true,
               signed: false,
@@ -124,6 +136,16 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
             height: 6,
           ),
           SpinBox(
+             incrementIcon: Icon(
+              Icons.add_circle,
+              color: Theme.of(context).colorScheme.primary,
+              size: 35,
+            ),
+            decrementIcon: Icon(
+              Icons.remove_circle,
+              color: Theme.of(context).colorScheme.primary,
+              size: 35,
+            ),
            keyboardType: TextInputType.numberWithOptions(),
             min: oldDriven.toDouble(),
             max: double.infinity,

@@ -44,6 +44,8 @@ class _ServiceEditFormState extends ConsumerState<ServiceEditForm> {
               controller: nameController,
               decoration: InputDecoration(labelText: 'Service Name'),
             ),
+            // Spacer(),
+            SizedBox(height: 8,),
             TextField(
               controller: costController,
               decoration: InputDecoration(labelText: 'Cost'),
@@ -53,45 +55,50 @@ class _ServiceEditFormState extends ConsumerState<ServiceEditForm> {
             Row (
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Cancel'),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancel'),
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (isSaving) {
-                      return;
-                    }
-    
-                    setState(() {
-                      isSaving = true;
-                    });
-    
-                    FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(widget.userUUId)
-                        .collection('services')
-                        .where('name', isEqualTo: widget.name)
-                        .get()
-                        .then((QuerySnapshot querySnapshot) {
-                      querySnapshot.docs.forEach((document) {
-                        document.reference.update({
-                          'name': nameController.text,
-                          'cost': int.parse(costController.text),
+                SizedBox(width: 8,),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (isSaving) {
+                        return;
+                      }
+                    
+                      setState(() {
+                        isSaving = true;
+                      });
+                    
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(widget.userUUId)
+                          .collection('services')
+                          .where('name', isEqualTo: widget.name)
+                          .get()
+                          .then((QuerySnapshot querySnapshot) {
+                        querySnapshot.docs.forEach((document) {
+                          document.reference.update({
+                            'name': nameController.text,
+                            'cost': int.parse(costController.text),
+                          });
                         });
                       });
-                    });
-    
-                    setState(() {
-                      isSaving = false;
-                      ref.invalidate(allServicesProvider);
-                    });
-    
-                    Navigator.pop(context);
-                  },
-                  child: Text('Update'),
+                    
+                      setState(() {
+                        isSaving = false;
+                        ref.invalidate(allServicesProvider);
+                      });
+                    
+                      Navigator.pop(context);
+                    },
+                    child: Text('Update'),
+                  ),
                 ),
                 ],),
                 SizedBox(height: 16,),

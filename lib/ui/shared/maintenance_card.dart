@@ -213,7 +213,7 @@ class MaintenanceCard extends StatelessWidget {
                         width: 2,
                       ),
                       Text(
-                        'L  ',
+                        'L ',
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall!
@@ -221,7 +221,7 @@ class MaintenanceCard extends StatelessWidget {
                       ),
              
                       Text(
-                        ' @  ',
+                        '@ ',
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall!
@@ -232,7 +232,8 @@ class MaintenanceCard extends StatelessWidget {
                       SizedBox(
                         width: 4,
                       ),
-                      Text('Rs/L'),
+                      Text('Rs/L',
+                      style: Theme.of(context).textTheme.labelSmall,),
                     ],
                   ),
                   // buildServicesTable(context)

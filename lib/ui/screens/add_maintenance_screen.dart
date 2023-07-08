@@ -4,6 +4,7 @@ import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/service_selection_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fleet_manager_pro/ui/screens/vehicle_detail_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -63,6 +64,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                             label: Text('Name'),
                             hintText: 'example:  brake pads replacement'),
                       ),
+                      SizedBox(height: 8,),
                       TextFormField(
                         controller: _serviceCostController,
                         onSaved: (newValue) =>
@@ -75,15 +77,19 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                       ),
                       Row(
                         children: [
-                          TextButton.icon(
-                              onPressed: () => Navigator.pop(context),
-                              icon: const Icon(Icons.cancel),
-                              label: const Text('Cancel')),
-                          const Spacer(),
-                          ElevatedButton.icon(
-                              onPressed: onSaveService,
-                              icon: const Icon(Icons.save),
-                              label: const Text('Save')),
+                          Expanded(
+                            child: OutlinedButton.icon(
+                                onPressed: () => Navigator.pop(context),
+                                icon: const Icon(Icons.cancel),
+                                label: const Text('Cancel')),
+                          ),
+                          SizedBox(width: 8,),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                                onPressed: onSaveService,
+                                icon: const Icon(Icons.save),
+                                label: const Text('Save')),
+                          ),
                         ],
                       )
                     ],
@@ -169,7 +175,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Maintenance'),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
@@ -302,8 +308,8 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                                           'name':
                                                               controller.text
                                                         });
-                                                        controller.dispose();
-                                                        Navigator.pop(context);
+                                                        // controller.dispose();
+                                                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => VehicleDetailScreen(),));
                                                       },
                                                       icon: Icon(
                                                           Icons.save_sharp),
@@ -398,12 +404,12 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                           //     .copyWith(fontSize: 16),
                           incrementIcon: Icon(
                             Icons.add_circle,
-                            // size: 35,
+                            size: 35,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           decrementIcon: Icon(
                             Icons.remove_circle,
-                            // size: 35,
+                            size: 35,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           spacing: 16,
@@ -494,6 +500,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                               ...services.toSet().map((service) {
                                 final isSelected =
                                     selectedServices.contains(service);
+                                    if (service.name=='Fuel') {return Container();
+                                      
+                                    }
                                 return GestureDetector(
                                   onLongPress: () {
                                     showDialog(
@@ -560,7 +569,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                         selectedServicesNotifier
                                             .remove(service);
                                         setState(() {
-                                          if (_cost!<0) {
+                                          if (_cost!>0) {
                                           _cost = _cost! - service.cost;
                                             
                                           }
