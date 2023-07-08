@@ -19,8 +19,8 @@ class AppHomeScreen extends ConsumerStatefulWidget {
 class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
   List<Widget> appBarTitles = [
     const Text('Home'),
+    const Text('Dashboard'),
     const Text('MarketPlace'),
-    const Text('Settings'),
     // const Text('Settings'),
     // const Text('Messages'),
   ];
@@ -32,11 +32,11 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
       size: 30,
     ),
     const Icon(
-      Icons.shopping_cart_outlined,
+      Icons.dashboard,
       size: 30,
     ),
     const Icon(
-      Icons.settings,
+      Icons.shopping_cart_outlined,
       size: 30,
     ),
     // const FaIcon(
@@ -53,26 +53,44 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
   int pageIndex = 0;
   List<Widget> pages = [
     VehicleList(),
-    SliverToBoxAdapter(
-      child: Container(
-        // color: Colors.red,
-        child: const Text('Market Place'),
+    SliverPadding(
+      padding: EdgeInsets.all(16),
+      sliver: SliverToBoxAdapter(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.all(4),
+              child: Image.asset(
+                'assets/under_dev.jpg',
+                height: 300,
+                width: 300,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+            Text('This feature is under development'),
+          ],
+        ),
       ),
     ),
-    SliverToBoxAdapter(
-      child: Container(
-        // color: Colors.green,
-        child: const Text('Settings'),
+SliverPadding(
+      padding: EdgeInsets.all(16),
+      sliver: SliverToBoxAdapter(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.all(4),
+              child: Image.asset(
+                'assets/under_dev.jpg',
+                height: 300,
+                width: 300,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+            Text('This feature is under development'),
+          ],
+        ),
       ),
     ),
-    // Container(
-    //   color: Colors.blue,
-    //   child: const Text('3'),
-    // ),
-    // Container(
-    //   color: Colors.yellow,
-    //   child: const Text('4'),
-    // ),
   ];
 
   late BuildContext _context;
@@ -101,39 +119,29 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
         onPressed: onVehicleAddFAB,
         backgroundColor: Theme.of(context).colorScheme.primary,
         tooltip: 'Add vehicle',
-        child:  FaIcon(
+        child: FaIcon(
           FontAwesomeIcons.plus,
           // color: Theme.of(context).colorScheme.outline,
           size: 35,
-          
         ),
       ),
-      //Maintenance FAB
-      FloatingActionButton(
-        onPressed: onMaintenanceAddFAB,
-        // backgroundColor: Theme.of(context).colorScheme.primary,
-        tooltip: 'Add Maintennce ',
-        child: const FaIcon(
-          FontAwesomeIcons.plus,
-          size: 35,
-        ),
-      ),
+  
       Container(),
       Container(),
     ];
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-   
       drawer: const CustomDrawer(),
       body: SafeArea(
         child: CustomScrollView(
-          slivers:[
-            SliverAppBar(title: Text('Home'),
-            // backgroundColor: Theme.of(context).colorScheme.secondary,
-            floating: true,),
-           pages[pageIndex],
-          
+          slivers: [
+            SliverAppBar(
+              title: appBarTitles[pageIndex],
+              // backgroundColor: Theme.of(context).colorScheme.secondary,
+              floating: true,
+            ),
+            pages[pageIndex],
           ],
         ),
       ),
