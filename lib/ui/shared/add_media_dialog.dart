@@ -7,18 +7,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../utils.dart';
 
 class AddMediaDialog extends ConsumerWidget {
-   AddMediaDialog({super.key});
-   late Vehicle vehicle ;
-    var appUser ;
-    late AddedMedia state;
-
+  AddMediaDialog({super.key});
+  late Vehicle vehicle;
+  var appUser;
+  late AddedMedia state;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-      vehicle = ref.read(currentVehicleProvider);
-     appUser = ref.read(appUserProvider);
-     state= ref.watch(addedMediaProvider);
-     
+    vehicle = ref.read(currentVehicleProvider);
+    appUser = ref.read(appUserProvider);
+    state = ref.watch(addedMediaProvider);
 
     final notifier = ref.read(addedMediaProvider.notifier);
     return Container(
@@ -28,55 +26,54 @@ class AddMediaDialog extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children:  [
-            AddedMediaContiner(),
+          children: [
+            const AddedMediaContiner(),
             ButtonsBar(),
-            state.addedMedia.isNotEmpty?
-            buildDoneButton(context,ref):Container(),
-
+            state.addedMedia.isNotEmpty
+                ? buildDoneButton(context, ref)
+                : Container(),
           ],
         ),
       ),
     );
   }
-  buildDoneButton(context,ref)=>Row(children: [
-    Expanded(child: ElevatedButton.icon(onPressed: (){
-      if (state.addedMedia.isEmpty) {
-        return;
-        
-      }
-      var imageList = state.addedMedia.map((e) => e.url).toList();
-      updateVehicleDoc(imagesList: imageList);
-      // ref.refresh(currentVehicleProvider);
-      ref.read(addedMediaProvider.notifier).clearMedia();
-      Navigator.pop(context);
-      ref.refresh(currentVehicleProvider);
-    }, icon: Icon(Icons.check,size: 40,), label: Text('Done')))
 
-  ],);
+  buildDoneButton(context, ref) => Row(
+        children: [
+          Expanded(
+              child: ElevatedButton.icon(
+                  onPressed: () {
+                    if (state.addedMedia.isEmpty) {
+                      return;
+                    }
+                    var imageList = state.addedMedia.map((e) => e.url).toList();
+                    updateVehicleDoc(imagesList: imageList);
+                    // ref.refresh(currentVehicleProvider);
+                    ref.read(addedMediaProvider.notifier).clearMedia();
+                    CurrentVehicleNotifier notifier =
+                        ref.read(currentVehicleProvider.notifier);
+                    notifier.addVehicleImages(imageList);
+                    Navigator.pop(context);
+                    // ref.refresh(currentVehicleProvider);
+                  },
+                  icon: const Icon(
+                    Icons.check,
+                    size: 40,
+                  ),
+                  label: const Text('Done')))
+        ],
+      );
 
   updateVehicleDoc({required List<String?> imagesList}) async {
     vehicle.images?.insertAll(0, imagesList);
-   
-      final DocumentReference docRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(appUser?.uuid)
-          .collection('vehicles')
-          .doc(vehicle.id);
-          await docRef.update(vehicle.toMap());
-     
 
+    final DocumentReference docRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(appUser?.uuid)
+        .collection('vehicles')
+        .doc(vehicle.id);
+    await docRef.update(vehicle.toMap());
   }
-
-
-
-
-
-
-
-
-
-
 }
 
 class AddedMediaContiner extends ConsumerWidget {
@@ -85,7 +82,7 @@ class AddedMediaContiner extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(addedMediaProvider);
-   
+
     return Flexible(
       // flex: 1,
       fit: FlexFit.loose,
@@ -120,15 +117,14 @@ class AddedMediaContiner extends ConsumerWidget {
   }
 }
 
-
 class ButtonsBar extends ConsumerWidget {
-   ButtonsBar({Key? key}) : super(key: key);
+  ButtonsBar({Key? key}) : super(key: key);
   var appUser, vehicle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    appUser= ref.read(appUserProvider);
-    vehicle= ref.read( currentVehicleProvider);
+    appUser = ref.read(appUserProvider);
+    vehicle = ref.read(currentVehicleProvider);
     final mediaNotifier = ref.read(addedMediaProvider.notifier);
 
     return Row(
@@ -184,5 +180,4 @@ class ButtonsBar extends ConsumerWidget {
     //   ),
     // );
   }
-
 }

@@ -12,8 +12,14 @@ class CurrentVehicleNotifier extends StateNotifier<Vehicle> {
   void setVehicle(Vehicle vehicle) {
     state = vehicle;
   }
-  void updateDriven(int driven){
-   state =  state.copyWith(driven: driven);
+
+  void updateDriven(int driven) {
+    state = state.copyWith(driven: driven);
   }
-  // void updateVehicl
+
+  void addVehicleImages(List<String?> images) {
+    state.images?.insertAll(0, images);
+    // state= state.copyWith(images: images);
+    state = state.copyWith();
+  }
 }
