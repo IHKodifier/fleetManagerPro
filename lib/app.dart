@@ -1,4 +1,5 @@
 // import 'package:fleet_manager_pro/onboarding.dart';
+
 import 'package:fleet_manager_pro/startup_view.dart';
 import 'package:fleet_manager_pro/theme_data.dart';
 import 'package:flutter/material.dart';
@@ -43,3 +44,15 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
     state = ThemeMode.light;
   }
 }
+
+class AppVersionInfo {
+   final version = '1.0.0';
+   final release = '1.0.0';
+   final build = '1.0.0';
+   final poweredBy='EnigmaTek.Inc';
+   final author='I H Khattak';
+}
+
+final defaultPhotoUrlProvider = Provider<String>((ref) =>'https://static.vecteezy.com/system/resources/thumbnails/001/840/618/small/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg');
+
+final defaultBannerUrlProvider = Provider<String>((ref) =>'https://media.licdn.com/dms/image/C4D12AQHMPBvE3avWzg/article-inline_image-shrink_1000_1488/0/1616872522462?e=1693440000&v=beta&t=tgYbvrPNyIPziuAzqg_tidOVY_SEBhw6gWk9_MlbmYQ');

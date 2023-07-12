@@ -195,7 +195,21 @@ class AboutTile extends StatelessWidget {
         color: Theme.of(context).colorScheme.primary,
         // size: 40,
       ),
-      title: Text(
+      onTap: () {
+        final appInfo= AppVersionInfo();
+        showAboutDialog(context: context,
+        applicationName: 'Fleet Manager Pro',
+        applicationVersion: appInfo.version,
+        children: [
+          Text('Powered By'),
+          Text(appInfo.poweredBy),
+          Text('a single man startup by'),
+          Text(appInfo.author),
+          
+        ]);
+        
+      },
+      title: Text( 
         'About',
         style: Theme.of(context).textTheme.titleMedium,
       ),

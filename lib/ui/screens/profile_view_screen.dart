@@ -1,3 +1,5 @@
+import 'package:fleet_manager_pro/app.dart';
+import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/ui/screens/profile_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,27 +34,20 @@ class ProfileBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
     return Center(
-      child: ListView(
-          // padding: const EdgeInsets.all(12),
+      child: ListView(children: const [
+        Column(
           children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: const [
-                ProfileBanner(),
-                ProfileNameonBanner(),
-                Positioned(
-                  bottom: -86,
-                  left: 0,
-                  right: 0,
-                  child: ProfileAvatar(),
-                ),
-              ],
+            SizedBox(
+              height: 70,
             ),
-            const SizedBox(
-              height: 100,
-            ),
-            const ProfiileFormView(),
-          ]),
+            ProfileAvatar(),
+          ],
+        ),
+        SizedBox(
+          height: 70,
+        ),
+        ProfiileColumnView(),
+      ]),
     );
   }
 }
@@ -95,64 +90,47 @@ class ProfileNameonBanner extends StatelessWidget {
   }
 }
 
-class Individual extends ConsumerWidget {
-  const Individual({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      child: const Center(child: Text('Individual')),
-    );
-  }
-}
-
-class Business extends ConsumerWidget {
-  const Business({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      child: const Center(child: Text('Business')),
-    );
-  }
-}
-
-class ProfileBanner extends ConsumerWidget {
-  const ProfileBanner({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
-    final curatedHeight = size.width / 1.618;
-    // final aspectRtio = size.width / curatedHeight;
-    return AspectRatio(
-        aspectRatio: 1.618,
-        child: Image.network(
-            'https://picsum.photos/${size.width.toInt().toString()}/${curatedHeight.toInt().toString()}'));
-  }
-}
 
 class ProfileAvatar extends ConsumerWidget {
   const ProfileAvatar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(appUserProvider);
     return CircleAvatar(
-      radius: 86,
-      backgroundColor: Colors.white,
+      radius: 63,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       child: CircleAvatar(
-        radius: 80,
-        child: ClipOval(child: Image.network('https://i.pravatar.cc/300')),
+        radius: 60,
+        child: ClipOval(
+            child: Center(
+          child: user!.photoUrl == ref.read(defaultPhotoUrlProvider)
+              ? Stack(
+                  children: [
+                    Image.network(user.photoUrl!),
+                    // IconButton(
+                    //     onPressed: _addProfilePhoto,
+                    //     icon: Center(
+                    //         child: Icon(
+                    //       Icons.add_a_photo,
+                    //       size: 40,
+                    //     ))),
+                  ],
+                )
+              : Image.network(user.photoUrl!),
+        )),
       ),
     );
   }
 }
 
-class ProfiileFormView extends ConsumerWidget {
-  const ProfiileFormView({super.key});
+class ProfiileColumnView extends ConsumerWidget {
+  const ProfiileColumnView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(appUserProvider);
     var formKey = GlobalKey<FormState>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -160,76 +138,61 @@ class ProfiileFormView extends ConsumerWidget {
         key: formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Dev Cycle Tester',
+            Text(user!.displayName!,
                 style: Theme.of(context).textTheme.headlineLarge),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Icon(
-                  Icons.assignment_outlined,
-                  size: 35,
-                ),
-                const Spacer(
-                  flex: 1,
-                ),
-                Text(
-                  'Individual ',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const Spacer(flex: 6),
-                // const Spacer(),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Icon(
-                  Icons.location_on_outlined,
-                  size: 35,
+                SizedBox(height: 8,),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                
+                const Spacer(flex: 3) , const Icon(
+                    Icons.assignment,
+                    size: 30,
+                  ),
+               const Spacer(),
+                  Text(
+                    user.profileType!,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Spacer(),
+                   const Icon(
+                  Icons.location_on,
+                  size: 30,
                 ),
                 const Spacer(),
-                Text(
-                  'Islamabad ',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  Text(
+                  user.location!,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const Spacer(
-                  flex: 6,
-                ),
-              ],
+                const Spacer(flex: 3,),
+                ],
+              ),
             ),
+      
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Spacer(flex: 2,),
                 const Icon(
                   Icons.call,
-                  size: 35,
+                  size: 30,
                 ),
                 const Spacer(),
                 Text(
                   '+92 333 598 9810',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Spacer(
-                  flex: 6,
+                  flex: 2,
                 ),
               ],
             ),
 
-            // TextFormField(
-            //   decoration: const InputDecoration(
-            //       label: Text(
-            //         'Profile Name',
-            //       ),
-            //       hintText: 'Name of your profile'),
-            // ),
-            // TextFormField(
-            //   decoration: const InputDecoration(
-            //       label: Text(
-            //         'Profile Name',
-            //       ),
-            //       hintText: 'Name of your profile'),
-            // ),
+          
           ],
         ),
       ),

@@ -148,7 +148,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(title: Text('Login')),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -158,9 +157,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               // shrinkWrap: true,
               children: [
-                const Spacer(
-                  flex: 1,
-                ),
+                Spacer(
+                    // flex: 0,
+                    ),
                 Text(
                   'Welcome to Fleet Manager Pro!',
                   style: Theme.of(context).textTheme.headlineLarge,
@@ -169,15 +168,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   height: 4,
                 ),
                 Expanded(
-                  flex: 5,
+                  flex: 3,
                   child: PageView(
                     children: [
                       Card(
                         // color: Color s.green,
                         child: Image.asset(
                           'assets/intro 1.jpg',
-                          height: 350,
-                          fit: BoxFit.fitHeight,
+                          height: 250,
+                          fit: BoxFit.scaleDown,
                         ),
                       ),
                       Card(
@@ -202,14 +201,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   'Your One Stop shop to manage all your vehicles  and their service History',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                const Spacer(
-                  flex: 1,
-                ),
+                // const Spacer(
+                //   flex: 1,
+                // ),
                 TextFormField(
                   controller: _usernameController,
                   decoration: const InputDecoration(labelText: 'Username'),
                 ),
-                const SizedBox(height: 4.0),
+                const SizedBox(
+                  height: 2.0,
+                ),
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
@@ -227,7 +228,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   obscureText: !passwordIsVisible,
                 ),
-                const SizedBox(height: 4.0),
+                const SizedBox(height: 2.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -236,8 +237,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           // Navigate to SignUpScreen
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupScreen(),));
-                          // print('naviga te sign up');
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SignupScreen(),
+                          ));
                         },
                         child: const Text('Sign Up'),
                       ),
@@ -276,9 +278,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ],
                 ),
-                Spacer(),
+                // Spacer(),
                 const SizedBox(
-                  height: 12,
+                  height: 4,
                 ),
               ],
             ),
