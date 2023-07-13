@@ -183,7 +183,7 @@ class ProfiileColumnView extends ConsumerWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '+92 333 598 9810',
+                  user.phone!.isEmpty? 'not set by user':user.phone!,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Spacer(
