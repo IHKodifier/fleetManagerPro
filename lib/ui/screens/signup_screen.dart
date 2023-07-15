@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fleet_manager_pro/states/app_user.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/ui/screens/app_home_screen.dart';
 import 'package:fleet_manager_pro/ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../app.dart';
 
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
@@ -30,6 +32,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   Future<void> _signup(String email, String password) async {
     final auth = ref.read(firebaseAuthProvider);
+    final url = ref.read(defaultPhotoUrlProvider);
     final credential = await auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -40,13 +43,16 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       //create appUser
       newUser = AppUser(uuid: credential.user!.uid);
       newUser.email = _email;
+      newUser.photoUrl = url;
       newUser.displayName = _displayNameController.text.isEmpty
           ? _email
           : _displayNameController.text;
       newUser.location = _locationController.text.isNotEmpty
           ? _locationController.text
-          : 'not set by user';
-      newUser.phone = 'not set by user';
+          : 'Not set by user';
+
+      newUser.phone = 'Not set by user';
+      newUser.profileType = 'Not set by user';
       //save to Firestore
       FirebaseFirestore.instance
           .collection('users')
@@ -117,9 +123,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       return 'Password is required';
                     }
                   },
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Password',
-                      prefixIcon: Icon(
+                    prefixIcon: Icon(
                       Icons.key,
                       size: 35,
                     ),
@@ -153,9 +159,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       return 'passwords do not match';
                     }
                   },
-                  decoration:
-                       InputDecoration(labelText: 'Confirm Password',
-                        prefixIcon: Icon(
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    prefixIcon: Icon(
                       Icons.key,
                       size: 35,
                     ),
@@ -179,15 +185,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _displayNameController,
-                  decoration:  InputDecoration(
-                      labelText: 'Display Name', hintText: 'optional',
-                        prefixIcon: Icon(
+                  decoration: InputDecoration(
+                    labelText: 'Display Name',
+                    hintText: 'optional',
+                    prefixIcon: Icon(
                       Icons.person,
                       size: 35,
                     ),
                     prefixIconColor: Theme.of(context).colorScheme.primary,
-                    
-                      ),
+                  ),
                   // obscureText: true,
                 ),
               ),
@@ -196,14 +202,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _locationController,
-                  decoration:  InputDecoration(
-                      labelText: 'Location/City', hintText: 'Optional',
-                        prefixIcon: Icon(
+                  decoration: InputDecoration(
+                    labelText: 'Location/City',
+                    hintText: 'Optional',
+                    prefixIcon: Icon(
                       Icons.location_city,
                       size: 35,
                     ),
                     prefixIconColor: Theme.of(context).colorScheme.primary,
-                    
                   ),
                   // obscureText: true,
                 ),
@@ -237,11 +243,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) =>  LoginScreen()),
-                         );
-                          }
-                        ,
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                          );
+                        },
                         child: _isBusy
                             ? CircularProgressIndicator()
                             : Text('Go Back'),

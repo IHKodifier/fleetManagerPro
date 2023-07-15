@@ -15,18 +15,20 @@ class ProfileView extends ConsumerWidget {
       appBar: AppBar(title: const Text('View Profile')),
       body: const ProfileBody(),
       floatingActionButton: FloatingActionButton.extended(
-          label: const Text('Edit'),
-          icon: Icon(Icons.edit,size: 30,),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          onPressed: onFABPressed,
-          
-          ),
+        label: const Text('Edit'),
+        icon: Icon(
+          Icons.edit,
+          size: 30,
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        onPressed: onFABPressed,
+      ),
     );
   }
 
   void onFABPressed() {
-    Navigator.of(localContext).push(
-        MaterialPageRoute(builder: (localContext) =>  ProfileEditView()));
+    Navigator.of(localContext)
+        .push(MaterialPageRoute(builder: (localContext) => ProfileEditView()));
   }
 }
 
@@ -55,10 +57,6 @@ class ProfileBody extends ConsumerWidget {
   }
 }
 
-
-
-
-
 class ProfileAvatar extends ConsumerWidget {
   const ProfileAvatar({super.key});
 
@@ -85,8 +83,10 @@ class ProfileAvatar extends ConsumerWidget {
                     //     ))),
                   ],
                 )
-              : Image.network(user.photoUrl!,
-              fit: BoxFit.cover,),
+              : Image.network(
+                  user.photoUrl!,
+                  fit: BoxFit.cover,
+                ),
         )),
       ),
     );
@@ -111,57 +111,62 @@ class ProfileColumnView extends ConsumerWidget {
           children: [
             Text(user!.displayName!,
                 style: Theme.of(context).textTheme.headlineLarge),
-                SizedBox(height: 12,),
+            SizedBox(
+              height: 12,
+            ),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                
-                const Spacer(flex: 3) , const Icon(
+                  const Spacer(flex: 3),
+                  const Icon(
                     Icons.assignment,
                     size: 30,
                   ),
-               const Spacer(),
+                  const Spacer(),
                   Text(
                     user.profileType!,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const Spacer(),
-                   const Icon(
-                  Icons.location_on,
-                  size: 30,
-                ),
-                const Spacer(),
+                  const Icon(
+                    Icons.location_on,
+                    size: 30,
+                  ),
+                  const Spacer(),
                   Text(
-                  user.location!,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const Spacer(flex: 3,),
+                    user.location!,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Spacer(
+                    flex: 3,
+                  ),
                 ],
               ),
             ),
-      
-      SizedBox(height: 12,),
+            SizedBox(
+              height: 12,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(flex: 4,),
+                const Spacer(
+                  flex: 4,
+                ),
                 const Icon(
                   Icons.call,
                   size: 30,
                 ),
-                const Spacer(flex:2),
+                const Spacer(flex: 2),
                 Text(
-                  user!.phone==null? 'not set by user':user.phone!,
+                  user!.phone == null ? 'Not set by user' : user.phone!,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Spacer(
-                  flex:4,
+                  flex: 4,
                 ),
               ],
             ),
-
-          
           ],
         ),
       ),
