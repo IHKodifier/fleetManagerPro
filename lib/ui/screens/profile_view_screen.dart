@@ -16,7 +16,7 @@ class ProfileView extends ConsumerWidget {
       body: const ProfileBody(),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Edit'),
-        icon: Icon(
+        icon: const Icon(
           Icons.edit,
           size: 30,
         ),
@@ -111,29 +111,38 @@ class ProfileColumnView extends ConsumerWidget {
           children: [
             Text(user!.displayName!,
                 style: Theme.of(context).textTheme.headlineLarge),
-            SizedBox(
+            const SizedBox(
               height: 12,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Profile Type',
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  user.profileType!,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
             ),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Spacer(flex: 3),
-                  const Icon(
-                    Icons.assignment,
-                    size: 30,
-                  ),
                   const Spacer(),
                   Text(
-                    user.profileType!,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    'Loctation',
+                    style: Theme.of(context).textTheme.labelSmall,
                   ),
-                  const Spacer(),
-                  const Icon(
-                    Icons.location_on,
-                    size: 30,
+                  const SizedBox(
+                    width: 8,
                   ),
-                  const Spacer(),
                   Text(
                     user.location!,
                     style: Theme.of(context).textTheme.titleMedium,
@@ -144,24 +153,37 @@ class ProfileColumnView extends ConsumerWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 12,
-            ),
+            // const SizedBox(
+            //   height: 12,
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Spacer(
                   flex: 4,
                 ),
+                Text(
+                  'Phone',
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
                 const Icon(
                   Icons.call,
-                  size: 30,
+                  size: 20,
                 ),
-                const Spacer(flex: 2),
+                const Spacer(),
                 Text(
-                  user!.phone == null ? 'Not set by user' : user.phone!,
+                  user.phone!,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
+
+                const Spacer(flex: 2),
+                // Text(
+                //   user.phone!,
+                //   style: Theme.of(context).textTheme.titleMedium,
+                // ),
                 const Spacer(
                   flex: 4,
                 ),

@@ -15,18 +15,23 @@ final appUserProvider =
 class AppUserStateNotifier extends StateNotifier<AppUser?> {
   AppUserStateNotifier(this.ref, [state]) : super(state) {
     ref.listen(authStateChangesProvider, (previous, next) {
-      if (previous != next) {
-        //refetch the user doc from forestore and set AppUserState
-        final user = FirebaseAuth.instance.currentUser;
 
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(user?.uid)
-            .get()
-            .then((value) {
-          final appUser = AppUser.fromMap(value.data()!);
-          setAppUser(appUser);
-        });
+
+
+      if (previous!.value != next.value) {
+        //refetch the user doc from forestore and set AppUserState
+        if (next.value != null) {
+          final user = FirebaseAuth.instance.currentUser;
+
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(user?.uid)
+              .get()
+              .then((value) {
+            final appUser = AppUser.fromMap(value.data()!);
+            setAppUser(appUser);
+          });
+        }
       }
     });
   }

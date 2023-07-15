@@ -24,7 +24,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController _displayNameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   String _password = '';
-  bool passwordIsVisible = false;
+  bool obscurePassword = true;
   bool _isBusy = false;
   String _email = '';
   final _formKey = GlobalKey<FormState>();
@@ -133,15 +133,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
-                          passwordIsVisible = !passwordIsVisible;
+                          obscurePassword = !obscurePassword;
                         });
                       },
-                      icon: Icon(passwordIsVisible
+                      icon: Icon(obscurePassword
                           ? Icons.visibility
                           : Icons.visibility_off),
                     ),
                   ),
-                  obscureText: passwordIsVisible,
+                  obscureText: obscurePassword,
                 ),
               ),
               const Spacer(),
@@ -169,15 +169,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
-                          passwordIsVisible = !passwordIsVisible;
+                          obscurePassword = !obscurePassword;
                         });
                       },
-                      icon: Icon(passwordIsVisible
+                      icon: Icon(obscurePassword
                           ? Icons.visibility
                           : Icons.visibility_off),
                     ),
                   ),
-                  obscureText: passwordIsVisible,
+                  obscureText: obscurePassword,
                 ),
               ),
               const Spacer(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../app.dart';
 import '../../states/barrel_models.dart';
@@ -227,7 +228,7 @@ class ProfileColumnView extends ConsumerWidget {
                 Expanded(child: OutlinedButton(onPressed: () {}, child: 
                 Text('Reset'))),
                 SizedBox(width: 8),
-                Expanded(child: ElevatedButton(onPressed: _updateProfile, child: 
+                Expanded(child: ElevatedButton(onPressed: () => _updateProfile(context,ref), child: 
                 Text('Save'))),
               ],
             ),
@@ -239,9 +240,15 @@ class ProfileColumnView extends ConsumerWidget {
     );
   }
 
-  void _updateProfile() {
+  void _updateProfile(BuildContext context,WidgetRef ref) async  {
     formKey.currentState?.save();
     Logger logger=Logger();
     logger.i(newUserState.toString());
+
+    await FirebaseFirestore.instance.collection('users').doc(newUserState.uuid)
+    .set(newUserState.toMap(),SetOptions(merge: true));
+                    ref.read(appUserProvider.notifier).setAppUser(newUserState);
+
+    Navigator.pop(context);
   }
 }
