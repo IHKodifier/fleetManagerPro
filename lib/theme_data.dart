@@ -10,6 +10,7 @@ final appLightTheme =  FlexThemeData.light(
   transparentStatusBar: true,
   tabBarStyle: FlexTabBarStyle.forAppBar,
   tooltipsMatchBackground: true,
+  
   swapColors: false,
   lightIsWhite: false,
   // useSubThemes: true,
@@ -27,7 +28,7 @@ final appLightTheme =  FlexThemeData.light(
     // navigationBarMutedUnselectedText: true,
     navigationBarMutedUnselectedIcon: true,
     inputDecoratorIsFilled: true,
-    inputDecoratorBorderType: FlexInputBorderType.outline,
+    inputDecoratorBorderType: FlexInputBorderType.underline,
     inputDecoratorUnfocusedHasBorder: false,
     blendOnColors: true,
     blendTextTheme: true,

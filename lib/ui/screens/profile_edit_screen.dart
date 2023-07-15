@@ -1,205 +1,247 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
-class ProfileEditView extends ConsumerWidget {
-  const ProfileEditView({super.key});
+import '../../app.dart';
+import '../../states/barrel_models.dart';
+import '../../states/barrel_states.dart';
+import '../shared/add_media_dialog.dart';
+
+class ProfileEditView extends ConsumerStatefulWidget {
+ 
+   ProfileEditView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileEditViewState();
+}
+
+class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
+ final TextEditingController displayNameController= TextEditingController();
+  final TextEditingController profileTypeController= TextEditingController();
+  final TextEditingController cityLoctionController= TextEditingController();
+  final TextEditingController phoneController= TextEditingController();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    displayNameController.dispose();
+    phoneController.dispose();
+    profileTypeController.dispose();
+    cityLoctionController.dispose();
+    super.dispose();
+  }
+ @override
+  Widget build(BuildContext context, ) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
       ),
-      body: const ProfileBody(),
-      floatingActionButton: FloatingActionButton.extended(
-          label: const Text('Save'),
-          onPressed: onFABPressed,
-          icon: const Icon(Icons.save)),
+      body:  ProfileBody(displayNameController: this.displayNameController,
+      phoneController: this.phoneController,
+      profileTypeController: this.profileTypeController,
+      cityLocationController: this.cityLoctionController,
+      ),
+  
     );
   }
-
-  void onFABPressed() {}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 class ProfileBody extends ConsumerWidget {
-  const ProfileBody({super.key});
+  final displayNameController,profileTypeController,cityLocationController,phoneController;
+  const ProfileBody({this.displayNameController, this.profileTypeController, this.cityLocationController, this.phoneController, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
     return Center(
-      child: ListView(
-          // padding: const EdgeInsets.all(12),
+      child: ListView(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: const [
-                ProfileBanner(),
-                ProfileNameonBanner(),
-                Positioned(
-                  bottom: -86,
-                  left: 0,
-                  right: 0,
-                  child: ProfileAvatar(),
-                ),
-              ],
-            ),
             const SizedBox(
-              height: 100,
+              height: 70,
             ),
-            const ProfiileForm(),
-          ]),
-    );
-  }
-}
-
-class ProfileNameonBanner extends StatelessWidget {
-  const ProfileNameonBanner({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 0,
-      left: 0,
-      child: Container(
-          padding:
-              const EdgeInsets.only(left: 12, right: 24, top: 12, bottom: 12),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black87,
-                Colors.black45,
+            const ProfileAvatar(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(onPressed: () {}, child: const Text('Remove ')),
+                const SizedBox(height: 12,),
+                IconButton(onPressed: () {
+                  showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          child: AddMediaDialog(),
+                        ),
+                      );
+                }, icon: const Icon(Icons.add_a_photo)),
               ],
             ),
-            borderRadius: BorderRadius.only(
-              // topRight: Radius.circular(12),
-              bottomRight: Radius.circular(100),
-            ),
-          ),
-          child: Text(
-            'Dev Cycle Tester',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: Colors.white),
-          )),
-    );
-  }
-}
-
-class Individual extends ConsumerWidget {
-  const Individual({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      child: const Center(child: Text('Individual')),
-    );
-  }
-}
-
-class Business extends ConsumerWidget {
-  const Business({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      child: const Center(child: Text('Business')),
-    );
-  }
-}
-
-class ProfileBanner extends ConsumerWidget {
-  const ProfileBanner({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
-    final curatedHeight = size.width / 1.618;
-    // final aspectRtio = size.width / curatedHeight;
-    return AspectRatio(
-        aspectRatio: 1.618,
-        child: Image.network(
-            'https://picsum.photos/${size.width.toInt().toString()}/${curatedHeight.toInt().toString()}',
-            loadingBuilder: (context, child, loadingProgress) {
-               if (loadingProgress == null) {
-      return child;
-    } else {
-      return Center(
-        child: CircularProgressIndicator(
-          value: loadingProgress.expectedTotalBytes != null
-              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-              : null,
+          ],
         ),
-      );
-    }
-            },),
-            );
+        const SizedBox(
+          height: 70,
+        ),
+         ProfileColumnView(displayNameController:this.displayNameController,
+         profileTypeController: this.profileTypeController,
+         phoneController: this.phoneController,
+         cityLocationController: this.cityLocationController,
+        ),
+      ]),
+    );
   }
 }
+
+
+
+
 
 class ProfileAvatar extends ConsumerWidget {
   const ProfileAvatar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(appUserProvider);
     return CircleAvatar(
-      radius: 86,
-      backgroundColor: Colors.white,
+      radius: 63,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       child: CircleAvatar(
-        radius: 80,
-        child: ClipOval(child: Image.network('https://i.pravatar.cc/300',
-        loadingBuilder: (context, child, loadingProgress) {
-           if (loadingProgress == null) {
-      return child;
-    } else {
-      return Center(
-        child: CircularProgressIndicator(
-          value: loadingProgress.expectedTotalBytes != null
-              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-              : null,
-        ),
-      );
-    }
-        },)),
+        radius: 60,
+        child: ClipOval(
+            child: Center(
+          child: user!.photoUrl == ref.read(defaultPhotoUrlProvider)
+              ? Stack(
+                  children: [
+                    Image.network(user.photoUrl!),
+                    IconButton(
+                        onPressed: _addProfilePhoto,
+                        icon: const Center(
+                            child: Icon(
+                          Icons.add_a_photo,
+                          size: 40,
+                        ))),
+                  ],
+                )
+              : Image.network(user.photoUrl!),
+        )),
       ),
     );
   }
+
+  void _addProfilePhoto() {}
 }
 
-class ProfiileForm extends ConsumerWidget {
-  const ProfiileForm({super.key});
+
+
+class ProfileColumnView extends ConsumerWidget {
+   final displayNameController,
+      profileTypeController,
+      cityLocationController,
+      phoneController;
+      late AppUser  previousUserState,newUserState;
+   ProfileColumnView({this.displayNameController, this.profileTypeController, this.cityLocationController, this.phoneController, super.key});
+       var formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var formKey = GlobalKey<FormState>();
+    final  previousUserState= ref.read(appUserProvider);
+    displayNameController.text = previousUserState?.displayName!;
+    profileTypeController.text = previousUserState?.profileType!;
+    cityLocationController.text = previousUserState?.location!;
+    phoneController.text = previousUserState?.phone!;
+    newUserState= previousUserState!.copyWith();
+    // final user = ref.watch(appUserProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Form(
         key: formKey,
-        child: Column(
-          children: const [
-            // TextFormField(
-            //   decoration: const InputDecoration(
-            //       label: Text(
-            //         'Profile Name',
-            //       ),
-            //       hintText: 'Name of your profile'),
-            // ),
-            // TextFormField(
-            //   decoration: const InputDecoration(
-            //       label: Text(
-            //         'Profile Name',
-            //       ),
-            //       hintText: 'Name of your profile'),
-            // ),
+        child:  Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+
+            TextFormField(
+              controller: displayNameController,
+              onSaved: (newValue) {
+                newUserState.displayName=newValue;
+              },
+              decoration: InputDecoration(
+                label: Text('Display Name'),
+                // hintText: 'Display Nam',
+                
+              ),
+
+            ),
+            SizedBox(height: 8,),
+            TextFormField(
+              controller: profileTypeController,
+              onSaved: (newValue) {
+                newUserState.profileType=newValue;
+              },
+              decoration: InputDecoration(
+                label: Text('Profile Type'),
+                hintText: 'e.g. Individual or Business',
+              ),
+
+            ),
+            SizedBox(height: 8,),
+            TextFormField(
+              controller: cityLocationController,
+              onSaved: (newValue) {
+                newUserState.location=newValue;
+              },
+              decoration: InputDecoration(
+                label: Text('City/Area'),
+                hintText: 'Optional',
+              ),
+
+            ),
+            SizedBox(height: 8,),
+            TextFormField(
+              controller: phoneController,
+              onSaved: (newValue) {
+                newUserState.phone=newValue;
+              },
+              decoration: InputDecoration(
+                label: Text('Phone '),
+                hintText: 'Optional',
+              ),
+
+            ),
+            SizedBox(height: 8,),
+            Row(
+              children: [
+                Expanded(child: OutlinedButton(onPressed: () {}, child: 
+                Text('Reset'))),
+                SizedBox(width: 8),
+                Expanded(child: ElevatedButton(onPressed: _updateProfile, child: 
+                Text('Save'))),
+              ],
+            ),
+
+         
           ],
         ),
       ),
     );
+  }
+
+  void _updateProfile() {
+    formKey.currentState?.save();
+    Logger logger=Logger();
+    logger.i(newUserState.toString());
   }
 }

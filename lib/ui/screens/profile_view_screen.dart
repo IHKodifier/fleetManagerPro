@@ -16,14 +16,17 @@ class ProfileView extends ConsumerWidget {
       body: const ProfileBody(),
       floatingActionButton: FloatingActionButton.extended(
           label: const Text('Edit'),
+          icon: Icon(Icons.edit,size: 30,),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           onPressed: onFABPressed,
-          icon: const Icon(Icons.edit)),
+          
+          ),
     );
   }
 
   void onFABPressed() {
     Navigator.of(localContext).push(
-        MaterialPageRoute(builder: (localContext) => const ProfileEditView()));
+        MaterialPageRoute(builder: (localContext) =>  ProfileEditView()));
   }
 }
 
@@ -46,49 +49,13 @@ class ProfileBody extends ConsumerWidget {
         SizedBox(
           height: 70,
         ),
-        ProfiileColumnView(),
+        ProfileColumnView(),
       ]),
     );
   }
 }
 
-class ProfileNameonBanner extends StatelessWidget {
-  const ProfileNameonBanner({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 0,
-      left: 0,
-      child: Container(
-          padding:
-              const EdgeInsets.only(left: 12, right: 24, top: 12, bottom: 12),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black87,
-                Colors.black45,
-              ],
-            ),
-            borderRadius: BorderRadius.only(
-              // topRight: Radius.circular(12),
-              bottomRight: Radius.circular(100),
-            ),
-          ),
-          child: Text(
-            'Dev Cycle Tester',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: Colors.white),
-          )),
-    );
-  }
-}
 
 
 
@@ -118,15 +85,16 @@ class ProfileAvatar extends ConsumerWidget {
                     //     ))),
                   ],
                 )
-              : Image.network(user.photoUrl!),
+              : Image.network(user.photoUrl!,
+              fit: BoxFit.cover,),
         )),
       ),
     );
   }
 }
 
-class ProfiileColumnView extends ConsumerWidget {
-  const ProfiileColumnView({super.key});
+class ProfileColumnView extends ConsumerWidget {
+  const ProfileColumnView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -143,7 +111,7 @@ class ProfiileColumnView extends ConsumerWidget {
           children: [
             Text(user!.displayName!,
                 style: Theme.of(context).textTheme.headlineLarge),
-                SizedBox(height: 8,),
+                SizedBox(height: 12,),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -173,21 +141,22 @@ class ProfiileColumnView extends ConsumerWidget {
               ),
             ),
       
+      SizedBox(height: 12,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(flex: 2,),
+                const Spacer(flex: 4,),
                 const Icon(
                   Icons.call,
                   size: 30,
                 ),
-                const Spacer(),
+                const Spacer(flex:2),
                 Text(
-                  user.phone!.isEmpty? 'not set by user':user.phone!,
+                  user!.phone==null? 'not set by user':user.phone!,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Spacer(
-                  flex: 2,
+                  flex:4,
                 ),
               ],
             ),
