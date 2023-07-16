@@ -13,6 +13,17 @@ import '../../states/barrel_states.dart';
 import '../../utils.dart';
 import '../shared/add_media_dialog.dart';
 
+final isBusyProvider = StateNotifierProvider<BusyNotifier, bool>((ref) {
+  return BusyNotifier(false);
+});
+
+class BusyNotifier extends StateNotifier<bool> {
+  BusyNotifier(super.state);
+  void setBusy() {state = true;
+  state = state;}
+  void setNotBusy() { state = false;
+  state = state;}
+}
 class ProfileEditView extends ConsumerStatefulWidget {
   ProfileEditView({super.key});
 
@@ -55,6 +66,9 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   }
 }
 
+
+
+
 class ProfileBody extends ConsumerWidget {
    ProfileBody(
       {this.displayNameController,
@@ -72,6 +86,7 @@ class ProfileBody extends ConsumerWidget {
 
   Future<void> onProfilePhotoUpload(BuildContext context, File file, String userId, WidgetRef ref) async {
     // final file = File(media.mediaFile.path);
+    ref.read(isBusyProvider.notifier).setBusy();
     final fileName = file.path.split('/').last;
     final storageRef = FirebaseStorage.instance.ref(
       'userdata/$userId/uploads/$fileName',
@@ -90,7 +105,9 @@ class ProfileBody extends ConsumerWidget {
     print('.............................\n \n $photoUrl');
 
     });
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
+    ref.read(isBusyProvider.notifier).setNotBusy();
 
 
 
@@ -99,6 +116,10 @@ class ProfileBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final busyNotifier= ref.read(isBusyProvider.notifier);
+    final busyState = ref.watch(isBusyProvider);
+
+
     // TODO: implement build
     return Center(
       child: ListView(children: [
@@ -129,26 +150,31 @@ class ProfileBody extends ConsumerWidget {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return AlertDialog(
-                            content: SizedBox(
-                              height: 200,
-                              child: Image.file(croppedImageFile),
+                          return Consumer(
+                            builder:(context, ref, child) =>  AlertDialog(
+                             
+                              content: SizedBox(
+                                height: 200,
+                                child: Image.file(croppedImageFile),
+                              ),
+                              title: const Center(child: Text('Profile Image')),
+                              actions: [
+                              ref.watch(isBusyProvider)? CircularProgressIndicator():
+                                ElevatedButton.icon(
+                                    onPressed: () {
+                                      onProfilePhotoUpload(context,croppedImageFile,
+                                          ref.read(appUserProvider)!.uuid,ref);
+                                    },
+                                    icon: const Icon(Icons.upload),
+                                    label: const Text('upload'))
+                              ],
                             ),
-                            title: const Center(child: Text('Profile Image')),
-                            actions: [
-                              ElevatedButton.icon(
-                                  onPressed: () {
-                                    onProfilePhotoUpload(context,croppedImageFile,
-                                        ref.read(appUserProvider)!.uuid,ref);
-                                  },
-                                  icon: const Icon(Icons.upload),
-                                  label: const Text('upload'))
-                            ],
                           );
                         },
                       );
                     },
-                    icon: const Icon(Icons.add_a_photo)),
+                    icon:  
+                    const Icon(Icons.add_a_photo)),
               ],
             ),
           ],
@@ -183,18 +209,7 @@ class ProfileAvatar extends ConsumerWidget {
         child: ClipOval(
             child: Center(
           child: user!.photoUrl == ref.read(defaultPhotoUrlProvider)
-              ? Stack(
-                  children: [
-                    Image.network(user.photoUrl!),
-                    // IconButton(
-                    //     onPressed: _addProfilePhoto,
-                    //     icon: const Center(
-                    //         child: Icon(
-                    //       Icons.add_a_photo,
-                    //       size: 40,
-                    //     ))),
-                  ],
-                )
+              ? Image.network(user.photoUrl!)
               : Image.network(user.photoUrl!),
         )),
       ),
@@ -211,13 +226,14 @@ class ProfileForm extends ConsumerWidget {
       super.key});
 
   var formKey = GlobalKey<FormState>();
-  late AppUser previousUserState, newUserState;
+  late AppUser  newUserState;
   final displayNameController,
       profileTypeController,
       cityLocationController,
       phoneController;
 
   void _updateProfile(BuildContext context, WidgetRef ref) async {
+    // previousUserState= ref.read(appUserProvider);
     formKey.currentState?.save();
     newUserState.photoUrl= ref.read(appUserProvider)!.photoUrl;
     Logger logger = Logger();
@@ -234,7 +250,7 @@ class ProfileForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //  previousUserState = ref.watch(appUserProvider);
+     final previousUserState = ref.read(appUserProvider);
     displayNameController.text = previousUserState?.displayName!;
     profileTypeController.text = previousUserState?.profileType!;
     // new
@@ -307,7 +323,9 @@ class ProfileForm extends ConsumerWidget {
               children: [
                 Expanded(
                     child: OutlinedButton(
-                        onPressed: () {}, child: const Text('Reset'))),
+                        onPressed: () {
+                          formKey.currentState!.reset();
+                        }, child: const Text('Reset'))),
                 const SizedBox(width: 8),
                 Expanded(
                     child: ElevatedButton(
