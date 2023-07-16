@@ -159,14 +159,16 @@ class ProfileBody extends ConsumerWidget {
                               ),
                               title: const Center(child: Text('Profile Image')),
                               actions: [
-                              ref.watch(isBusyProvider)? CircularProgressIndicator():
+                              
                                 ElevatedButton.icon(
                                     onPressed: () {
                                       onProfilePhotoUpload(context,croppedImageFile,
                                           ref.read(appUserProvider)!.uuid,ref);
                                     },
-                                    icon: const Icon(Icons.upload),
-                                    label: const Text('upload'))
+                                    icon: ref.watch(isBusyProvider)
+                                        ?  CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,)
+                                        : const Icon(Icons.upload),
+                                    label: ref.watch(isBusyProvider)?Text('uploading...'): const Text('upload'))
                               ],
                             ),
                           );
