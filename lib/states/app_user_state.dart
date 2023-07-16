@@ -45,6 +45,9 @@ class AppUserStateNotifier extends StateNotifier<AppUser?> {
   void setAppUser(AppUser appUser) {
     state = appUser;
   }
+ void setPhotoUrl(String url){
+  state = state!.copyWith(photoUrl: url);
+ }
 
   Future<void> refreshAppUser() async {
 //TODO

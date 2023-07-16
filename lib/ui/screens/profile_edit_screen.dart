@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -6,21 +10,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../app.dart';
 import '../../states/barrel_models.dart';
 import '../../states/barrel_states.dart';
+import '../../utils.dart';
 import '../shared/add_media_dialog.dart';
 
 class ProfileEditView extends ConsumerStatefulWidget {
- 
-   ProfileEditView({super.key});
+  ProfileEditView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileEditViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ProfileEditViewState();
 }
 
 class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
- final TextEditingController displayNameController= TextEditingController();
-  final TextEditingController profileTypeController= TextEditingController();
-  final TextEditingController cityLoctionController= TextEditingController();
-  final TextEditingController phoneController= TextEditingController();
+  final TextEditingController cityLoctionController = TextEditingController();
+  final TextEditingController displayNameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController profileTypeController = TextEditingController();
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -30,37 +36,66 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
     cityLoctionController.dispose();
     super.dispose();
   }
- @override
-  Widget build(BuildContext context, ) {
+
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
       ),
-      body:  ProfileBody(displayNameController: this.displayNameController,
-      phoneController: this.phoneController,
-      profileTypeController: this.profileTypeController,
-      cityLocationController: this.cityLoctionController,
+      body: ProfileBody(
+        displayNameController: this.displayNameController,
+        phoneController: this.phoneController,
+        profileTypeController: this.profileTypeController,
+        cityLocationController: this.cityLoctionController,
       ),
-  
     );
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 class ProfileBody extends ConsumerWidget {
-  final displayNameController,profileTypeController,cityLocationController,phoneController;
-  const ProfileBody({this.displayNameController, this.profileTypeController, this.cityLocationController, this.phoneController, super.key});
+   ProfileBody(
+      {this.displayNameController,
+      this.profileTypeController,
+      this.cityLocationController,
+      this.phoneController,
+      super.key});
+
+  final displayNameController,
+      profileTypeController,
+      cityLocationController,
+      phoneController;
+
+       final _uploadProgressStreamController = StreamController<double>();
+
+  Future<void> onProfilePhotoUpload(BuildContext context, File file, String userId, WidgetRef ref) async {
+    // final file = File(media.mediaFile.path);
+    final fileName = file.path.split('/').last;
+    final storageRef = FirebaseStorage.instance.ref(
+      'userdata/$userId/uploads/$fileName',
+    );
+   final  _uploadTask = storageRef.putFile(file);
+    _uploadTask!.snapshotEvents.listen((taskSnapshot) {
+      final progress = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes;
+      _uploadProgressStreamController.sink.add(progress);
+    });
+        await _uploadTask!.whenComplete(() async {
+      // _uploadTask.
+      _uploadProgressStreamController.close();
+      final photoUrl = await storageRef.getDownloadURL();
+    ref.read(appUserProvider.notifier).setPhotoUrl(photoUrl);
+    // ignore: avoid_print
+    print('.............................\n \n $photoUrl');
+
+    });
+    Navigator.pop(context);
+
+
+
+
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,15 +113,42 @@ class ProfileBody extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(onPressed: () {}, child: const Text('Remove ')),
-                const SizedBox(height: 12,),
-                IconButton(onPressed: () {
-                  showDialog(
+                const SizedBox(
+                  height: 12,
+                ),
+                IconButton(
+                    onPressed: () async {
+                      final pickedMedia = await Utils.pickMediafromCamera();
+                      //pickedMedia.length will always be 1 . time to crop it
+                      var croppedImage =
+                          await Utils().cropSquareImage(pickedMedia![0]);
+                      // ignore: unused_local_variable
+                      var croppedImageFile = await Utils()
+                          .createFileFromCroppedFile(croppedImage!);
+                      // ignore: use_build_context_synchronously
+                      showDialog(
                         context: context,
-                        builder: (context) => Dialog(
-                          child: AddMediaDialog(),
-                        ),
+                        builder: (context) {
+                          return AlertDialog(
+                            content: SizedBox(
+                              height: 200,
+                              child: Image.file(croppedImageFile),
+                            ),
+                            title: const Center(child: Text('Profile Image')),
+                            actions: [
+                              ElevatedButton.icon(
+                                  onPressed: () {
+                                    onProfilePhotoUpload(context,croppedImageFile,
+                                        ref.read(appUserProvider)!.uuid,ref);
+                                  },
+                                  icon: const Icon(Icons.upload),
+                                  label: const Text('upload'))
+                            ],
+                          );
+                        },
                       );
-                }, icon: const Icon(Icons.add_a_photo)),
+                    },
+                    icon: const Icon(Icons.add_a_photo)),
               ],
             ),
           ],
@@ -94,22 +156,21 @@ class ProfileBody extends ConsumerWidget {
         const SizedBox(
           height: 70,
         ),
-         ProfileColumnView(displayNameController:this.displayNameController,
-         profileTypeController: this.profileTypeController,
-         phoneController: this.phoneController,
-         cityLocationController: this.cityLocationController,
+        ProfileForm(
+          displayNameController: this.displayNameController,
+          profileTypeController: this.profileTypeController,
+          phoneController: this.phoneController,
+          cityLocationController: this.cityLocationController,
         ),
       ]),
     );
   }
 }
 
-
-
-
-
 class ProfileAvatar extends ConsumerWidget {
   const ProfileAvatar({super.key});
+
+  void _addProfilePhoto() {}
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -125,13 +186,13 @@ class ProfileAvatar extends ConsumerWidget {
               ? Stack(
                   children: [
                     Image.network(user.photoUrl!),
-                    IconButton(
-                        onPressed: _addProfilePhoto,
-                        icon: const Center(
-                            child: Icon(
-                          Icons.add_a_photo,
-                          size: 40,
-                        ))),
+                    // IconButton(
+                    //     onPressed: _addProfilePhoto,
+                    //     icon: const Center(
+                    //         child: Icon(
+                    //       Icons.add_a_photo,
+                    //       size: 40,
+                    //     ))),
                   ],
                 )
               : Image.network(user.photoUrl!),
@@ -139,116 +200,124 @@ class ProfileAvatar extends ConsumerWidget {
       ),
     );
   }
-
-  void _addProfilePhoto() {}
 }
 
+class ProfileForm extends ConsumerWidget {
+  ProfileForm(
+      {this.displayNameController,
+      this.profileTypeController,
+      this.cityLocationController,
+      this.phoneController,
+      super.key});
 
-
-class ProfileColumnView extends ConsumerWidget {
-   final displayNameController,
+  var formKey = GlobalKey<FormState>();
+  late AppUser previousUserState, newUserState;
+  final displayNameController,
       profileTypeController,
       cityLocationController,
       phoneController;
-      late AppUser  previousUserState,newUserState;
-   ProfileColumnView({this.displayNameController, this.profileTypeController, this.cityLocationController, this.phoneController, super.key});
-       var formKey = GlobalKey<FormState>();
 
+  void _updateProfile(BuildContext context, WidgetRef ref) async {
+    formKey.currentState?.save();
+    newUserState.photoUrl= ref.read(appUserProvider)!.photoUrl;
+    Logger logger = Logger();
+    logger.i(newUserState.toString());
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(newUserState.uuid)
+        .set(newUserState.toMap(), SetOptions(merge: true));
+    ref.read(appUserProvider.notifier).setAppUser(newUserState);
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final  previousUserState= ref.read(appUserProvider);
+    //  previousUserState = ref.watch(appUserProvider);
     displayNameController.text = previousUserState?.displayName!;
     profileTypeController.text = previousUserState?.profileType!;
+    // new
     cityLocationController.text = previousUserState?.location!;
     phoneController.text = previousUserState?.phone!;
-    newUserState= previousUserState!.copyWith();
+    newUserState = previousUserState!.copyWith();
     // final user = ref.watch(appUserProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Form(
         key: formKey,
-        child:  Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             TextFormField(
               controller: displayNameController,
               onSaved: (newValue) {
-                newUserState.displayName=newValue;
+                newUserState.displayName = newValue;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('Display Name'),
                 // hintText: 'Display Nam',
-                
               ),
-
             ),
-            SizedBox(height: 8,),
+            const SizedBox(
+              height: 8,
+            ),
             TextFormField(
               controller: profileTypeController,
               onSaved: (newValue) {
-                newUserState.profileType=newValue;
+                newUserState.profileType = newValue;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('Profile Type'),
                 hintText: 'e.g. Individual or Business',
               ),
-
             ),
-            SizedBox(height: 8,),
+            const SizedBox(
+              height: 8,
+            ),
             TextFormField(
               controller: cityLocationController,
               onSaved: (newValue) {
-                newUserState.location=newValue;
+                newUserState.location = newValue;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('City/Area'),
                 hintText: 'Optional',
               ),
-
             ),
-            SizedBox(height: 8,),
+            const SizedBox(
+              height: 8,
+            ),
             TextFormField(
               controller: phoneController,
               onSaved: (newValue) {
-                newUserState.phone=newValue;
+                newUserState.phone = newValue;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('Phone '),
                 hintText: 'Optional',
               ),
-
             ),
-            SizedBox(height: 8,),
+            const SizedBox(
+              height: 8,
+            ),
             Row(
               children: [
-                Expanded(child: OutlinedButton(onPressed: () {}, child: 
-                Text('Reset'))),
-                SizedBox(width: 8),
-                Expanded(child: ElevatedButton(onPressed: () => _updateProfile(context,ref), child: 
-                Text('Save'))),
+                Expanded(
+                    child: OutlinedButton(
+                        onPressed: () {}, child: const Text('Reset'))),
+                const SizedBox(width: 8),
+                Expanded(
+                    child: ElevatedButton(
+                        onPressed: () => _updateProfile(context, ref),
+                        child: const Text('Save'))),
               ],
             ),
-
-         
           ],
         ),
       ),
     );
-  }
-
-  void _updateProfile(BuildContext context,WidgetRef ref) async  {
-    formKey.currentState?.save();
-    Logger logger=Logger();
-    logger.i(newUserState.toString());
-
-    await FirebaseFirestore.instance.collection('users').doc(newUserState.uuid)
-    .set(newUserState.toMap(),SetOptions(merge: true));
-                    ref.read(appUserProvider.notifier).setAppUser(newUserState);
-
-    Navigator.pop(context);
   }
 }
