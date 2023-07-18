@@ -4,6 +4,6 @@ workflows:
       events:
         - push
       branch_patterns: 
-        - pattern: develop
+        - pattern: dev
           include: false
       cancel_previous_builds: true
