@@ -166,8 +166,8 @@ class ProfileBody extends ConsumerWidget {
                                           ref.read(appUserProvider)!.uuid,ref);
                                     },
                                     icon: ref.watch(isBusyProvider)
-                                        ?  CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,),
-                                        
+                                        ?  CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,)
+
                                         : const Icon(Icons.upload),
                                     label: ref.watch(isBusyProvider)?Text('uploading...'): const Text('upload'))
                               ],
