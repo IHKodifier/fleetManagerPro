@@ -228,6 +228,7 @@ class SignOutTile extends ConsumerWidget {
       print('signing out user');
       await ref.read(appUserProvider.notifier).signOut();
       print('user signed out successffully');
+      ref.read(appUserProvider.notifier).clearUser();
       },
     );
   }

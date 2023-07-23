@@ -7,3 +7,4 @@ workflows:
         - pattern: dev
           include: false
       cancel_previous_builds: true
+ 

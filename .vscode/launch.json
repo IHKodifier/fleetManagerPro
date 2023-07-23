@@ -2,17 +2,30 @@
     "configurations": [
 
         {
-            "name": "Flutter Run debug",
+            "name": "Run Dev",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main.dart",
-            // "args": ["--no-sound-null-safety"],
-            "cwd": "${workspaceFolder}",
+            "program": "lib/main_dev.dart",
             "flutterMode": "debug",
-            // "deviceName": "Pixel 2 API 29",
-            "target": "lib/main.dart",
-            // "flutterPlatform": "android-x86"
+            "args": [
+              "--flavor",
+              "dev",
+            ],
+            
+          },
+        {
+            "name": "Run Prod",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_prod.dart",
+            "flutterMode": "debug",
+            "args":[
+              "--flavor",
+              "prod",
+            ],
+            
           }
+
 
     ]
 }

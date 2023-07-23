@@ -133,7 +133,9 @@ class ProfileBody extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextButton(onPressed: () {}, child: const Text('Remove ')),
+                TextButton(onPressed: () {
+                  ref.read(appUserProvider.notifier).setPhotoUrl(ref.read(defaultPhotoUrlProvider));
+                }, child: const Text('Remove ')),
                 const SizedBox(
                   height: 12,
                 ),

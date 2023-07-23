@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+  final bool isDebugBannerVisible;
+  const MyApp({required this.isDebugBannerVisible, super.key});
 
   // This widget is the root of your application.
   @override
@@ -14,7 +15,7 @@ class MyApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
     return MaterialApp(
       title: 'Fleet Manager Pro',
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: isDebugBannerVisible,
       themeMode: themeMode,
 // This theme was made for FlexColorScheme version 6.1.1. Make sure
 // you use same or higher version, but still same major version. If
