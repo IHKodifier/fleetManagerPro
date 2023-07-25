@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/ui/screens/vehicle_detail_screen.dart';
@@ -25,10 +27,10 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
           icon: Icon(Icons.local_gas_station,size: 50,color: Theme.of(context).colorScheme.primary,),
-          title: Text('Add Fuel Stop'),
+          title: const Text('Add Fuel Stop'),
           content: addFuelStopForm(),
           actionsAlignment: MainAxisAlignment.end,
-          actionsPadding: EdgeInsets.all(8),
+          actionsPadding: const EdgeInsets.all(8),
           actionsOverflowButtonSpacing: 10,
           actionsOverflowAlignment: OverflowBarAlignment.center,
           actions: [
@@ -37,20 +39,20 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {Navigator.pop(context);},
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                 ),
-                SizedBox(width: 10,),
+                const SizedBox(width: 10,),
                 Expanded(
                   child: FilledButton.icon(
                     onPressed: saveFuelStop,
-                    icon: Icon(Icons.save),
-                    label: isBusy? Padding(
-                      padding: const EdgeInsets.all(2.0),
+                    icon: const Icon(Icons.save),
+                    label: isBusy? const Padding(
+                      padding: EdgeInsets.all(2.0),
                       child: CircularProgressIndicator(
                         color: Colors.white,
                       ),
-                    ): Text('Save'),
+                    ): const Text('Save'),
                   ),
                 ),
               ],
@@ -146,7 +148,7 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
               color: Theme.of(context).colorScheme.primary,
               size: 35,
             ),
-           keyboardType: TextInputType.numberWithOptions(),
+           keyboardType: const TextInputType.numberWithOptions(),
             min: oldDriven.toDouble(),
             max: double.infinity,
             // decimals: true,
@@ -207,7 +209,7 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
     //  ref.invalidate(currentVehicleProvider);
     //  Navigator.pop(context);
     //  ref.refresh(currentVehicleProvider);
-     Navigator.pushReplacement(context, MaterialPageRoute(builder:  (context) => VehicleDetailScreen()));
+     Navigator.pushReplacement(context, MaterialPageRoute(builder:  (context) => const VehicleDetailScreen()));
     //  Navigator.pop(context);
 
   }

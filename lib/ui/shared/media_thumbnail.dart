@@ -6,7 +6,7 @@ import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
 class MediaThumbnail extends StatelessWidget {
   final Media appMedia;
 
-  MediaThumbnail({required this.appMedia});
+  const MediaThumbnail({super.key, required this.appMedia});
 
   @override
   Widget build(BuildContext context) {

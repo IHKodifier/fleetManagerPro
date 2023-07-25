@@ -17,6 +17,7 @@ class ServiceEditForm extends ConsumerStatefulWidget {
   final String userUUId;
 
   @override
+  // ignore: library_private_types_in_public_api
   _ServiceEditFormState createState() => _ServiceEditFormState();
 }
 

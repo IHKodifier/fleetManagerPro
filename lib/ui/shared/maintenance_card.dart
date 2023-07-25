@@ -105,15 +105,15 @@ class MaintenanceCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       Icon(
                         Icons.car_repair,
                         color: Theme.of(context).colorScheme.primary,
                         size: 70, 
                       ),
-                      Spacer(),
+                      const Spacer(),
                       buildMaintenanceLocationText(context),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
                   buildTimeAgoText(context),
@@ -229,7 +229,7 @@ class MaintenanceCard extends StatelessWidget {
                       ),
                       Text(Utils.thousandify(state.cost!~/state.litres!),
                           style: Theme.of(context).textTheme.labelLarge),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Text('Rs/L',
@@ -261,7 +261,7 @@ class MaintenanceCard extends StatelessWidget {
         child: Card(
           // color: Colors.white54,
           elevation: 5,
-          margin: EdgeInsets.all(4),
+          margin: const EdgeInsets.all(4),
           child: Column(
               // shrinkWrap: true,
 
@@ -289,8 +289,8 @@ class MaintenanceCard extends StatelessWidget {
                     .toList(),
                 // Spacer(),
                 // SizedBox(height: 6,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Divider(
                     thickness: 1.5,
                     color: Colors.black87,
@@ -329,13 +329,13 @@ class MaintenanceCard extends StatelessWidget {
           : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Spacer(),
+              const Spacer(),
               Icon(
                   Icons.local_gas_station,
                   size: 70,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-              Spacer(),
+              const Spacer(),
                 Text(
                   Utils.thousandify(state.cost!),
                   style: Theme.of(context)
@@ -353,7 +353,7 @@ class MaintenanceCard extends StatelessWidget {
                       .labelSmall!
                       .copyWith(color: Colors.blueGrey.shade800),
                 ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
     );
