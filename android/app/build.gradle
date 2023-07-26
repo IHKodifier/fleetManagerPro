@@ -29,18 +29,18 @@ android {
     compileSdkVersion 33
     ndkVersion flutter.ndkVersion
     //lines below added for separating the nvironment linked at https://kmtsandeepanie.medium.com/set-up-multiple-firebase-environments-in-flutter-9f88bc284454
-    //
-//     flavorDimensions "env"
-// productFlavors {
-//     dev {
-//         dimension "env"
-//         // applicationId "com.example.tools.dev"
-//     }
-//     prod {
-//         dimension "env"
-//         // applicationId "com.example.tools.prod"
-//     }
-// }
+    
+    flavorDimensions "env"
+productFlavors {
+    dev {
+        dimension "env"
+        // applicationId "com.example.tools.dev"
+    }
+    prod {
+        dimension "env"
+        // applicationId "com.example.tools.prod"
+    }
+}
 // copy paste from tutorial ends here
 
     compileOptions {
@@ -85,17 +85,17 @@ android {
        
     }
   
-    flavorDimensions "environment"
+    // flavorDimensions "environment"
 
-    productFlavors {
-        dev {
-            // Development flavor configuration
-        }
+    // productFlavors {
+    //     dev {
+    //         // Development flavor configuration
+    //     }
 
-        prod {
-            // Production flavor configuration
-        }
-    }
+    //     prod {
+    //         // Production flavor configuration
+    //     }
+    // }
 }
 
 flutter {
