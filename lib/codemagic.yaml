@@ -1,0 +1,13 @@
+workflows:
+  android:
+    name: bFlutter Dev for  Android 
+     scripts:
+      - name: Build Android App Bundle
+        working_directory: android
+        script: ./gradlew bundleRelease
+    artifacts:
+      - build/**/outputs/bundle/**/*.aab
+  ios:
+    name: build, test & publish iOS version
+    scripts:
+      - ...
