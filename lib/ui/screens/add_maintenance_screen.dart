@@ -108,10 +108,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
         .doc(ref.read(appUserProvider)?.uuid)
         .collection('services')
         .add(newService.toMap());
-    // print(_formKey.currentState.toString());
     ref.invalidate(allServicesProvider);
-    _serviceNameController.dispose();
-    _serviceCostController.dispose();
     Navigator.pop(context);
   }
 
