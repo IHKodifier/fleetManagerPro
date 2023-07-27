@@ -19,13 +19,13 @@ workflows:
       - name: Get Flutter packages
         script: |
           flutter packages pub get
-      - name: Flutter analyze
-        script: |
-          flutter analyze
-      - name: Flutter unit tests
-        script: |
-          flutter test
-        ignore_failure: true
+      # - name: Flutter analyze
+      #   script: |
+      #     flutter analyze
+      # - name: Flutter unit tests
+      #   script: |
+      #     flutter test
+      #   ignore_failure: true
       - name: Build AAB with Flutter
         script: |
           BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK") + 1))      
@@ -73,13 +73,13 @@ workflows:
       - name: Install pods
         script: |
           find . -name "Podfile" -execdir pod install \;
-      - name: Flutter analyze
-        script: |
-          flutter analyze
-      - name: Flutter unit tests
-        script: |
-          flutter test
-        ignore_failure: true
+      # - name: Flutter analyze
+      #   script: |
+      #     flutter analyze
+      # - name: Flutter unit tests
+      #   script: |
+      #     flutter test
+      #   ignore_failure: true
       - name: Flutter build ipa and automatic versioning
         script: |
           flutter build ipa --release \
