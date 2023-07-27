@@ -1,6 +1,39 @@
 workflows:
+  
   android:
     name: Flutter Dev for  Android 
+    max_build_duration: 15
+    triggering:
+      events:
+        -  push
+      branch_patterns:
+        -  pattern: dev
+        -  include: true
+    scripts:
+      -  name: Get Flutter Packages
+         script: flutter Packages pub Get
+      -  name: build apk
+         script: flutter build/**/outputs/bundle/**/*.apk
+    artifacts:
+      -  build/**/outputs/**/*.apk
+      -  build/**/outputs/**/*.aab
+      
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     scripts:
        - name: Build Android App Bundle
          working_directory: android
@@ -11,3 +44,5 @@ workflows:
     name: build, test & publish iOS version
     scripts:
       - ...
+  web:
+    name: web build workflow
