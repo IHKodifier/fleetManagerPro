@@ -67,21 +67,19 @@ android {
             signingConfig signingConfigs.debug
         }
         debug {
-
         }
-       
     }
-  
+
      //lines below added for separating the nvironment linked at https://kmtsandeepanie.medium.com/set-up-multiple-firebase-environments-in-flutter-9f88bc284454
-    
-    flavorDimensions "flavor-type"
+
+    flavorDimensions "flavor"
 productFlavors {
     dev {
-        dimension "flavor-type"
+        dimension "flavor"
         // applicationId "com.example.tools.dev"
     }
     prod {
-        dimension "flavor-type"
+        dimension "flavor"
         // applicationId "com.example.tools.prod"
     }
 }
