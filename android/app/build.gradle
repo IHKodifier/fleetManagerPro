@@ -28,20 +28,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     compileSdkVersion 33
     ndkVersion flutter.ndkVersion
-    //lines below added for separating the nvironment linked at https://kmtsandeepanie.medium.com/set-up-multiple-firebase-environments-in-flutter-9f88bc284454
-    
-    flavorDimensions "env"
-productFlavors {
-    dev {
-        dimension "env"
-        // applicationId "com.example.tools.dev"
-    }
-    prod {
-        dimension "env"
-        // applicationId "com.example.tools.prod"
-    }
-}
-// copy paste from tutorial ends here
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -85,17 +72,20 @@ productFlavors {
        
     }
   
-    // flavorDimensions "environment"
-
-    // productFlavors {
-    //     dev {
-    //         // Development flavor configuration
-    //     }
-
-    //     prod {
-    //         // Production flavor configuration
-    //     }
-    // }
+     //lines below added for separating the nvironment linked at https://kmtsandeepanie.medium.com/set-up-multiple-firebase-environments-in-flutter-9f88bc284454
+    
+    flavorDimensions "flavor-type"
+productFlavors {
+    dev {
+        dimension "flavor-type"
+        // applicationId "com.example.tools.dev"
+    }
+    prod {
+        dimension "flavor-type"
+        // applicationId "com.example.tools.prod"
+    }
+}
+// copy paste from tutorial ends here
 }
 
 flutter {

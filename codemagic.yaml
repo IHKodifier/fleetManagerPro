@@ -6,7 +6,7 @@ workflows:
          working_directory: android
          script: ./gradlew bundleRelease
     artifacts:
-      - build/**/outputs/bundle/**/*.aab
+      - build/**/outputs/bundle/**/*.apk
   ios:
     name: build, test & publish iOS version
     scripts:
