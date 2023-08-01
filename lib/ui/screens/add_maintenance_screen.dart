@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import '../shared/service_edit_form.dart';
-import '../shared/valu_indicator_dlidershape.dart';
 
 class AddMaintenanceScreen extends ConsumerStatefulWidget {
   const AddMaintenanceScreen({Key? key}) : super(key: key);
@@ -66,7 +64,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                             label: Text('Name'),
                             hintText: 'example:  brake pads replacement'),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       TextFormField(
@@ -87,7 +85,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                 icon: const Icon(Icons.cancel),
                                 label: const Text('Cancel')),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
                           Expanded(
@@ -279,7 +277,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                           TextField(
                                             maxLength: 20,
                                             controller: controller,
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                               hintText: 'Name of location',
                                             ),
                                           ),
@@ -328,12 +326,12 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                                             context,
                                                             MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  VehicleDetailScreen(),
+                                                                  const VehicleDetailScreen(),
                                                             ));
                                                       },
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                           Icons.save_sharp),
-                                                      label: Text('Save'))),
+                                                      label: const Text('Save'))),
                                             ],
                                           ),
                                         ),
@@ -398,7 +396,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                       child: IntrinsicWidth(
                         child: SpinBox(
                           step: 10,
-                          textStyle: TextStyle(fontSize: 20)
+                          textStyle: const TextStyle(fontSize: 20)
                               .copyWith(fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
                             // labelText: 'Kilometers Driven',
@@ -406,9 +404,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                 .textTheme
                                 .bodySmall!
                                 .copyWith(fontSize: 12),
-                            suffix: Text(' Kms'),
-                            border: OutlineInputBorder(),
-                            suffixStyle: TextStyle(fontSize: 14).copyWith(
+                            suffix: const Text(' Kms'),
+                            border: const OutlineInputBorder(),
+                            suffixStyle: const TextStyle(fontSize: 14).copyWith(
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.italic),
                             contentPadding: const EdgeInsets.all(4),
@@ -617,11 +615,11 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
               const Spacer(
                 flex: 1,
               ),
-              Container(
+              SizedBox(
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _submitAddMaintenanceForm,
-                  child: _isBusy? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,)): Text('Submit'),
+                  child: _isBusy? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,)): const Text('Submit'),
                 ),
               ),
             ],

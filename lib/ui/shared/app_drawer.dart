@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fleet_manager_pro/app.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/ui/shared/vehicles_list.dart';
@@ -189,9 +188,9 @@ class AboutTile extends StatelessWidget {
         applicationName: 'Fleet Manager Pro',
         applicationVersion: appInfo.version,
         children: [
-          Text('Powered By'),
+          const Text('Powered By'),
           Text(appInfo.poweredBy),
-          Text('a single man startup by'),
+          const Text('a single man startup by'),
           Text(appInfo.author),
           
         ]);

@@ -36,13 +36,13 @@ map((service) {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           onPressed: () {
             // Perform edit action here
           },
         ),
         IconButton(
-          icon: Icon(Icons.delete),
+          icon: const Icon(Icons.delete),
           onPressed: () {
             // Perform delete action here
           },
@@ -60,12 +60,12 @@ map((service) {
   }
 
   List<Widget> onError(Object error, StackTrace stackTrace)=>[
-    Text('error encountered'),
+    const Text('error encountered'),
     Text(error.toString()),
     
     ];
 
-  List<Widget> onLoading() =>[CircularProgressIndicator()];
+  List<Widget> onLoading() =>[const CircularProgressIndicator()];
 }
 
 

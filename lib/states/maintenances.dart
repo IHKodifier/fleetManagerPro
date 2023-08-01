@@ -47,7 +47,7 @@ Map<String, dynamic> toMap() {
     'id': id,
     'location': location,
     'timestamp': timestamp != null ? Timestamp.fromDate(timestamp!) : null,
-    'litres': litres != null ? litres : 0.0,
+    'litres': litres ?? 0.0,
     // 'type': type.index,
     'kmsDriven': kmsDriven,
     'cost': cost,

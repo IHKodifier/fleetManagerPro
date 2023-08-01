@@ -89,6 +89,7 @@ final StateNotifierProviderRef ref;
       _setCompleted();
       
     });
+    return null;
   }
 
   void _setStarted() {

@@ -3,12 +3,11 @@ import 'package:fleet_manager_pro/states/maintenances.dart';
 import 'package:fleet_manager_pro/ui/shared/maintenance_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import '../../states/maintenance_state.dart';
 
 class MaintenanceList extends ConsumerWidget {
-  MaintenanceList({required this.vehicleId});
+  MaintenanceList({super.key, required this.vehicleId});
   var _ref;
 
   final String vehicleId;
@@ -24,7 +23,7 @@ class MaintenanceList extends ConsumerWidget {
         return Container(
           // height: 150,
           child: ConstrainedBox(
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               // minHeight: 120,
               // maxHeight: double.infinity,
             ),
@@ -42,7 +41,7 @@ class MaintenanceList extends ConsumerWidget {
     final maintenanceAsync = ref.watch(maintenanceStreamProvider(vehicleId));
 
     return maintenanceAsync.when(
-      loading: () => Center(child: const CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) => Text(error.toString()),
       data: onData,
     );

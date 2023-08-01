@@ -13,6 +13,8 @@ final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
 class SignupScreen extends ConsumerStatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
@@ -25,7 +27,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController _locationController = TextEditingController();
   String _password = '';
   bool obscurePassword = true;
-  bool _isBusy = false;
+  final bool _isBusy = false;
   String _email = '';
   final _formKey = GlobalKey<FormState>();
   late AppUser newUser;
@@ -62,7 +64,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         (value) {
           ref.read(appUserProvider.notifier).setAppUser(newUser);
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => AppHomeScreen(),
+            builder: (context) => const AppHomeScreen(),
           ));
         },
       );
@@ -101,10 +103,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     if (value!.isEmpty) {
                       return 'Email is required';
                     }
+                    return null;
                   },
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.email,
                       size: 35,
                     ),
@@ -124,10 +127,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     if (value!.isEmpty) {
                       return 'Password is required';
                     }
+                    return null;
                   },
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.key,
                       size: 35,
                     ),
@@ -164,11 +168,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         ) {
                       return 'Please Confirm your password ';
                     }
+                    return null;
 
                   },
                   decoration: InputDecoration(
                     labelText: ' Confirm Password',
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.key,
                       size: 35,
                     ),
@@ -195,7 +200,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   decoration: InputDecoration(
                     labelText: 'Display Name',
                     hintText: 'optional',
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.person,
                       size: 35,
                     ),
@@ -212,7 +217,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   decoration: InputDecoration(
                     labelText: 'Location/City',
                     hintText: 'Optional',
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.location_city,
                       size: 35,
                     ),
@@ -252,12 +257,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
+                                builder: (context) => const LoginScreen()),
                           );
                         },
                         child: _isBusy
-                            ? CircularProgressIndicator()
-                            : Text('Go Back'),
+                            ? const CircularProgressIndicator()
+                            : const Text('Go Back'),
                       ),
                     ),
                   ],

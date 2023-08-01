@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +10,6 @@ import '../../app.dart';
 import '../../states/barrel_models.dart';
 import '../../states/barrel_states.dart';
 import '../../utils.dart';
-import '../shared/add_media_dialog.dart';
 
 final isBusyProvider = StateNotifierProvider<BusyNotifier, bool>((ref) {
   return BusyNotifier(false);
@@ -25,7 +23,7 @@ class BusyNotifier extends StateNotifier<bool> {
   state = state;}
 }
 class ProfileEditView extends ConsumerStatefulWidget {
-  ProfileEditView({super.key});
+  const ProfileEditView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -57,10 +55,10 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         title: const Text('Edit Profile'),
       ),
       body: ProfileBody(
-        displayNameController: this.displayNameController,
-        phoneController: this.phoneController,
-        profileTypeController: this.profileTypeController,
-        cityLocationController: this.cityLoctionController,
+        displayNameController: displayNameController,
+        phoneController: phoneController,
+        profileTypeController: profileTypeController,
+        cityLocationController: cityLoctionController,
       ),
     );
   }
@@ -91,12 +89,12 @@ class ProfileBody extends ConsumerWidget {
     final storageRef = FirebaseStorage.instance.ref(
       'userdata/$userId/uploads/$fileName',
     );
-   final  _uploadTask = storageRef.putFile(file);
-    _uploadTask!.snapshotEvents.listen((taskSnapshot) {
+   final  uploadTask = storageRef.putFile(file);
+    uploadTask.snapshotEvents.listen((taskSnapshot) {
       final progress = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes;
       _uploadProgressStreamController.sink.add(progress);
     });
-        await _uploadTask!.whenComplete(() async {
+        await uploadTask.whenComplete(() async {
       // _uploadTask.
       _uploadProgressStreamController.close();
       final photoUrl = await storageRef.getDownloadURL();
@@ -171,7 +169,7 @@ class ProfileBody extends ConsumerWidget {
                                         ?  CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,)
 
                                         : const Icon(Icons.upload),
-                                    label: ref.watch(isBusyProvider)?Text('uploading...'): const Text('upload'))
+                                    label: ref.watch(isBusyProvider)?const Text('uploading...'): const Text('upload'))
                               ],
                             ),
                           );
@@ -188,10 +186,10 @@ class ProfileBody extends ConsumerWidget {
           height: 70,
         ),
         ProfileForm(
-          displayNameController: this.displayNameController,
-          profileTypeController: this.profileTypeController,
-          phoneController: this.phoneController,
-          cityLocationController: this.cityLocationController,
+          displayNameController: displayNameController,
+          profileTypeController: profileTypeController,
+          phoneController: phoneController,
+          cityLocationController: cityLocationController,
         ),
       ]),
     );

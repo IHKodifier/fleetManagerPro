@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fleet_manager_pro/ui/screens/add_maintenance_screen.dart';
 
 import 'package:fleet_manager_pro/ui/shared/add_vehicle_form.dart';
@@ -25,41 +24,17 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
     // const Text('Messages'),
   ];
 
-  List<Widget> navBarItems = [
-    const FaIcon(
-      FontAwesomeIcons.house,
-      // color: Colors.green,
-      size: 30,
-    ),
-    const Icon(
-      Icons.dashboard,
-      size: 30,
-    ),
-    const Icon(
-      Icons.shopping_cart_outlined,
-      size: 30,
-    ),
-    // const FaIcon(
-    //   Icons.settings,
-    //   size: 30,
-    // ),
-    // const FaIcon(
-    //   FontAwesomeIcons.message,
-    //   size: 30,
-    // ),
-  ];
-
-  double opacity = 0;
-  int pageIndex = 0;
+  // double opacity = 0;
+  int currentPageIndex = 0;
   List<Widget> pages = [
     VehicleList(),
     SliverPadding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       sliver: SliverToBoxAdapter(
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(4),
+              margin: const EdgeInsets.all(4),
               child: Image.asset(
                 'assets/under_dev.jpg',
                 height: 300,
@@ -67,18 +42,18 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
                 fit: BoxFit.fitHeight,
               ),
             ),
-            Text('This feature is under development'),
+            const Text('This feature is under development'),
           ],
         ),
       ),
     ),
-SliverPadding(
-      padding: EdgeInsets.all(16),
+    SliverPadding(
+      padding: const EdgeInsets.all(16),
       sliver: SliverToBoxAdapter(
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(4),
+              margin: const EdgeInsets.all(4),
               child: Image.asset(
                 'assets/under_dev.jpg',
                 height: 300,
@@ -86,7 +61,7 @@ SliverPadding(
                 fit: BoxFit.fitHeight,
               ),
             ),
-            Text('This feature is under development'),
+            const Text('This feature is under development'),
           ],
         ),
       ),
@@ -112,6 +87,34 @@ SliverPadding(
   @override
   Widget build(BuildContext context) {
     _context = context;
+    List<BottomNavigationBarItem> navBarItems = [
+      const BottomNavigationBarItem(
+        label: 'Home',
+        // backgroundColor: Colors.red,
+        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        icon: Icon(
+          Icons.home,
+          // color: Theme.of(context).colorScheme.inverseSurface,
+          // color: Colors.purple,
+          // size: 30,
+        ),
+      ),
+      const BottomNavigationBarItem(
+        label: 'Dashboard',
+        icon: Icon(
+          Icons.dashboard,
+          // size: 30,
+        ),
+      ),
+      const BottomNavigationBarItem(
+        label: 'Marketplace',
+        icon: Icon(
+          Icons.shopping_cart_outlined,
+          // size: 30,
+        ),
+      ),
+    ];
+
     List<Widget> fabs = [
       // Container(),
       // vehicle FAB
@@ -119,13 +122,13 @@ SliverPadding(
         onPressed: onVehicleAddFAB,
         backgroundColor: Theme.of(context).colorScheme.primary,
         tooltip: 'Add vehicle',
-        child: FaIcon(
+        child: const FaIcon(
           FontAwesomeIcons.plus,
           // color: Theme.of(context).colorScheme.outline,
           size: 35,
         ),
       ),
-  
+
       Container(),
       Container(),
     ];
@@ -136,25 +139,26 @@ SliverPadding(
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: appBarTitles[pageIndex],
-              // backgroundColor: Theme.of(context).colorScheme.secondary,
+              title: appBarTitles[currentPageIndex],
               floating: true,
             ),
-            pages[pageIndex],
+            pages[currentPageIndex],
           ],
         ),
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        animationDuration: const Duration(milliseconds: 300),
+      bottomNavigationBar: BottomNavigationBar(
+       currentIndex: currentPageIndex,
+       iconSize: 40,
+
+       type: BottomNavigationBarType.shifting,
+       selectedItemColor: Theme.of(context).colorScheme.primary,
         onTap: (value) => setState(() {
-          pageIndex = value;
-          opacity = 1.0;
+          currentPageIndex = value;
         }),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        height: 60,
         items: navBarItems,
       ),
-      floatingActionButton: fabs[pageIndex],
+      floatingActionButton: fabs[currentPageIndex],
     );
   }
 }

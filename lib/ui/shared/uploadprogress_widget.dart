@@ -60,15 +60,15 @@ class MediaUploadProgressWidget extends ConsumerWidget {
           Column(
             children: [
               Icon(Icons.check_circle,color: Colors.green.shade900,),
-              Text('Uploaded',
-               style: const TextStyle(fontSize: 12),)
+              const Text('Uploaded',
+               style: TextStyle(fontSize: 12),)
             ],
           ),
-          Column(
+          const Column(
             children: [
               Icon(Icons.delete_forever,color: Color.fromARGB(255, 112, 8, 1),),
               Text('Delete',
-               style: const TextStyle(fontSize: 12),)
+               style: TextStyle(fontSize: 12),)
             ],
           ),
         ],

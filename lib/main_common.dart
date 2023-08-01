@@ -4,7 +4,6 @@ import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
-import 'firebase_options.dart';
 
 Future<void> mainCommon(String env) async {
   //variables to hold the dev and prod version of FirebaseProject

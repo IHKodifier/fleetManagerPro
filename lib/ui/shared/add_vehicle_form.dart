@@ -2,12 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../utils.dart';
 
 class AddVehiclePage extends ConsumerStatefulWidget {
   const AddVehiclePage({super.key});
@@ -171,7 +169,7 @@ class DrivenSpinBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       // width: 200,
       child: SpinBox(
         min: 0,
@@ -217,7 +215,7 @@ class YearTextField extends StatelessWidget {
         keyboardType: TextInputType.number,
         controller: yearController,
         decoration: InputDecoration(
-          label: Text('Year'),
+          label: const Text('Year'),
           hintText: 'e.g. 2016',
           hintStyle: Theme.of(context)
               .textTheme
@@ -233,6 +231,7 @@ class YearTextField extends StatelessWidget {
           if (value!.isEmpty) {
             return 'enter Year of Vehicle Registration';
           }
+          return null;
         },
       ),
     );
@@ -257,7 +256,7 @@ class RegCityTextField extends StatelessWidget {
         controller: controller,
         maxLength: 15,
         decoration: InputDecoration(
-          label: Text('Registration City '),
+          label: const Text('Registration City '),
           hintText: 'e.g. Islamabad',
           hintStyle: Theme.of(context)
               .textTheme
@@ -272,6 +271,7 @@ class RegCityTextField extends StatelessWidget {
           if (value!.isEmpty) {
             return 'city of Registration is required';
           }
+          return null;
         },
       ),
     );
@@ -296,7 +296,7 @@ class RegTextField extends StatelessWidget {
         controller: controller,
         maxLength: 8,
         decoration: InputDecoration(
-          label: Text('Registration '),
+          label: const Text('Registration '),
           hintText: '   e.g. AJ 047',
           hintStyle: Theme.of(context)
               .textTheme
@@ -313,6 +313,7 @@ class RegTextField extends StatelessWidget {
               'Registration Number of vahicle is required'
               ;
           }
+          return null;
           
         },
       ),
@@ -338,7 +339,7 @@ class ModelTextField extends StatelessWidget {
         controller: controller,
         maxLength: 12,
         decoration: InputDecoration(
-          label: Text('Model'),
+          label: const Text('Model'),
           hintText: 'e.g. Vezel Hybrid 1.8',
           hintStyle: Theme.of(context)
               .textTheme
@@ -355,6 +356,7 @@ class ModelTextField extends StatelessWidget {
           if (value!.isEmpty) {
             return 'name of the model is required';
           }
+          return null;
         },
       ),
     );
@@ -378,7 +380,7 @@ class MakeTextField extends StatelessWidget {
       child: TextFormField(
         controller: Controller,
         decoration: InputDecoration(
-          label: Text('Make'),
+          label: const Text('Make'),
           hintText: 'e.g. Honda, Toyota, Suzuki',
           hintStyle: Theme.of(context)
               .textTheme
@@ -394,6 +396,7 @@ class MakeTextField extends StatelessWidget {
           if (value!.isEmpty) {
             return 'make of the vehicle is required';
           }
+          return null;
           
         },
       ),

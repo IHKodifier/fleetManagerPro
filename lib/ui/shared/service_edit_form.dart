@@ -43,15 +43,15 @@ class _ServiceEditFormState extends ConsumerState<ServiceEditForm> {
           children: [
             TextField(
               controller: nameController,
-              decoration: InputDecoration(labelText: 'Service Name'),
+              decoration: const InputDecoration(labelText: 'Service Name'),
             ),
             // Spacer(),
-            SizedBox(height: 8,),
+            const SizedBox(height: 8,),
             TextField(
               controller: costController,
-              decoration: InputDecoration(labelText: 'Cost'),
+              decoration: const InputDecoration(labelText: 'Cost'),
             ),
-                        SizedBox(height: 8,),
+                        const SizedBox(height: 8,),
     
             Row (
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,10 +61,10 @@ class _ServiceEditFormState extends ConsumerState<ServiceEditForm> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                 ),
-                SizedBox(width: 8,),
+                const SizedBox(width: 8,),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
@@ -83,12 +83,12 @@ class _ServiceEditFormState extends ConsumerState<ServiceEditForm> {
                           .where('name', isEqualTo: widget.name)
                           .get()
                           .then((QuerySnapshot querySnapshot) {
-                        querySnapshot.docs.forEach((document) {
+                        for (var document in querySnapshot.docs) {
                           document.reference.update({
                             'name': nameController.text,
                             'cost': int.parse(costController.text),
                           });
-                        });
+                        }
                       });
                     
                       setState(() {
@@ -98,21 +98,21 @@ class _ServiceEditFormState extends ConsumerState<ServiceEditForm> {
                     
                       Navigator.pop(context);
                     },
-                    child: Text('Update'),
+                    child: const Text('Update'),
                   ),
                 ),
                 ],),
-                SizedBox(height: 16,),
-                Container(
+                const SizedBox(height: 16,),
+                SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
                       if (isSaving) {
                         return;
                       }
-               await  showDialog(context: context, builder: (context)=>AlertDialog(title: Text('Delete  this service?'),
-               content: Text('Are you sure you want to delete this service?'),
-               actions: [ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('NO , DON\'T DELETE'),
+               await  showDialog(context: context, builder: (context)=>AlertDialog(title: const Text('Delete  this service?'),
+               content: const Text('Are you sure you want to delete this service?'),
+               actions: [ElevatedButton(onPressed: (){Navigator.pop(context);}, child: const Text('NO , DON\'T DELETE'),
                 ),
                 TextButton(onPressed: (){
     FirebaseFirestore.instance
@@ -122,18 +122,18 @@ class _ServiceEditFormState extends ConsumerState<ServiceEditForm> {
                           .where('name', isEqualTo: widget.name)
                           .get()
                           .then((QuerySnapshot querySnapshot) {
-                        querySnapshot.docs.forEach((doc) {
+                        for (var doc in querySnapshot.docs) {
                           FirebaseFirestore.instance
                               .collection('users')
                               .doc(widget.userUUId)
                               .collection('services')
                               .doc(doc.id)
                               .delete();
-                        });
+                        }
                       });
     
     
-                }, child: Text('Yes delete  it '),
+                }, child: const Text('Yes delete  it '),
                 ),
                 
                ],));
@@ -144,19 +144,19 @@ class _ServiceEditFormState extends ConsumerState<ServiceEditForm> {
                           .where('name', isEqualTo: widget.name)
                           .get()
                           .then((QuerySnapshot querySnapshot) {
-                        querySnapshot.docs.forEach((doc) {
+                        for (var doc in querySnapshot.docs) {
                           FirebaseFirestore.instance
                               .collection('users')
                               .doc(widget.userUUId)
                               .collection('services')
                               .doc(doc.id)
                               .delete();
-                        });
+                        }
                       });
                 
                       Navigator.pop(context);
                     },
-                    child: Text('Delete'),
+                    child: const Text('Delete'),
                   ),
                 ),
              

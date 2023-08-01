@@ -28,7 +28,7 @@ class AddedMedia extends Equatable {
 }
 
 class AddedMediaNotifier extends StateNotifier<AddedMedia> {
-  AddedMediaNotifier() : super(AddedMedia(addedMedia: const []));
+  AddedMediaNotifier() : super(const AddedMedia(addedMedia: []));
 
   void addMedia(Media media) {
     final newMediaList = [...state.addedMedia, media];
@@ -50,6 +50,6 @@ void clearMedia(){
     print('at index of  $index existing url quals ${state.addedMedia[index].url}');
     state.addedMedia.replaceRange(index, index,[ media ]);
     print('at index of $index new url quals ${state.addedMedia[index].url}');
-    state..copyWith();
+    state.copyWith();
   }
 }

@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:fleet_manager_pro/states/vehicle.dart';
 

@@ -28,7 +28,7 @@ class ProfileView extends ConsumerWidget {
 
   void onFABPressed() {
     Navigator.of(localContext)
-        .push(MaterialPageRoute(builder: (localContext) => ProfileEditView()));
+        .push(MaterialPageRoute(builder: (localContext) => const ProfileEditView()));
   }
 }
 
@@ -166,7 +166,7 @@ class ProfileColumnView extends ConsumerWidget {
                   'Phone',
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 4,
                 ),
                 const Icon(

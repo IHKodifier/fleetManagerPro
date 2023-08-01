@@ -32,9 +32,6 @@ class Service extends Equatable {
     final result = <String, dynamic>{};
 
     result.addAll({'name': name});
-    if (Timestamp != null) {
-      // result.addAll({'timestamp': timestamp!.millisecondsSinceEpoch});
-    }
     result.addAll({'cost': cost});
 
     return result;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../states/vehicle.dart';
-import 'dart:math'as math;
 
 class RegPlate extends StatelessWidget {
   const RegPlate({super.key, required this.state});

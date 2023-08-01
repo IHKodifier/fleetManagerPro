@@ -77,9 +77,9 @@ class Vehicle extends Equatable {
     if (doors != null) {
       result.addAll({'doors': doors});
     }
-    if (maintenances!.isEmpty) {
+    if (maintenances.isEmpty) {
       result.addAll(
-          {'maintenances': maintenances!.map((x) => x?.toMap()).toList()});
+          {'maintenances': maintenances.map((x) => x?.toMap()).toList()});
     }
      if (images!.isNotEmpty) {
       result.addAll(

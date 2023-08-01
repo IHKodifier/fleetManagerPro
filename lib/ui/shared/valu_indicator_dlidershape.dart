@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class ValueIndicatorThumbShape extends RoundSliderThumbShape {
@@ -37,7 +36,7 @@ class ValueIndicatorThumbShape extends RoundSliderThumbShape {
     // Paint the value text
     final double valuePercentage =
         (value - minValue) / (maxValue - minValue) * 100;
-    final String valueText = valuePercentage.toStringAsFixed(0) + '%';
+    final String valueText = '${valuePercentage.toStringAsFixed(0)}%';
     final TextPainter textPainter = TextPainter(
       text: TextSpan(
         text: valueText,

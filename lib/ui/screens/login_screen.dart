@@ -4,17 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/ui/screens/signup_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:introduction_screen/introduction_screen.dart';
 
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
 class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -65,7 +64,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                title: Icon(
+                title: const Icon(
                   Icons.warning_amber, size: 50,
                   // color: Theme.of(context).colorScheme.error,
                 ),
@@ -157,7 +156,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               // shrinkWrap: true,
               children: [
-                Spacer(
+                const Spacer(
                     // flex: 0,
                     ),
                 Text(
@@ -238,7 +237,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: () {
                           // Navigate to SignUpScreen
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SignupScreen(),
+                            builder: (context) => const SignupScreen(),
                           ));
                         },
                         child: const Text('Sign Up'),
