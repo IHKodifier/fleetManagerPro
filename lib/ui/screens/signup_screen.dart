@@ -83,6 +83,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
+                  textAlign:TextAlign.center,
+                  
                   'Sign Up',
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
@@ -154,13 +156,18 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     // newUser.email = newValue;
                   },
                   validator: (value) {
-                    if (value!.isNotEmpty &&
+                    if (
                         value != _passwordController.text) {
                       return 'passwords do not match';
                     }
+                    if (value!.isEmpty 
+                        ) {
+                      return 'Please Confirm your password ';
+                    }
+
                   },
                   decoration: InputDecoration(
-                    labelText: 'Confirm Password',
+                    labelText: ' Confirm Password',
                     prefixIcon: Icon(
                       Icons.key,
                       size: 35,
@@ -269,6 +276,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   SizedBox(
                     height: 10,
                   ),
+                  // Spacer(flex: 2),
                 ],
               ),
               // Text(''),

@@ -38,7 +38,7 @@ class AddMediaDialog extends ConsumerWidget {
     );
   }
 
-  buildDoneButton(context, ref) => Row(
+  buildDoneButton(context, WidgetRef ref) => Row(
         children: [
           Expanded(
               child: ElevatedButton.icon(
@@ -48,13 +48,13 @@ class AddMediaDialog extends ConsumerWidget {
                     }
                     var imageList = state.addedMedia.map((e) => e.url).toList();
                     updateVehicleDoc(imagesList: imageList);
-                    // ref.refresh(currentVehicleProvider);
                     ref.read(addedMediaProvider.notifier).clearMedia();
-                    CurrentVehicleNotifier notifier =
-                        ref.read(currentVehicleProvider.notifier);
-                    notifier.addVehicleImages(imageList);
+        ref.read(currentVehicleProvider.notifier).refreshVehicle();
+                    // CurrentVehicleNotifier notifier =
+                        // ref.update(currentVehicleProvider);
+    
+                    // notifier.addVehicleImages(imageList);
                     Navigator.pop(context);
-                    // ref.refresh(currentVehicleProvider);
                   },
                   icon: const Icon(
                     Icons.check,

@@ -5,6 +5,7 @@ import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/service_selection_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/ui/screens/vehicle_detail_screen.dart';
+import 'package:fleet_manager_pro/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -23,6 +24,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
   late Maintenance newMaintenanceState;
   late Service newService;
   late Vehicle vehicleState;
+  bool _isBusy=false;
 
   final _addServiceFormKey = GlobalKey<FormState>();
   int? _cost;
@@ -64,7 +66,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                             label: Text('Name'),
                             hintText: 'example:  brake pads replacement'),
                       ),
-                      SizedBox(height: 8,),
+                      SizedBox(
+                        height: 8,
+                      ),
                       TextFormField(
                         controller: _serviceCostController,
                         onSaved: (newValue) =>
@@ -83,7 +87,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                 icon: const Icon(Icons.cancel),
                                 label: const Text('Cancel')),
                           ),
-                          SizedBox(width: 8,),
+                          SizedBox(
+                            width: 8,
+                          ),
                           Expanded(
                             child: ElevatedButton.icon(
                                 onPressed: onSaveService,
@@ -118,47 +124,59 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
       });
 
   void _submitAddMaintenanceForm() {
-    final form = _formKey.currentState;
-    if (form != null && form.validate()) {
-      form.save();
-
-      newMaintenanceState.timestamp = DateTime.now();
-      newMaintenanceState.location = _location;
-      newMaintenanceState.cost = _cost;
-      newMaintenanceState.kmsDriven = _kmsDriven!;
-      newMaintenanceState.litres= 0.0;
-      newMaintenanceState.services = ref.read(selectedServicesProvider);
-      var formatter = NumberFormat('#,##,000');
-
-      //TODO save to proper collection path and create a function for it
-      final user = ref.read(appUserProvider);
-      final Vehicle vehicle = ref.read(currentVehicleProvider);
-      final docRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(user?.uuid)
-          .collection('vehicles')
-          .doc(vehicle.id)
-          .collection('maintenances')
-          .doc();
-      newMaintenanceState.id = docRef.id;
-
-      docRef
-          .set(newMaintenanceState.toMap())
-          // .add(newMaintenanceState.toMap())
-          .then((value) async {
-        //TODO dispose controllers
-        ref.refresh(selectedServicesProvider);
-        //todo update [driven] on vehicle objet
-        // ref.read(currentVehicleProvider.notifier).updateDriven(_kmsDriven!);
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(ref.read(appUserProvider)?.uuid)
-            .collection('vehicles')
-            .doc(ref.read(currentVehicleProvider).id)
-            .set({'driven': _kmsDriven}, SetOptions(merge: true)).then((value) {
-          Navigator.pop(context);
+          newMaintenanceState.location = _location;
+          newMaintenanceState.services = ref.read(selectedServicesProvider);
+    if ((newMaintenanceState.location != null) &&
+        (newMaintenanceState.services != null)) {
+      if (newMaintenanceState.services!.isNotEmpty) {
+        setState(() {
+          _isBusy=true;
         });
-      });
+        final form = _formKey.currentState;
+        if (form != null && form.validate()) {
+          form.save();
+
+          newMaintenanceState.timestamp = DateTime.now();
+          newMaintenanceState.cost = _cost;
+          newMaintenanceState.kmsDriven = _kmsDriven!;
+          newMaintenanceState.litres = 0.0;
+          var formatter = NumberFormat('#,##,000');
+
+          //TODO save to proper collection path and create a function for it
+          final user = ref.read(appUserProvider);
+          final Vehicle vehicle = ref.read(currentVehicleProvider);
+          final docRef = FirebaseFirestore.instance
+              .collection('users')
+              .doc(user?.uuid)
+              .collection('vehicles')
+              .doc(vehicle.id)
+              .collection('maintenances')
+              .doc();
+          newMaintenanceState.id = docRef.id;
+
+          docRef
+              .set(newMaintenanceState.toMap())
+              // .add(newMaintenanceState.toMap())
+              .then((value) async {
+            //TODO dispose controllers
+            ref.refresh(selectedServicesProvider);
+            //todo update [driven] on vehicle objet
+            // ref.read(currentVehicleProvider.notifier).updateDriven(_kmsDriven!);
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(ref.read(appUserProvider)?.uuid)
+                .collection('vehicles')
+                .doc(ref.read(currentVehicleProvider).id)
+                .set({'driven': _kmsDriven}, SetOptions(merge: true)).then(
+                    (value) {
+              Navigator.pop(context);
+              setState(() {
+                _isBusy=false;
+              });
+            });
+          });
+        }
+      }
     }
   }
 
@@ -306,7 +324,12 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                                               controller.text
                                                         });
                                                         // controller.dispose();
-                                                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => VehicleDetailScreen(),));
+                                                        Navigator.pushReplacement(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  VehicleDetailScreen(),
+                                                            ));
                                                       },
                                                       icon: Icon(
                                                           Icons.save_sharp),
@@ -323,10 +346,10 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                 message: 'Add Location',
                                 child: Center(
                                   child: Icon(
-                                    Icons.add_circle, 
+                                    Icons.add_circle,
                                     color:
                                         Theme.of(context).colorScheme.primary,
-                                    size: 35,
+                                    // size: 35,
                                   ),
                                 ),
                               )),
@@ -378,7 +401,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                           textStyle: TextStyle(fontSize: 20)
                               .copyWith(fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
-                            labelText: 'Kilometers Driven',
+                            // labelText: 'Kilometers Driven',
                             labelStyle: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
@@ -401,12 +424,12 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                           //     .copyWith(fontSize: 16),
                           incrementIcon: Icon(
                             Icons.add_circle,
-                            size: 35,
+                            // size: 35,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           decrementIcon: Icon(
                             Icons.remove_circle,
-                            size: 35,
+                            // size: 35,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           spacing: 16,
@@ -436,7 +459,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                       ),
                       //todo get maintenance cost from state
                       Text(
-                        _cost.toString(),
+                        Utils.thousandify(_cost!),
                         style: Theme.of(context).textTheme.displaySmall,
                       ),
                       // Spacer(flex: 1,),
@@ -462,9 +485,8 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                       final listIterator = services.iterator;
                       while (listIterator.moveNext()) {
                         final currentService = listIterator.current;
-                        if (currentService.name=='Fuel') {
+                        if (currentService.name == 'Fuel') {
                           // services.remove(currentService);
-                          
                         }
                       }
                       // for (var service in services) {
@@ -497,9 +519,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                               ...services.toSet().map((service) {
                                 final isSelected =
                                     selectedServices.contains(service);
-                                    if (service.name=='Fuel') {return Container();
-                                      
-                                    }
+                                if (service.name == 'Fuel') {
+                                  return Container();
+                                }
                                 return GestureDetector(
                                   onLongPress: () {
                                     showDialog(
@@ -539,12 +561,14 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                                   fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                          'Rs ${service.cost.toString()} ',
+                                          'Rs ${Utils.thousandify(service.cost)} ',
                                           style: Theme.of(context)
                                               .textTheme
                                               .labelSmall
                                               ?.copyWith(
-                                                  color: Theme.of(context).colorScheme.tertiary,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
                                                   fontSize: 10),
                                         ),
                                       ],
@@ -566,9 +590,8 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                                         selectedServicesNotifier
                                             .remove(service);
                                         setState(() {
-                                          if (_cost!>0) {
-                                          _cost = _cost! - service.cost;
-                                            
+                                          if (_cost! > 0) {
+                                            _cost = _cost! - service.cost;
                                           }
                                         });
 
@@ -598,7 +621,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _submitAddMaintenanceForm,
-                  child: const Text('Submit'),
+                  child: _isBusy? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,)): Text('Submit'),
                 ),
               ),
             ],

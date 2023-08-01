@@ -22,4 +22,7 @@ class CurrentVehicleNotifier extends StateNotifier<Vehicle> {
     // state= state.copyWith(images: images);
     state = state.copyWith();
   }
+void refreshVehicle(){
+  state = state.copyWith();
+}
 }

@@ -50,7 +50,8 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
   body(BuildContext context) {
     // state = ref.watch(currentVehicleProvider);
-    final pageCount = vehicleState.images!.length;
+    // final pageCount = vehicleState.images!.length;
+    final pageCount = ref.watch(currentVehicleProvider).images!.length;
 
     _context = context;
     return CustomScrollView(
@@ -171,7 +172,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                 ],
               ),
               SwitchListTile(
-                title: Text('Show Fuels Stops'),
+                title: const Text('Show Fuels Stops'),
                 value: showFuelstops,
                 controlAffinity: ListTileControlAffinity.leading,
                 onChanged: (value) {
@@ -244,10 +245,17 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         children: [
           vehicleState.images!.isEmpty
               ? Container(
-                  color: Colors.blueGrey.shade300,
-                  child: const Center(
-                      child: Text(
-                          'No Media added for this car , click the camer Icon below to add Media for this car')),
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Text(
+                      'No Media added for this car , click the camer Icon below to add Media for this car',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
+                  )),
                 )
               : imagePageView(),
           vehicleState.images!.isEmpty
@@ -261,6 +269,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             child: IconButton(
               icon: Icon(
                 Icons.add_a_photo,
+                color: Theme.of(context).colorScheme.onPrimary,
                 size: 45,
               ),
               onPressed: () {
@@ -424,7 +433,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
     await vehicledocRef
         .set({'driven': newDriven.toInt()}, SetOptions(merge: true));
-        ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
+    ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
     Navigator.of(context).pop();
 
     ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());

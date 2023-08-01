@@ -4,6 +4,7 @@ import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../utils.dart';
@@ -20,8 +21,8 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
   TextEditingController modelController = TextEditingController();
   TextEditingController regController = TextEditingController();
   TextEditingController regcityController = TextEditingController();
-  Vehicle state = Vehicle(id: 'not initialized', doors: 0);
   TextEditingController yearController = TextEditingController();
+  Vehicle state = Vehicle(id: 'not initialized', doors: 0);
 
   late BuildContext _context;
   final _formKey = GlobalKey<FormState>();
@@ -58,14 +59,15 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
   Future<void> onSavePressed() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
+      
       final docId = FirebaseFirestore.instance
           .collection('users')
           .doc(ref.read(appUserProvider)?.uuid)
           .collection('vehicles')
           .doc();
       state.id = docId.id;
-      state.driven ??= 0; 
-      state.driven=state.driven?? 0;
+      // state.driven ??= 0;
+      // state.driven = state.driven ?? 0;
       // state.driven= _
       state.images = [];
       FirebaseFirestore.instance
@@ -73,13 +75,13 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
           .doc(ref.read(appUserProvider)?.uuid)
           .collection('vehicles')
           .doc(docId.id)
-          .set(state.toMap()).then((value) { 
-            //  SystemNavigator.pop();
-             Navigator.pop(context);
-             });
+          .set(state.toMap())
+          .then((value) {
+        //  SystemNavigator.pop();
+        Navigator.pop(context);
+      });
 
       // print(result.toString());
-     
     }
   }
 
@@ -89,8 +91,7 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
 
   @override
   Widget build(BuildContext context) {
-    var sliderMin= state.driven!=null?state.driven!.toDouble():0.0,
-    _context = context;
+        _context = context;
     return Scaffold(
       appBar: AppBar(),
       body: Form(
@@ -103,44 +104,19 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
               const SizedBox(height: 12),
               const FormTitle(),
               MakeTextField(Controller: makeController, state: state),
-              const SizedBox(height: 12),
+              const SizedBox(height: 6),
               ModelTextField(controller: modelController, state: state),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('  Driven: ',style: Theme.of(context).textTheme.titleMedium,),
-                  Text(Utils.thousandify(state.driven?? 0),style: Theme.of(context).textTheme.titleMedium,),
-                  Text('  Km',style: Theme.of(context).textTheme.titleMedium,),
-                ],
-              ),
               const SizedBox(height: 12),
-             
-             SliderTheme(
-  data: const SliderThemeData(
-    valueIndicatorTextStyle: TextStyle(
-      fontSize: 24, // set the font size of the label
-      height: 1.2, // set the height of the label
-    ),
-  ),
-  child: Slider(
-                min: 0,
-                max: 500000,
-                divisions:500,
-                label: Utils.thousandify(state.driven?? 0),
 
-                value: sliderMin, onChanged: (newValue){
-                setState(() {
-                  state.driven=newValue.toInt();
-                });
-              },)),
-              const SizedBox(height: 12),
+
+              DrivenSpinBox(state: state),
+              const SizedBox(height: 6),
               RegTextField(controller: regController, state: state),
-              const SizedBox(height: 12),
+              const SizedBox(height: 6),
               RegCityTextField(controller: regcityController, state: state),
-              const SizedBox(height: 10),
+              const SizedBox(height: 6),
               YearTextField(yearController: yearController, state: state),
-              const SizedBox(height: 10),
+              const SizedBox(height: 6),
               const Divider(thickness: 2),
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -185,6 +161,44 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
   }
 }
 
+class DrivenSpinBox extends StatelessWidget {
+  final Vehicle state;
+  const DrivenSpinBox({
+    super.key,
+    required this.state,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      // width: 200,
+      child: SpinBox(
+        min: 0,
+        max: 1000000,
+        step: 100,
+        value: state.driven?.toDouble() ?? 0.0,
+        keyboardType: TextInputType.number,
+        decoration: const InputDecoration(
+          // labelText: 'Driven',
+          suffix: Text('Km'),
+        ),
+        incrementIcon: Icon(
+          Icons.add_circle,
+          color: Theme.of(context).colorScheme.primary,
+          size: 35,
+        ),
+        decrementIcon: Icon(
+          Icons.remove_circle,
+          color: Theme.of(context).colorScheme.primary,
+          size: 35,
+        ),
+      onSubmitted: (p0) => state.driven= p0.toInt(),
+      ),
+    );
+  }
+}
+
 class YearTextField extends StatelessWidget {
   const YearTextField({
     super.key,
@@ -198,17 +212,27 @@ class YearTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 70,
+      height: 80,
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: yearController,
-        
-        decoration:
-            const InputDecoration(label: Text('Year'), hintText: 'e.g. 2016',
-            
-            ),
-            maxLength: 4,
+        decoration: InputDecoration(
+          label: Text('Year'),
+          hintText: 'e.g. 2016',
+          hintStyle: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(fontSize: 14, fontStyle: FontStyle.italic),
+        ),
+        maxLength: 4,
         onSaved: (value) {
           state.year = value;
+        },
+        validator: (String? value) {
+          print('validating year of regitration value = $value');
+          if (value!.isEmpty) {
+            return 'enter Year of Vehicle Registration';
+          }
         },
       ),
     );
@@ -228,14 +252,26 @@ class RegCityTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 70,
+      height: 80,
       child: TextFormField(
         controller: controller,
         maxLength: 15,
-        decoration: const InputDecoration(
-            label: Text('Registration City '), hintText: 'e.g. Islamabad'),
+        decoration: InputDecoration(
+          label: Text('Registration City '),
+          hintText: 'e.g. Islamabad',
+          hintStyle: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(fontSize: 14, fontStyle: FontStyle.italic),
+        ),
         onSaved: (value) {
           state.regCity = value;
+        },
+        validator: (value) {
+          print('validating City of regitration vaue = $value');
+          if (value!.isEmpty) {
+            return 'city of Registration is required';
+          }
         },
       ),
     );
@@ -255,14 +291,29 @@ class RegTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 70,
+      height: 80,
       child: TextFormField(
         controller: controller,
         maxLength: 8,
-        decoration: const InputDecoration(
-            label: Text('Registration '), hintText: 'e.g. AKT 057'),
+        decoration: InputDecoration(
+          label: Text('Registration '),
+          hintText: '   e.g. AJ 047',
+          hintStyle: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(fontSize: 14, fontStyle: FontStyle.italic),
+        ),
         onSaved: (value) {
           state.reg = value;
+        },
+        validator: (value) {
+          print('validating regitration number  value = $value');
+          if (value!.isEmpty) {
+            return 
+              'Registration Number of vahicle is required'
+              ;
+          }
+          
         },
       ),
     );
@@ -286,10 +337,24 @@ class ModelTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         maxLength: 12,
-        decoration: const InputDecoration(
-            label: Text('Model'), hintText: 'e.g. Vezel Hybrid 1.8'),
+        decoration: InputDecoration(
+          label: Text('Model'),
+          hintText: 'e.g. Vezel Hybrid 1.8',
+          hintStyle: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(fontSize: 14, fontStyle: FontStyle.italic),
+        ),
         onSaved: (value) {
+          print('validating regitration vaue = $value');
           state.model = value;
+        },
+        validator: (value) {
+          print('validating model value = $value');
+
+          if (value!.isEmpty) {
+            return 'name of the model is required';
+          }
         },
       ),
     );
@@ -312,11 +377,24 @@ class MakeTextField extends StatelessWidget {
       height: 70,
       child: TextFormField(
         controller: Controller,
-        decoration: const InputDecoration(
-            label: Text('Make'), hintText: 'e.g. Honda, Toyota, Suzuki'),
-            maxLength: 8,
+        decoration: InputDecoration(
+          label: Text('Make'),
+          hintText: 'e.g. Honda, Toyota, Suzuki',
+          hintStyle: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(fontSize: 14, fontStyle: FontStyle.italic),
+        ),
+        maxLength: 8,
         onSaved: (value) {
           state.make = value;
+        },
+        validator: (value) {
+          print('validating MAKE  field value = $value');
+          if (value!.isEmpty) {
+            return 'make of the vehicle is required';
+          }
+          
         },
       ),
     );
@@ -331,6 +409,7 @@ class FormTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text('Add Vehicle',
+        textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.headlineLarge);
   }
 }

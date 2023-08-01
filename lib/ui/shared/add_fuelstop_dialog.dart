@@ -73,12 +73,12 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
              incrementIcon: Icon(
               Icons.add_circle,
               color: Theme.of(context).colorScheme.primary,
-              size: 35,
+              // size: 30,
             ),
             decrementIcon: Icon(
               Icons.remove_circle,
               color: Theme.of(context).colorScheme.primary,
-              size: 35,
+              // size: 30, 
             ),
             
             max: double.infinity,
@@ -105,11 +105,15 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
           SpinBox(
             min: 0,
             max: double.infinity,
-            incrementIcon: Icon(Icons.add_circle,color: Theme.of(context).colorScheme.primary,size: 35,),
-            decrementIcon: Icon(Icons.remove_circle,color: Theme.of(context).colorScheme.primary,size: 35,),
+            incrementIcon: Icon(Icons.add_circle,color: Theme.of(context).colorScheme.primary,
+            // size: 35,
+            ),
+            decrementIcon: Icon(Icons.remove_circle,color: Theme.of(context).colorScheme.primary,
+            // size: 35,
+            ),
             value: litres,
-            step:1.12, 
-            decimals: 2,
+            step:1.11, 
+            decimals: 1,
             keyboardType: const TextInputType.numberWithOptions(
               decimal: true,
               signed: false,
@@ -141,12 +145,12 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
              incrementIcon: Icon(
               Icons.add_circle,
               color: Theme.of(context).colorScheme.primary,
-              size: 35,
+              // size: 35,
             ),
             decrementIcon: Icon(
               Icons.remove_circle,
               color: Theme.of(context).colorScheme.primary,
-              size: 35,
+              // size: 35,
             ),
            keyboardType: const TextInputType.numberWithOptions(),
             min: oldDriven.toDouble(),
