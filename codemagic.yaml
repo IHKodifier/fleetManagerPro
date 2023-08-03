@@ -9,12 +9,21 @@ workflows:
     #   android_signing:
     #     - keystore_reference
     #   groups:
-    #     - google_play # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS)
+        - google_play # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS)
     #   vars:
     #     PACKAGE_NAME: "io.codemagic.flutteryaml" # <-- Put your package name here
     #     GOOGLE_PLAY_TRACK: "alpha"
     #   flutter: stable
     scripts:
+      -  name: setup the keystore
+         script:  echo $KEYSTORE_FILE | base64 --decode > /tmp/keystore.jks
+          cat >> "$CM_BUILD_DIR/android/key.properties << EOF
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword= $KEYSTORE_KEY_PASSWORD
+          keyAlias=$release_key
+          storefile=/tmp/keystore.jks
+          EOF
+
       - name: Set up local.properties
         script: |
           echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
