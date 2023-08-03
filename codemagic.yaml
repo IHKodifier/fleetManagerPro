@@ -155,6 +155,10 @@ workflows:
       - build/web.zip
       - flutter_drive.log
     publishing:
+      google_play:
+        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT
+        track:  "alpha"
+
       email:
         recipients:
           - user_1@example.com
