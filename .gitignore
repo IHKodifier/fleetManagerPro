@@ -46,3 +46,4 @@ app.*.map.json
 .jks
 
 android/app/fleet-managerpro-_service account key29e00aad84cf.json
+release aab/app-prod-release.aab
