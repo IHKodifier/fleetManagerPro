@@ -15,12 +15,7 @@ class MaintenanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return LayoutBuilder(builder: (context, constraints)
-    // // {
-    //   minHeight = constraints.minHeight;
-    //   minWwidth = constraints.minWidth;
-    //   maxHeight = constraints.maxHeight;
-    //   maxWwidth = constraints.maxWidth;
+  
     return IntrinsicHeight(
       child: state.location != 'Fuel Station 1'
           ? _maintenanceCard(context)
@@ -64,14 +59,7 @@ class MaintenanceCard extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Positioned(
-                            //     // left: 0,
-                            //     top: 0,
-                            //     right: 0,
-                            //     // bottom:0,
-                            //     child: state.location == 'Fuel Station 1'
-                            //         ? Icon(Icons.local_gas_station,size: 40,)
-                            //         : Icon(Icons.car_repair,size: 40,)),
+                           
                             FittedBox(
                               fit: BoxFit.fitWidth,
                               child: Text(

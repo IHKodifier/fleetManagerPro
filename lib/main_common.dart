@@ -14,33 +14,32 @@ Future<void> mainCommon(String env) async {
       projectId: 'fleet-manager-pro',
       storageBucket: 'fleet-manager-pro.appspot.com');
 
+  // var prodFirebase = const FirebaseOptions(
+  //     apiKey: 'AIzaSyBQCMjGCqbVgl6R2ojsUeE8ysBdVfcFqtQ',
+  //     appId: '1:833775430161:android:b1e1b2876dc131496c9fb0',
+  //     messagingSenderId: '833775430161-ln2n0d9uof9qfj146d0khgt9drarcr7k.apps.googleusercontent.com',
+  //     projectId: 'fleet-manager-prod-86045',
+  //     storageBucket: 'fleet-manager-prod-86045.appspot.com',
+  //     );
   var prodFirebase = const FirebaseOptions(
-      apiKey: 'AIzaSyBQCMjGCqbVgl6R2ojsUeE8ysBdVfcFqtQ',
-      appId: '1:833775430161:android:b1e1b2876dc131496c9fb0',
+      apiKey: "AIzaSyBQCMjGCqbVgl6R2ojsUeE8ysBdVfcFqtQ",
+      appId: '1:833775430161:android:d9caa6f0022f94f16c9fb0',
       messagingSenderId: '833775430161-ln2n0d9uof9qfj146d0khgt9drarcr7k.apps.googleusercontent.com',
       projectId: 'fleet-manager-prod-86045',
       storageBucket: 'fleet-manager-prod-86045.appspot.com',
       );
-
   WidgetsFlutterBinding.ensureInitialized();
-  //not needed anymore
-  // await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 30));
-
-  // TODO: initialize environment specfic FirebaseProject
+   // TODO: initialize environment specfic FirebaseProject
   // Firebase.initializeApp(options: FirebaseOp);
-
- 
   bool showDebugBanner = true;
   switch (env) {
     case Environment.dev:
       showDebugBanner = true;
       await Firebase.initializeApp(options: devFirebase);
-
       break;
     case Environment.prod:
       showDebugBanner = false;
             await Firebase.initializeApp(options: prodFirebase);
-
       break;
     default:
   }

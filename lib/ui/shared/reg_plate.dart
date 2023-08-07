@@ -37,15 +37,12 @@ class RegPlate extends StatelessWidget {
                           style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.w400,
                           color: Colors.black)),
                     ),
-                    FittedBox(
-                      fit: BoxFit.contain,
-                      child: Expanded(
-                        child: Text(state.regCity!,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w400,
-                            color: Colors.black)),
-                      ),
+                    Expanded(
+                      child: Text(state.regCity!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w400,
+                          color: Colors.black)),
                     ),
                   ],
                 ),

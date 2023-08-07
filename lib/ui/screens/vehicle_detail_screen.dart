@@ -201,7 +201,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: CircularProgressIndicator(),
                 )),
-                childCount: 5,
+                childCount: 4,
               ),
             );
           },
@@ -218,14 +218,9 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                   print(
                       'length of active maintenances = ${activeListofMaintenances.length.toString()}');
                   final maintenance = activeListofMaintenances[index];
-                  return Flexible(
-                    // padding: const EdgeInsets.all(8),
-                    fit: FlexFit.tight,
-                    flex: 2,
-                    child: MaintenanceCard(
-                      state: maintenance,
-                      totalDriven: ref.read(currentVehicleProvider).driven!,
-                    ),
+                  return MaintenanceCard(
+                    state: maintenance,
+                    totalDriven: ref.read(currentVehicleProvider).driven!,
                   );
                 },
                 childCount: activeListofMaintenances.length,
@@ -343,19 +338,15 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Expanded(
-                child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancel')),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                    onPressed: _updateDriven,
-                    child: const Padding(
-                      padding: EdgeInsets.all(6.0),
-                      child: Text('Save'),
-                    )),
-              ),
+              OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel')),
+              ElevatedButton(
+                  onPressed: _updateDriven,
+                  child: const Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: Text('Save'),
+                  )),
             ],
           ),
         ),

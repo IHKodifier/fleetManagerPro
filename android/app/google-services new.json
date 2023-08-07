@@ -1,0 +1,84 @@
+{
+  "project_info": {
+    "project_number": "833775430161",
+    "project_id": "fleet-manager-prod-86045",
+    "storage_bucket": "fleet-manager-prod-86045.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833775430161:android:b1e1b2876dc131496c9fb0",
+        "android_client_info": {
+          "package_name": "com.enigmatek.fleet_manager_pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833775430161-mlpn4bvfgjj0posep9inohskgjokp79i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enigmatek.fleet_manager_pro",
+            "certificate_hash": "70f5546debc1b84005345f21f8ed66b0cf0fce7b"
+          }
+        },
+        {
+          "client_id": "833775430161-ln2n0d9uof9qfj146d0khgt9drarcr7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQCMjGCqbVgl6R2ojsUeE8ysBdVfcFqtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833775430161-6p8uop1o7d7216ocfnabd9srr5jgjru2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833775430161:android:d9caa6f0022f94f16c9fb0",
+        "android_client_info": {
+          "package_name": "com.enigmatek.fleet_manager_pro.prod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833775430161-od41u7ico6qvtj5iiik8h71609cboid8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enigmatek.fleet_manager_pro.prod",
+            "certificate_hash": "70f5546debc1b84005345f21f8ed66b0cf0fce7b"
+          }
+        },
+        {
+          "client_id": "833775430161-ln2n0d9uof9qfj146d0khgt9drarcr7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQCMjGCqbVgl6R2ojsUeE8ysBdVfcFqtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833775430161-6p8uop1o7d7216ocfnabd9srr5jgjru2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

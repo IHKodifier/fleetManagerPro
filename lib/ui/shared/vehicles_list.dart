@@ -97,48 +97,7 @@ class VehicleList extends ConsumerWidget {
                                 
                           ),
                         ),
-                        // Expanded(
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(8.0),
-                        //     child: FittedBox(
-                        //       fit: BoxFit.contain,
-                        //       child: RichText(
-                        //         text: TextSpan(
-                        //             style: DefaultTextStyle.of(_context).style,
-                        //             children: [
-                        //               TextSpan(
-                        //                 text: e.make,
-                        //                 style: Theme.of(_context)
-                        //                     .textTheme
-                        //                     .headlineLarge!
-                        //                     .copyWith(
-
-                        //                         ),
-                        //               ),
-                        //               const TextSpan(text: ' '),
-                        //               TextSpan(
-                        //                 text: e.model,
-
-                        //                         //   color: Theme.of(_context)
-                        //                         //       .colorScheme
-                        //                         //       .secondary,
-                        //                         ),
-                        //               ),
-                        //               const TextSpan(text: ' '),
-                        //               TextSpan(
-                        //                 text: e.year.toString(),
-                        //                 style: Theme.of(_context)
-                        //                     .textTheme
-                        //                     .labelSmall!
-                        //                     .copyWith(
-                        //                        fontStyle: FontStyle.italic
-                        //                         ),
-                        //               ),
-                        //             ]),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                        
                       ],
                     ),
                     RegPlate(state: e),
