@@ -260,7 +260,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
           Positioned(
             bottom: 8,
             left: 8,
-            // left: 8,
+            // left: 8,o
             child: IconButton(
               icon: Icon(
                 Icons.add_a_photo,

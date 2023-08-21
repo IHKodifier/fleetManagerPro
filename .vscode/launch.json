@@ -1,9 +1,9 @@
 {
   "version": "0.2.0",
     "configurations": [
-
+//Debug  DEV
         {
-            "name": "  Dev debug",
+            "name": "  Debug DEV",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_dev.dart",
@@ -16,8 +16,9 @@
             ],
             
           },
-        {
-            "name": "Prod debug",
+//Debug PROD
+          {
+            "name": "Debug PROD",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_prod.dart",
@@ -31,22 +32,26 @@
             
             
           },
-            {
-            "name": "Prod release",
+           
+//Release DEV
+          {
+            "name": "Release DEV",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main_prod.dart",
+            "program": "lib/main_dev.dart",
             "flutterMode": "release",
             "args":[
               "--flavor",
               "prod",
                "--target",
-              "lib/main_prod.dart"
+              "lib/main_dev.dart"
             ],
             
           },
+
+//Release PROD          
             {
-            "name": "dev release",
+            "name": "Rlease PROD",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_dev.dart",
