@@ -100,12 +100,12 @@ class MaintenanceCard extends StatelessWidget {
                         size: 70, 
                       ),
                       const Spacer(),
-                      buildMaintenanceLocationText(context),
+                      // buildMaintenanceLocationText(context),
                       const Spacer(),
                     ],
                   ),
-                  buildTimeAgoText(context),
-                  buildServicesTable(context)
+                  // buildTimeAgoText(context),
+                  // buildServicesTable(context)
                 ],
               ),
             ),
@@ -184,9 +184,9 @@ class MaintenanceCard extends StatelessWidget {
                 // clipBehavior: Clip.antiAlias,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  buildTimeAgoText(context),
+                  // buildTimeAgoText(context),
 
-                  buildMaintenanceLocationText(context),
+                  // buildMaintenanceLocationText(context),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

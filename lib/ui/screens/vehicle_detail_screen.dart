@@ -25,15 +25,16 @@ class VehicleDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
-  late final imagePageController;
-  late AsyncValue<List<Maintenance>> maintenanceAsync;
-  late int selectedImagePage;
-  late Vehicle vehicleState;
-  double newDriven = 0;
-  bool showFuelstops = true;
+  List<Maintenance> activeListofMaintenances = <Maintenance>[];
   List<Maintenance> allMaintenances = <Maintenance>[];
   List<Maintenance> filteredMaintenances = <Maintenance>[];
-  List<Maintenance> activeListofMaintenances = <Maintenance>[];
+  late final imagePageController;
+  late AsyncValue<List<Maintenance>> maintenanceAsync;
+  double newDriven = 0;
+  late int selectedImagePage;
+  bool showFuelstops = true;
+  late Vehicle vehicleState;
+
   late BuildContext _context;
 
   @override
@@ -235,7 +236,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
   Widget imagePageViewContainer(int pageCount) {
     return SizedBox(
-      height: 300,
+      height: 250,
       child: Stack(
         children: [
           vehicleState.images!.isEmpty
@@ -260,7 +261,6 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
           Positioned(
             bottom: 8,
             left: 8,
-            // left: 8,o
             child: IconButton(
               icon: Icon(
                 Icons.add_a_photo,
@@ -290,28 +290,25 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
       controller: imagePageController,
       children: vehicleState.images!
           .map(
-            (e) => Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.network(
-                  fit: BoxFit.fitHeight,
-                  e!,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    }
-                  },
-                ),
+            (e) => ClipRRect(
+              // borderRadius: BorderRadius.circular(16),
+              child: Image.network(
+                fit: BoxFit.fitHeight,
+                e!,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           )
@@ -354,6 +351,36 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
       ],
       actionsAlignment: MainAxisAlignment.center,
     );
+  }
+
+  void toggleFilters() {
+    if (showFuelstops) {
+      setState(() {
+        activeListofMaintenances = allMaintenances;
+      });
+    } else {
+      setState(() {
+        activeListofMaintenances = filteredMaintenances;
+      });
+    }
+  }
+
+  Future<void> _updateDriven() async {
+    if (kDebugMode) {
+      print(vehicleState.driven.toString());
+    }
+    final vehicledocRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(ref.read(appUserProvider)?.uuid)
+        .collection('vehicles')
+        .doc(ref.read(currentVehicleProvider).id);
+
+    await vehicledocRef
+        .set({'driven': newDriven.toInt()}, SetOptions(merge: true));
+    ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
+    Navigator.of(context).pop();
+
+    ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
   }
 
   @override
@@ -410,35 +437,5 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
         ],
       ),
     );
-  }
-
-  Future<void> _updateDriven() async {
-    if (kDebugMode) {
-      print(vehicleState.driven.toString());
-    }
-    final vehicledocRef = FirebaseFirestore.instance
-        .collection('users')
-        .doc(ref.read(appUserProvider)?.uuid)
-        .collection('vehicles')
-        .doc(ref.read(currentVehicleProvider).id);
-
-    await vehicledocRef
-        .set({'driven': newDriven.toInt()}, SetOptions(merge: true));
-    ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
-    Navigator.of(context).pop();
-
-    ref.read(currentVehicleProvider.notifier).updateDriven(newDriven.toInt());
-  }
-
-  void toggleFilters() {
-    if (showFuelstops) {
-      setState(() {
-        activeListofMaintenances = allMaintenances;
-      });
-    } else {
-      setState(() {
-        activeListofMaintenances = filteredMaintenances;
-      });
-    }
   }
 }
