@@ -24,7 +24,8 @@ class VehicleDetailScreen extends ConsumerStatefulWidget {
       _VehicleDetailScreenState();
 }
 
-class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
+class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
+    with TickerProviderStateMixin {
   List<Maintenance> activeListofMaintenances = <Maintenance>[];
   List<Maintenance> allMaintenances = <Maintenance>[];
   List<Maintenance> filteredMaintenances = <Maintenance>[];
@@ -34,6 +35,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
   late int selectedImagePage;
   bool showFuelstops = true;
   late Vehicle vehicleState;
+  late Widget tabBar;
 
   late BuildContext _context;
 
@@ -172,21 +174,22 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                       icon: const Icon(Icons.edit))
                 ],
               ),
-              SwitchListTile(
-                title: const Text('Show Fuels Stops'),
-                value: showFuelstops,
-                controlAffinity: ListTileControlAffinity.leading,
-                onChanged: (value) {
-                  setState(() {
-                    showFuelstops = value;
+              // SwitchListTile(
+              //   title: const Text('Show Fuels Stops'),
+              //   value: showFuelstops,
+              //   controlAffinity: ListTileControlAffinity.leading,
+              //   onChanged: (value) {
+              //     setState(() {
+              //       showFuelstops = value;
 
-                    toggleFilters();
-                  });
-                },
-              ),
+              //       toggleFilters();
+              //     });
+              //   },
+              // ),
             ],
           ),
         ),
+        SliverToBoxAdapter(child: tabBar),
 
         maintenanceAsync.when(
           error: (error, stackTrace) {
@@ -385,6 +388,64 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TabController tabController = TabController(length: 3, vsync: this);
+
+    tabBar = TabBar(
+      controller: tabController,
+      // indicator: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(6),
+      //     color: Theme.of(context).colorScheme.surface),
+      tabs: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Icon(
+                Icons.car_repair,
+                color: Theme.of(context).colorScheme.primary,
+                size: 40,
+              ),
+              Text(
+                'Maintances',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Icon(
+                Icons.local_gas_station_rounded,
+                color: Theme.of(context).colorScheme.primary,
+                size: 40,
+              ),
+              Text(
+                'Fuel Stops',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Icon(
+                Icons.location_pin,
+                color: Theme.of(context).colorScheme.primary,
+                size: 40,
+              ),
+              Text(
+                'Log Book',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
     vehicleState = ref.watch(currentVehicleProvider);
     maintenanceAsync = ref.watch(maintenanceStreamProvider(vehicleState.id));
     return Scaffold(

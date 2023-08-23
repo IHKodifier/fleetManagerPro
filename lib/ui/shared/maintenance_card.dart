@@ -17,9 +17,8 @@ class MaintenanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
   
     return IntrinsicHeight(
-      child: state.location != 'Fuel Station 1'
-          ? _maintenanceCard(context)
-          : _fuelstopCard(context),
+      child: 
+           _maintenanceCard(context)
     );
     // },
     // );
@@ -27,7 +26,8 @@ class MaintenanceCard extends StatelessWidget {
 
   Card _maintenanceCard(BuildContext context) {
     return Card(
-      elevation: 5,
+      elevation: 10,
+      margin: EdgeInsets.all(4),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Row(
