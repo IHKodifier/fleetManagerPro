@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
+import 'package:fleet_manager_pro/ui/shared/maintenances_tab.dart';
+import 'package:fleet_manager_pro/ui/shared/sliver_appbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,347 +28,24 @@ class VehicleDetailScreen extends ConsumerStatefulWidget {
 
 class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
     with TickerProviderStateMixin {
-  List<Maintenance> activeListofMaintenances = <Maintenance>[];
-  List<Maintenance> allMaintenances = <Maintenance>[];
-  List<Maintenance> filteredMaintenances = <Maintenance>[];
   late final imagePageController;
   late AsyncValue<List<Maintenance>> maintenanceAsync;
   double newDriven = 0;
   late int selectedImagePage;
-  bool showFuelstops = true;
+  // late Widget tabBar;
   late Vehicle vehicleState;
-  late Widget tabBar;
 
-  late BuildContext _context;
+  // late BuildContext _context;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    selectedImagePage = 0;
-    imagePageController = PageController(initialPage: selectedImagePage);
     vehicleState = ref.read(currentVehicleProvider);
     newDriven = vehicleState.driven!.toDouble();
   }
 
   void onFABPressed() {}
-
-  body(BuildContext context) {
-    // state = ref.watch(currentVehicleProvider);
-    // final pageCount = vehicleState.images!.length;
-    final pageCount = ref.watch(currentVehicleProvider).images!.length;
-
-    _context = context;
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          pinned: false,
-          floating: true,
-          backgroundColor: Colors.transparent,
-          expandedHeight: 200,
-          // snap: true ,
-          flexibleSpace: FlexibleSpaceBar(
-              background: imagePageViewContainer(pageCount),
-              collapseMode: CollapseMode.parallax,
-              title: SizedBox(
-                width: double.infinity,
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.background,
-                          Colors.transparent,
-                        ],
-                        begin: Alignment.centerRight,
-                        end: Alignment.center,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Spacer(),
-                        Text(
-                          vehicleState.reg!,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                      ],
-                    )),
-              )),
-          centerTitle: true,
-        ),
-
-        // displays the make and model of the vehicle
-        SliverToBoxAdapter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // displays the make and model of th vehicle
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    vehicleState.make!,
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    vehicleState.model!,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ],
-              ),
-              // displays the year and doors of the vehicle
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    vehicleState.year!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(fontSize: 20),
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    '${vehicleState.doors.toString()} dr',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(fontSize: 20),
-                  ),
-                ],
-              ),
-              // displays the driven and button to update the driven  of the vehicle
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    vehicleState.driven.toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(fontSize: 18),
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    ' Kms',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(fontSize: 18, fontStyle: FontStyle.italic),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: updateDrivenDialogBuilder);
-                      },
-                      icon: const Icon(Icons.edit))
-                ],
-              ),
-              // SwitchListTile(
-              //   title: const Text('Show Fuels Stops'),
-              //   value: showFuelstops,
-              //   controlAffinity: ListTileControlAffinity.leading,
-              //   onChanged: (value) {
-              //     setState(() {
-              //       showFuelstops = value;
-
-              //       toggleFilters();
-              //     });
-              //   },
-              // ),
-            ],
-          ),
-        ),
-        SliverToBoxAdapter(child: tabBar),
-
-        maintenanceAsync.when(
-          error: (error, stackTrace) {
-            print(error.toString());
-            print(stackTrace.toString());
-            return Text('Error: $error');
-          },
-          loading: () {
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => const Center(
-                    child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
-                )),
-                childCount: 4,
-              ),
-            );
-          },
-          data: (maintenances) {
-            allMaintenances = List.from(maintenances);
-            filteredMaintenances = List.from(allMaintenances);
-            filteredMaintenances
-                .removeWhere((element) => element.location == 'Fuel Station 1');
-            activeListofMaintenances = allMaintenances;
-            toggleFilters();
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  print(
-                      'length of active maintenances = ${activeListofMaintenances.length.toString()}');
-                  final maintenance = activeListofMaintenances[index];
-                  return MaintenanceCard(
-                    state: maintenance,
-                    totalDriven: ref.read(currentVehicleProvider).driven!,
-                  );
-                },
-                childCount: activeListofMaintenances.length,
-              ),
-            );
-          },
-        ),
-        //
-      ],
-    );
-  }
-
-  Widget imagePageViewContainer(int pageCount) {
-    return SizedBox(
-      height: 250,
-      child: Stack(
-        children: [
-          vehicleState.images!.isEmpty
-              ? Container(
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: Center(
-                      child: Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: Text(
-                      'No Media added for this car , click the camer Icon below to add Media for this car',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSecondary),
-                    ),
-                  )),
-                )
-              : imagePageView(),
-          vehicleState.images!.isEmpty
-              ? Container()
-              : ImagePageViewDotIndicator(
-                  selectedPage: selectedImagePage, pageCount: pageCount),
-          Positioned(
-            bottom: 8,
-            left: 8,
-            child: IconButton(
-              icon: Icon(
-                Icons.add_a_photo,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: 45,
-              ),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    child: AddMediaDialog(),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  PageView imagePageView() {
-    return PageView(
-      onPageChanged: (value) => setState(() {
-        selectedImagePage = value;
-      }),
-      controller: imagePageController,
-      children: vehicleState.images!
-          .map(
-            (e) => ClipRRect(
-              // borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                fit: BoxFit.fitHeight,
-                e!,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  Widget updateDrivenDialogBuilder(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Update  driven'),
-      content: SpinBox(
-        min: vehicleState.driven!.toDouble(),
-        max: 2000000,
-        value: newDriven,
-        step: 10,
-        onChanged: (value) => setState(() {
-          newDriven = value;
-          vehicleState = vehicleState.copyWith(driven: newDriven.toInt());
-        }),
-      ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel')),
-              ElevatedButton(
-                  onPressed: _updateDriven,
-                  child: const Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: Text('Save'),
-                  )),
-            ],
-          ),
-        ),
-        const Spacer(),
-      ],
-      actionsAlignment: MainAxisAlignment.center,
-    );
-  }
-
-  void toggleFilters() {
-    if (showFuelstops) {
-      setState(() {
-        activeListofMaintenances = allMaintenances;
-      });
-    } else {
-      setState(() {
-        activeListofMaintenances = filteredMaintenances;
-      });
-    }
-  }
 
   Future<void> _updateDriven() async {
     if (kDebugMode) {
@@ -388,14 +67,13 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 3, vsync: this);
+    // TabController tabController = TabController(length: 3, vsync: this);
 
-    tabBar = TabBar(
-      controller: tabController,
+    //
       // indicator: BoxDecoration(
       //     borderRadius: BorderRadius.circular(6),
       //     color: Theme.of(context).colorScheme.surface),
-      tabs: [
+     var  tabs= [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -444,15 +122,196 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
             ],
           ),
         ),
-      ],
-    );
+      ];
+    
+    var tabViews = [
+      MaintenancesTab(),
+      // ListView.builder(
+      //   itemCount: 25,
+      //   itemBuilder: (context, index) => ListTile(
+      //     title: Text(
+      //       'Maintenance $index',
+      //     ),
+      //   ),
+      // ),
+      ListView.builder(
+        itemCount: 25,
+        itemBuilder: (context, index) => ListTile(
+          title: Text('Fuel stop  $index'),
+        ),
+      ),
+      ListView.builder(
+        itemCount: 25,
+        itemBuilder: (context, index) => ListTile(
+          title: Text(
+              // index.toString(),
+              'Log  $index'),
+        ),
+      ),
+    ];
+
     vehicleState = ref.watch(currentVehicleProvider);
     maintenanceAsync = ref.watch(maintenanceStreamProvider(vehicleState.id));
     return Scaffold(
-      body: body(context),
+      // body: body(context),
+      body: CustomScrollView(
+        slivers: [
+          CustomSliverAppBar(),
+          // displays the make and model of the vehicle
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // displays the make and model of th vehicle
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      vehicleState.make!,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      vehicleState.model!,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ],
+                ),
+                // displays the year and doors of the vehicle
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      vehicleState.year!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      '${vehicleState.doors.toString()} dr',
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontSize: 20),
+                    ),
+                  ],
+                ),
+                // displays the driven and button to update the driven  of the vehicle
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      vehicleState.driven.toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontSize: 18),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      ' Kms',
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          // showDialog(
+                          //     context: context,
+                          //     builder: updateDrivenDialogBuilder);
+                        },
+                        icon: const Icon(Icons.edit))
+                  ],
+                ),
+        
+              ],
+            ),
+          ),
+          // SliverToBoxAdapter(child: tabBar),
+          SliverFillRemaining(
+            child: DefaultTabController(
+              length: 3,
+              child: Column(children: [
+                TabBar(
+                  tabs: tabs,
+                  indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Theme.of(context).colorScheme.onSecondary),
+                ),
+                // TabBar(tabs: tabs),
+
+                Expanded(
+                  child: TabBarView(
+                    children: tabViews,
+                  ),
+             
+                ),
+              ]),
+            ),
+          ),
+
+          maintenanceAsync.when(
+            error: (error, stackTrace) {
+              print(error.toString());
+              print(stackTrace.toString());
+              return Text('Error: $error');
+            },
+            loading: () {
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => const Center(
+                      child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  )),
+                  childCount: 4,
+                ),
+              );
+            },
+            data: (maintenances) {
+              return SliverToBoxAdapter(
+                  child: Container(
+                height: 150,
+                color: Colors.deepOrange,
+              ));
+              // allMaintenances = List.from(maintenances);
+              // filteredMaintenances = List.from(allMaintenances);
+              // filteredMaintenances
+              //     .removeWhere((element) => element.location == 'Fuel Station 1');
+              // activeListofMaintenances = allMaintenances;
+              // toggleFilters();
+              // return SliverList(
+              //   delegate: SliverChildBuilderDelegate(
+              //     (context, index) {
+              //       print(
+              //           'length of active maintenances = ${activeListofMaintenances.length.toString()}');
+              //       final maintenance = activeListofMaintenances[index];
+              //       return MaintenanceCard(
+              //         state: maintenance,
+              //         totalDriven: ref.read(currentVehicleProvider).driven!,
+              //       );
+              //     },
+              //     childCount: activeListofMaintenances.length,
+              //   ),
+              // );
+            },
+          ),
+          
+        ],
+      ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 200),
         backgroundColor: Theme.of(context).colorScheme.primary,
         fanAngle: 90,
         distance: 100,
