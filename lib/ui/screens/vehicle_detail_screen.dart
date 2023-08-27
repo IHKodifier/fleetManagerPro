@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
 import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
+import 'package:fleet_manager_pro/ui/shared/fuelstops_tab.dart';
+import 'package:fleet_manager_pro/ui/shared/logbook_tab.dart';
 import 'package:fleet_manager_pro/ui/shared/maintenances_tab.dart';
 import 'package:fleet_manager_pro/ui/shared/sliver_appbar.dart';
 import 'package:flutter/foundation.dart';
@@ -75,13 +77,13 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
       //     color: Theme.of(context).colorScheme.surface),
      var  tabs= [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Column(
             children: [
               Icon(
                 Icons.car_repair,
                 color: Theme.of(context).colorScheme.primary,
-                size: 40,
+                // size: 40,
               ),
               Text(
                 'Maintances',
@@ -91,13 +93,13 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
+          padding: const EdgeInsets.all(4.0),
+          child: Column( 
             children: [
               Icon(
                 Icons.local_gas_station_rounded,
                 color: Theme.of(context).colorScheme.primary,
-                size: 40,
+                // size: 40,
               ),
               Text(
                 'Fuel Stops',
@@ -107,13 +109,13 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Column(
             children: [
               Icon(
                 Icons.location_pin,
                 color: Theme.of(context).colorScheme.primary,
-                size: 40,
+                // size: 40,
               ),
               Text(
                 'Log Book',
@@ -126,28 +128,9 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
     
     var tabViews = [
       MaintenancesTab(),
-      // ListView.builder(
-      //   itemCount: 25,
-      //   itemBuilder: (context, index) => ListTile(
-      //     title: Text(
-      //       'Maintenance $index',
-      //     ),
-      //   ),
-      // ),
-      ListView.builder(
-        itemCount: 25,
-        itemBuilder: (context, index) => ListTile(
-          title: Text('Fuel stop  $index'),
-        ),
-      ),
-      ListView.builder(
-        itemCount: 25,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(
-              // index.toString(),
-              'Log  $index'),
-        ),
-      ),
+      FuelStopsTab(),
+      LogbookTab(),
+   
     ];
 
     vehicleState = ref.watch(currentVehicleProvider);
@@ -282,7 +265,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
               return SliverToBoxAdapter(
                   child: Container(
                 height: 150,
-                color: Colors.deepOrange,
+                // color: Colors.deepOrange,
               ));
               // allMaintenances = List.from(maintenances);
               // filteredMaintenances = List.from(allMaintenances);
