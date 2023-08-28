@@ -208,9 +208,9 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
                     ),
                     IconButton(
                         onPressed: () {
-                          // showDialog(
-                          //     context: context,
-                          //     builder: updateDrivenDialogBuilder);
+                          showDialog(
+                              context: context,
+                              builder: updateDrivenDialogBuilder);
                         },
                         icon: const Icon(Icons.edit))
                   ],
@@ -338,6 +338,42 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
           ),
         ],
       ),
+    );
+  }
+   Widget updateDrivenDialogBuilder(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Update  driven'),
+      content: SpinBox(
+        min: vehicleState.driven!.toDouble(),
+        max: 2000000,
+        value: newDriven,
+        step: 10,
+        onChanged: (value) => setState(() {
+          newDriven = value;
+          vehicleState = vehicleState.copyWith(driven: newDriven.toInt());
+        }),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel')),
+              ElevatedButton(
+                  onPressed: _updateDriven,
+                  child: const Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: Text('Save'),
+                  )),
+            ],
+          ),
+        ),
+        const Spacer(),
+      ],
+      actionsAlignment: MainAxisAlignment.center,
     );
   }
 }

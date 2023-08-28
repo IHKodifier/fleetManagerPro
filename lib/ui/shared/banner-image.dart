@@ -1,4 +1,5 @@
 import 'package:fleet_manager_pro/states/barrel_states.dart';
+import 'package:fleet_manager_pro/ui/shared/add_media_dialog.dart';
 import 'package:fleet_manager_pro/ui/shared/image_pageview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -92,18 +93,20 @@ class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
             bottom: 8,
             left: 8,
             child: IconButton(
-              icon: Icon(
-                Icons.add_a_photo,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: 45,
+              icon: Center(
+                child: Icon(
+                  Icons.add_a_photo,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  size: 45,
+                ),
               ),
               onPressed: () {
-                // showDialog(
-                //   context: context,
-                //   builder: (context) => Dialog(
-                //     child: AddMediaDialog(),
-                //   ),
-                // );
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    child: AddMediaDialog(),
+                  ),
+                );
               },
             ),
           ),
