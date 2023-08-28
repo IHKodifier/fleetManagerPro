@@ -18,7 +18,6 @@ import '../../states/maintenance_state.dart';
 import '../../states/maintenances.dart';
 import '../shared/add_fuelstop_dialog.dart';
 import '../shared/image_pageview.dart';
-import '../shared/maintenance_card.dart';
 
 class VehicleDetailScreen extends ConsumerStatefulWidget {
   const VehicleDetailScreen({super.key});
