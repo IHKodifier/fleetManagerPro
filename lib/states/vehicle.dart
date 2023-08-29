@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:fleet_manager_pro/states/fuelstop.dart';
+import 'package:fleet_manager_pro/states/logbook.dart';
 import 'package:fleet_manager_pro/states/maintenances.dart';
 
 class Vehicle extends Equatable {
   String id;
   int? doors;
   List<Maintenance?> maintenances;
+  List<FuelStop?> fuelstops;
+  List<Logbook?> logbooks;
   String? make;
   String? model;
   String? year;
@@ -18,6 +22,8 @@ class Vehicle extends Equatable {
     required this.id,
     this.doors,
     this.maintenances = const [],
+    this.fuelstops = const [],
+    this.logbooks = const [],
     this.make,
     this.model,
     this.year,
@@ -34,6 +40,8 @@ class Vehicle extends Equatable {
       id,
       doors!,
       maintenances,
+      fuelstops,
+      logbooks,
       make!,
       model!,
       year!,
@@ -48,6 +56,8 @@ class Vehicle extends Equatable {
     String? id,
     int? doors,
     List<Maintenance?>? maintenances,
+    List<FuelStop?>? fuelstops,
+    List<Logbook?>? logbooks,
     String? make,
     String? model,
     String? year,
@@ -60,6 +70,8 @@ class Vehicle extends Equatable {
       id: id ?? this.id,
       doors: doors ?? this.doors,
       maintenances: maintenances ?? this.maintenances,
+      fuelstops: fuelstops ?? this.fuelstops,
+      logbooks: logbooks ?? this.logbooks,
       make: make ?? this.make,
       model: model ?? this.model,
       year: year ?? this.year,
@@ -77,9 +89,17 @@ class Vehicle extends Equatable {
     if (doors != null) {
       result.addAll({'doors': doors});
     }
-    if (maintenances.isEmpty) {
+    if (maintenances.isNotEmpty) {
       result.addAll(
           {'maintenances': maintenances.map((x) => x?.toMap()).toList()});
+    }
+    if (fuelstops.isNotEmpty) {
+      result.addAll(
+          {'fuelstops': fuelstops.map((x) => x?.toMap()).toList()});
+    }
+       if (logbooks.isNotEmpty) {
+      result.addAll(
+          {'logbooks': logbooks.map((x) => x?.toMap()).toList()});
     }
      if (images!.isNotEmpty) {
       result.addAll(

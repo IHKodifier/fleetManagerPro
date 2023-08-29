@@ -60,4 +60,25 @@ class FuelStop extends Equatable {
       timestamp: timestamp ?? this.timestamp,
     );
   }
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'driven': driven,
+      'litres': litres,
+      'pricePerLitre': pricePerLitre,
+      'totalCost': totalCost,
+      'timestamp': timestamp,
+    };
+  }
+
+  factory FuelStop.fromMap(Map<String, dynamic> map) {
+    return FuelStop(
+      id: map['id'],
+      driven: map['driven'],
+      litres: map['litres'],
+      pricePerLitre: map['pricePerLitre'],
+      totalCost: map['totalCost'],
+      timestamp: map['timestamp'],
+    );
+  }
 }

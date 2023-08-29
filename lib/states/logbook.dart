@@ -73,4 +73,28 @@ class Logbook extends Equatable {
       driver: driver ?? this.driver,
     );
   }
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'timestamp': timestamp,
+      'placesVisited': placesVisited,
+      'kmsTravelled': kmsTravelled,
+      'startReading': startReading,
+      'endReading': endReading,
+      'driver': driver,
+    };
+  }
+
+  factory Logbook.fromMap(Map<String, dynamic> map) {
+    return Logbook(
+      id: map['id'],
+      timestamp: map['timestamp'],
+      placesVisited: List<String>.from(map['placesVisited']),
+      kmsTravelled: map['kmsTravelled'],
+      startReading: map['startReading'],
+      endReading: map['endReading'],
+      driver: map['driver'],
+    );
+  }
+
 }
