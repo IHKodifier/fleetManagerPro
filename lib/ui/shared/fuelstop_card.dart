@@ -144,7 +144,7 @@ class FuelStopHeader extends StatelessWidget {
         ),
         Spacer(),
         Text(
-          '${timeago.format(DateTime.fromMillisecondsSinceEpoch(state.timestamp),
+          timeago.format(DateTime.fromMillisecondsSinceEpoch(state.timestamp.millisecondsSinceEpoch)),
           style: Theme.of(context).textTheme.labelSmall,
         ),
       ],
