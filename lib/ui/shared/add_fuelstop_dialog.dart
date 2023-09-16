@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
+import 'package:fleet_manager_pro/states/fuelstop.dart';
 import 'package:fleet_manager_pro/ui/screens/vehicle_detail_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -13,64 +14,27 @@ class AddFuelStopDialog extends ConsumerStatefulWidget {
   const AddFuelStopDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AddFuelStopDialogState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AddFuelStopDialogState();
 }
 
 class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
-  double litres = 0, cost = 0;
-  int oldDriven = 0;
-  int? newDriven = 0;
   double costPerLitre = 0;
-  bool isBusy=false;
- 
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-          icon: Icon(Icons.local_gas_station,size: 50,color: Theme.of(context).colorScheme.primary,),
-          title: const Text('Add Fuel Stop'),
-          content: addFuelStopForm(),
-          actionsAlignment: MainAxisAlignment.end,
-          actionsPadding: const EdgeInsets.all(8),
-          actionsOverflowButtonSpacing: 10,
-          actionsOverflowAlignment: OverflowBarAlignment.center,
-          actions: [
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {Navigator.pop(context);},
-                    child: const Text('Cancel'),
-                  ),
-                ),
-                const SizedBox(width: 10,),
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: saveFuelStop,
-                    icon: const Icon(Icons.save),
-                    label: isBusy? const Padding(
-                      padding: EdgeInsets.all(2.0),
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                    ): const Text('Save'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        );
-  }
-  
+  bool isBusy = false;
+  double litres = 0, cost = 0;
+  int? newDriven = 0;
+  int oldDriven = 0;
+
   addFuelStopForm() {
     oldDriven = ref.read(currentVehicleProvider).driven!;
     costPerLitre = cost / litres;
-     return SingleChildScrollView(
-       child: Column(
+    return SingleChildScrollView(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SpinBox(
-             incrementIcon: Icon(
+            incrementIcon: Icon(
               Icons.add_circle,
               color: Theme.of(context).colorScheme.primary,
               // size: 30,
@@ -78,9 +42,8 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
             decrementIcon: Icon(
               Icons.remove_circle,
               color: Theme.of(context).colorScheme.primary,
-              // size: 30, 
+              // size: 30,
             ),
-            
             max: double.infinity,
             value: cost,
             step: 100,
@@ -105,14 +68,16 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
           SpinBox(
             min: 0,
             max: double.infinity,
-            incrementIcon: Icon(Icons.add_circle,color: Theme.of(context).colorScheme.primary,
-            // size: 35,
+            incrementIcon: Icon(
+              Icons.add_circle, color: Theme.of(context).colorScheme.primary,
+              // size: 35,
             ),
-            decrementIcon: Icon(Icons.remove_circle,color: Theme.of(context).colorScheme.primary,
-            // size: 35,
+            decrementIcon: Icon(
+              Icons.remove_circle, color: Theme.of(context).colorScheme.primary,
+              // size: 35,
             ),
             value: litres,
-            step:1.11, 
+            step: 1.11,
             decimals: 1,
             keyboardType: const TextInputType.numberWithOptions(
               decimal: true,
@@ -129,7 +94,7 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
               contentPadding: const EdgeInsets.all(16),
             ),
             onChanged: (value) => setState(() {
-              litres = value*1.0;
+              litres = value * 1.0;
             }),
           ),
           const SizedBox(
@@ -142,7 +107,7 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
             height: 6,
           ),
           SpinBox(
-             incrementIcon: Icon(
+            incrementIcon: Icon(
               Icons.add_circle,
               color: Theme.of(context).colorScheme.primary,
               // size: 35,
@@ -152,7 +117,7 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
               color: Theme.of(context).colorScheme.primary,
               // size: 35,
             ),
-           keyboardType: const TextInputType.numberWithOptions(),
+            keyboardType: const TextInputType.numberWithOptions(),
             min: oldDriven.toDouble(),
             max: double.infinity,
             // decimals: true,
@@ -164,7 +129,6 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
               newDriven = value.round();
             }),
             decoration: InputDecoration(
-             
               hintText: 'Hint',
               labelText: 'Kilometers Driven',
               labelStyle:
@@ -174,48 +138,99 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
               suffixStyle: const TextStyle(fontSize: 14).copyWith(
                   fontWeight: FontWeight.w300, fontStyle: FontStyle.italic),
               contentPadding: const EdgeInsets.all(16),
-              
             ),
-            
           ),
         ],
-         ),
-     );
+      ),
+    );
   }
 
   Future<void> saveFuelStop() async {
     setState(() {
-      isBusy=true;
+      isBusy = true;
     });
-     
-    final vehicle= ref.read(currentVehicleProvider);
-    final  fuelStop = Maintenance(cost:cost.toInt(),
-    services: [Service(name: 'Fuel',cost: cost.round())],
-    timestamp: DateTime.now(),
-    location: 'Fuel Station 1'
-     );
-     fuelStop.kmsDriven= newDriven!.toInt();
-     fuelStop.litres= litres;
+    final vehicle = ref.read(currentVehicleProvider);
 
-     
-     DocumentReference  docRef = FirebaseFirestore.instance
-     .collection('users')
-     .doc(ref.read(appUserProvider)!.uuid)
-     .collection('vehicles')
-     .doc(vehicle.id).collection('maintenances').doc();
-     fuelStop.id=docRef.id;
-     ref.read(currentVehicleProvider.notifier).updateDriven(newDriven!);
-     await docRef.set(fuelStop.toMap());
-     await FirebaseFirestore.instance.collection('users').doc(ref.read(appUserProvider)?.uuid).collection('vehicles').doc(ref.read(currentVehicleProvider).id).set({'driven':newDriven},SetOptions(merge: true));
-     setState(() {
-       isBusy=false;
-     });
+    //get the id for newFuelStop
+    DocumentReference docRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(ref.read(appUserProvider)!.uuid)
+        .collection('vehicles')
+        .doc(vehicle.id)
+        .collection('fuelstops')
+        .doc();
+    // create the newFuelStop instance
+    final newFuelStop = FuelStop(
+        id: docRef.id,
+        driven: newDriven!.toInt(),
+        litres: litres,
+        totalCost: cost);
+    //save the doc to Firbase
+    await docRef.set(newFuelStop.toMap());
+    //update the [driven]on parent Vehicle Firebase Doc
+
+    ref.read(currentVehicleProvider.notifier).updateDriven(newDriven!);
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(ref.read(appUserProvider)?.uuid)
+        .collection('vehicles')
+        .doc(ref.read(currentVehicleProvider).id)
+        .set({'driven': newDriven}, SetOptions(merge: true));
+    setState(() {
+      isBusy = false;
+    });
     //  ref.invalidate(currentVehicleProvider);
-    //  Navigator.pop(context);
+     Navigator.pop(context);
     //  ref.refresh(currentVehicleProvider);
      Navigator.pushReplacement(context, MaterialPageRoute(builder:  (context) => const VehicleDetailScreen()));
     //  Navigator.pop(context);
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      icon: Icon(
+        Icons.local_gas_station,
+        size: 50,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      title: const Text('Add Fuel Stop'),
+      content: addFuelStopForm(),
+      actionsAlignment: MainAxisAlignment.end,
+      actionsPadding: const EdgeInsets.all(8),
+      actionsOverflowButtonSpacing: 10,
+      actionsOverflowAlignment: OverflowBarAlignment.center,
+      actions: [
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: FilledButton.icon(
+                onPressed: saveFuelStop,
+                icon: const Icon(Icons.save),
+                label: isBusy
+                    ? const Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text('Save'),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
-
