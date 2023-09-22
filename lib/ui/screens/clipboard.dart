@@ -21,7 +21,7 @@ class MaintenanceCard extends StatelessWidget {
   Card _maintenanceCard(BuildContext context) {
     return Card(
       elevation: 10,
-      margin: EdgeInsets.all(4),
+      margin: const EdgeInsets.all(4),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Row(

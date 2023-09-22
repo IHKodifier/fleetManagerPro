@@ -4,6 +4,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/vehicle.dart';
+import 'package:fleet_manager_pro/ui/shared/add_logbook_dialog.dart';
 import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
 import 'package:fleet_manager_pro/ui/shared/fuelstops_tab.dart';
 import 'package:fleet_manager_pro/ui/shared/logbook_tab.dart';
@@ -17,7 +18,6 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 import '../../states/maintenance_state.dart';
 import '../../states/maintenances.dart';
 import '../shared/add_fuelstop_dialog.dart';
-import '../shared/image_pageview.dart';
 
 class VehicleDetailScreen extends ConsumerStatefulWidget {
   const VehicleDetailScreen({super.key});
@@ -138,7 +138,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
       // body: body(context),
       body: CustomScrollView(
         slivers: [
-          CustomSliverAppBar(),
+          const CustomSliverAppBar(),
           // displays the make and model of the vehicle
           SliverToBoxAdapter(
             child: Column(
@@ -293,14 +293,15 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
       ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 150),
         backgroundColor: Theme.of(context).colorScheme.primary,
         fanAngle: 90,
-        distance: 100,
+        distance: 120,
         expandedFabSize: ExpandableFabSize.small,
         collapsedFabSize: ExpandableFabSize.regular,
         overlayStyle: ExpandableFabOverlayStyle(
-          blur: 1.1,
+          // blur: .75,
+          color: Colors.black.withOpacity(0.5),
         ),
         children: [
           FloatingActionButton(
@@ -321,6 +322,22 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
             },
           ),
           FloatingActionButton(
+            heroTag: 'logbook',
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            child: const Icon(
+              Icons.mode_of_travel_rounded,
+              size: 50,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => const AddLogbookDialog(),
+                ),
+              );
+            },
+          ),
+          FloatingActionButton(
             heroTag: 'repair',
             backgroundColor: Theme.of(context).colorScheme.primary,
             child: const Icon(
@@ -336,6 +353,11 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
               );
             },
           ),
+        
+        
+        
+        
+        
         ],
       ),
     );

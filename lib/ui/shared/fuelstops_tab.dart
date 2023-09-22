@@ -2,9 +2,7 @@ import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/fuelstop.dart';
 import 'package:fleet_manager_pro/states/fuelstop_state.dart';
-import 'package:fleet_manager_pro/states/maintenance_state.dart';
 import 'package:fleet_manager_pro/ui/shared/fuelstop_card.dart';
-import 'package:fleet_manager_pro/ui/shared/maintenance_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FuelStopsTab extends ConsumerWidget {

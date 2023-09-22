@@ -612,9 +612,9 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                 },
               ),
 
-              const Spacer(
-                flex: 1,
-              ),
+              // const Spacer(
+              //   flex: 1,
+              // ),
               SizedBox(
                 height: 50,
                 child: ElevatedButton(

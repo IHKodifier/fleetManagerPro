@@ -1,29 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import '../states/destination.dart'; // Import the Destination class
 
 class Logbook extends Equatable {
   final String id;
-  final Timestamp timestamp;
-  final List<String> placesVisited;
-  final double kmsTravelled;
-  final int startReading;
-  final int endReading;
-  final String driver;
+  Timestamp timestamp;
+  List<Destination> destinations; // Change the type to List<Destination>
+  double kmsTravelled;
+  int startReading;
+  int endReading;
+  String driver;
+
+  // Constructor with just the id
+  Logbook({required this.id})
+      : timestamp = Timestamp.now(),
+        destinations = [], // Initialize as an empty list of Destination
+        kmsTravelled = 0.0,
+        startReading = 0,
+        endReading = 0,
+        driver = '';
 
   Logbook._({
     required this.id,
     required this.timestamp,
-    required this.placesVisited,
+    required this.destinations, // Change the type to List<Destination>
     required this.kmsTravelled,
     required this.startReading,
     required this.endReading,
     required this.driver,
   });
 
-  factory Logbook({
+  factory Logbook.full({
     required String id,
-    Timestamp? timestamp,
-    List<String>? placesVisited,
+    required Timestamp timestamp,
+    required List<Destination>
+        destinations, // Change the type to List<Destination>
     required double kmsTravelled,
     required int startReading,
     required int endReading,
@@ -31,8 +42,8 @@ class Logbook extends Equatable {
   }) {
     return Logbook._(
       id: id,
-      timestamp: timestamp ?? Timestamp.now(),
-      placesVisited: placesVisited ?? [],
+      timestamp: timestamp,
+      destinations: destinations, // Change the type to List<Destination>
       kmsTravelled: kmsTravelled,
       startReading: startReading,
       endReading: endReading,
@@ -44,7 +55,7 @@ class Logbook extends Equatable {
   List<Object> get props => [
         id,
         timestamp,
-        placesVisited,
+        destinations,
         kmsTravelled,
         startReading,
         endReading,
@@ -57,7 +68,7 @@ class Logbook extends Equatable {
   Logbook copyWith({
     String? id,
     Timestamp? timestamp,
-    List<String>? placesVisited,
+    List<Destination>? destinations, // Change the type to List<Destination>
     double? kmsTravelled,
     int? startReading,
     int? endReading,
@@ -66,18 +77,22 @@ class Logbook extends Equatable {
     return Logbook._(
       id: id ?? this.id,
       timestamp: timestamp ?? this.timestamp,
-      placesVisited: placesVisited ?? this.placesVisited,
+      destinations: destinations ??
+          this.destinations, // Change the type to List<Destination>
       kmsTravelled: kmsTravelled ?? this.kmsTravelled,
       startReading: startReading ?? this.startReading,
       endReading: endReading ?? this.endReading,
       driver: driver ?? this.driver,
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'timestamp': timestamp,
-      'placesVisited': placesVisited,
+      'destinations': destinations
+          .map((destination) => destination.toMap())
+          .toList(), // Convert each Destination to a map
       'kmsTravelled': kmsTravelled,
       'startReading': startReading,
       'endReading': endReading,
@@ -86,15 +101,16 @@ class Logbook extends Equatable {
   }
 
   factory Logbook.fromMap(Map<String, dynamic> map) {
-    return Logbook(
+    return Logbook.full(
       id: map['id'],
       timestamp: map['timestamp'],
-      placesVisited: List<String>.from(map['placesVisited']),
+      destinations: (map['destinations'] as List)
+          .map((item) => Destination.fromMap(item))
+          .toList(), // Convert each map to a Destination
       kmsTravelled: map['kmsTravelled'],
       startReading: map['startReading'],
       endReading: map['endReading'],
       driver: map['driver'],
     );
   }
-
 }

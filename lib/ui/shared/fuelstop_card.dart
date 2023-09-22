@@ -29,13 +29,13 @@ class FuelStopCard extends StatelessWidget {
         children: [
           // Spacer(),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: FuelStopHeader(state: state),
           ),
           Row(
             children: [
               FuelStopAvatar(totalDriven: totalDriven, state: state),
-              Container(
+              SizedBox(
                 width: 300,
                 // constraints: BoxConstraints(minHeight: 120),
                 // height: 120,
@@ -73,7 +73,7 @@ class FuelStopCard extends StatelessWidget {
                         // Spacer(),
                         // SizedBox(height: 6,),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Divider(
                             thickness: 1.5,
                             color: Theme.of(context).colorScheme.onSurface,
@@ -134,7 +134,7 @@ class FuelStopHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Spacer(),
+        const Spacer(),
         Text(
           // state.location!,
           'Fuel Stop',
@@ -142,7 +142,7 @@ class FuelStopHeader extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        Spacer(),
+        const Spacer(),
         Text(
           timeago.format(DateTime.fromMillisecondsSinceEpoch(state.timestamp.millisecondsSinceEpoch)),
           style: Theme.of(context).textTheme.labelSmall,
@@ -165,9 +165,9 @@ class FuelStopAvatar extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 35,
-          child: Text('${(totalDriven - state.driven).toString()}'),
+          child: Text((totalDriven - state.driven).toString()),
         ),
-        Text('Kms ago'),
+        const Text('Kms ago'),
       ],
     );
   }
