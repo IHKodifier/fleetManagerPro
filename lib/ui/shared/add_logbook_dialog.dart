@@ -21,13 +21,12 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
   TextEditingController controller2 = TextEditingController();
   TextEditingController controller3 = TextEditingController();
   DateTime selectedDate = DateTime.now();
+  String newDestinationName = '';
   List<Destination> selectedDestinations = [
-    //for testing only
-    Destination(id: '1234', name: 'Hf Office'),
+    //always starts at HF
+    // Destination(id: '00001', name: 'HF'),
 
-    Destination(id: '123', name: 'MCB Blue Area'),
-    Destination(id: '12377', name: 'PIMS'),
-    Destination(id: '12378', name: 'WHO'),
+    //for testing only
   ];
 
   late Vehicle vehicle;
@@ -60,12 +59,12 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
         //     .textTheme
         //     .displaySmall!
         //     .copyWith(fontSize: 16),
-        incrementIcon: Icon(
+        incrementIcon: const Icon(
           Icons.add,
           // size: 35,
           // color: Theme.of(context).colorScheme.primary,
         ),
-        decrementIcon: Icon(
+        decrementIcon: const Icon(
           Icons.remove,
           // size: 35,
           // color: Theme.of(context).colorScheme.primary,
@@ -81,34 +80,25 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
     );
   }
 
-  // Stream<List<Destination>> allDestinationsStream() =>
-  //     FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(ref.read(appUserProvider)!.uuid)
-  //         .collection('destinations')
-  //         .snapshots()
-  //         .map((event) =>
-  //             event.docs.map((e) => Destination.fromMap(e.data())).toList());
-
   Padding currentReadingRow() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Spacer(),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text('Current Reading'),
           ),
-          Spacer(
+          const Spacer(
             flex: 3,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(' ${vehicle.driven} '),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );
@@ -118,8 +108,8 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TextField(
-        decoration:
-            InputDecoration(labelText: 'Driver name', hintText: 'optional'),
+        decoration: const InputDecoration(
+            labelText: 'Driver name', hintText: 'optional'),
         controller: controller1,
         // keyboardType: TextInputType.number,
       ),
@@ -134,16 +124,16 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
           Expanded(
               child: OutlinedButton.icon(
                   onPressed: onCancel,
-                  icon: Icon(Icons.cancel),
-                  label: Text('Cancel'))),
-          SizedBox(
+                  icon: const Icon(Icons.cancel),
+                  label: const Text('Cancel'))),
+          const SizedBox(
             width: 4,
           ),
           Expanded(
               child: FilledButton.icon(
                   onPressed: onAddLogbook,
-                  icon: Icon(Icons.save),
-                  label: Text('Save'))),
+                  icon: const Icon(Icons.save),
+                  label: const Text('Save'))),
         ],
       ),
     );
@@ -151,20 +141,139 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
 
   void onAddLogbook() {}
 
-  void onCancel() {}
+  void onCancel() {
+    Navigator.pop(context);
+  }
+
+  Widget onAllDestinationsLoading() {
+    return const CircularProgressIndicator();
+  }
+
+  Widget onAllDestinationsError(Object error, StackTrace stackTrace) {
+    return Text(error.toString());
+  }
+
+  Widget onAllDestinationsData(List<Destination> data) {
+    return Wrap(
+      spacing: 2,
+      children: [
+        IconButton(
+          onPressed: createNewDestination,
+          icon: Icon(
+            Icons.add_circle,
+            color: Theme.of(context).colorScheme.primary,
+            size: 35,
+          ),
+        ),
+        ...data
+            .map((e) => Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: ActionChip(
+                    label: Text(e.name),
+                    onPressed: () {
+                      toggleChipStatus(e);
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                  ),
+                ))
+            .toList()
+      ],
+    );
+  }
+
+  OutlinedButton datePickerButton(BuildContext context) {
+    return OutlinedButton(
+      onPressed: () async {
+        final DateTime now = DateTime.now();
+        final DateTime firstDate =
+            DateTime(now.year - 1, now.month, now.day + 1); // 364 days earlier
+        final DateTime lastDate =
+            DateTime(now.year, now.month, now.day + 6); // 7 days later
+
+        final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: selectedDate,
+          firstDate: firstDate,
+          lastDate: lastDate,
+        );
+        if (picked != null && picked != selectedDate) {
+          setState(() {
+            selectedDate = picked;
+          });
+        }
+      },
+      child: Text(
+        DateFormat('EEE, dd  MMM  yyyy').format(selectedDate),
+        // style: Theme.of(context)
+        //     .textTheme
+        //     .titleMedium!
+        //     .copyWith(color: Theme.of(context).colorScheme.primary),
+      ),
+    );
+  }
+
+  void toggleChipStatus(Destination e) {
+    setState(() {
+      selectedDestinations.contains(e)
+          ? selectedDestinations.remove(e)
+          : selectedDestinations.add(e);
+    });
+  }
+
+  void createNewDestination() {
+    showDialog(context: context, builder: createNewDestinationbuilder);
+  }
+
+  Widget createNewDestinationbuilder(BuildContext context) {
+    final controller = TextEditingController();
+    return Dialog(
+      child: Row(
+        children: [
+          Expanded(
+            // width: 250,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: controller,
+                decoration: const InputDecoration(
+                  // label: Text('Create new desintation'),
+                  hintText: 'New destination name ',
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+              onPressed: () {
+                onCreatreNewDestinationPressed;
+              },
+              icon: const Icon(Icons.done)),
+          IconButton(
+              onPressed: onCancelNewDestinationPressed,
+              icon: const Icon(Icons.cancel)),
+        ],
+      ),
+    );
+  }
+
+  void onCreatreNewDestinationPressed() {}
+
+  void onCancelNewDestinationPressed() {
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     vehicle = ref.read(currentVehicleProvider);
 
-final allDestinations = ref.watch(allDestinationsProvider);
+    final allDestinations = ref.watch(allDestinationsProvider);
     return Dialog(
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            // Spacer(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -172,35 +281,11 @@ final allDestinations = ref.watch(allDestinationsProvider);
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
-            OutlinedButton(
-              onPressed: () async {
-                final DateTime now = DateTime.now();
-                final DateTime firstDate = DateTime(
-                    now.year - 1, now.month, now.day + 1); // 364 days earlier
-                final DateTime lastDate =
-                    DateTime(now.year, now.month, now.day + 6); // 7 days later
 
-                final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: selectedDate,
-                  firstDate: firstDate,
-                  lastDate: lastDate,
-                );
-                if (picked != null && picked != selectedDate) {
-                  setState(() {
-                    selectedDate = picked;
-                  });
-                }
-              },
-              child: Text(
-                DateFormat('EEE, dd  MMM  yyyy').format(selectedDate),
-                // style: Theme.of(context)
-                //     .textTheme
-                //     .titleMedium!
-                //     .copyWith(color: Theme.of(context).colorScheme.primary),
-              ),
-            ),
+            datePickerButton(context),
+
             currentReadingRow(),
+
             Divider(
               indent: 32,
               endIndent: 32,
@@ -208,40 +293,49 @@ final allDestinations = ref.watch(allDestinationsProvider);
               thickness: 0.5,
               color: Theme.of(context).colorScheme.primary,
             ),
+
             driverNameTextField(),
 
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                // color: Colors.yellow,
-                //  width: 20,
-                // height: 50,
-                child: Wrap(
-                  children: selectedDestinations
-                      .map(
-                        (e) => Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(e.name),
-                            ),
-                            Icon(
-                              Icons.arrow_circle_right_outlined,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                child: Card(
+                  elevation: 2,
+                  child: Wrap(
+                    alignment: WrapAlignment.start,
+                    runAlignment: WrapAlignment.start,
+                    children: [
+                       Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: 
+                        Card(
+                          color: Colors.blueGrey.shade100,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0), 
+                            child: Text('HF(Start)'),
+                          ), 
+                        ), 
+                        // Icon(
+                        //   Icons.location_on, 
+                        //   color: Colors.grey,
+                        // ), 
+                      ),
+                      ...selectedDestinations
+                          .map(
+                            (e) => track(e),
+                          )
+                          .toList(),
+                    ],
+                  ),
                 ),
               ),
             ),
-allDestinations.when(
-  loading:onAllDestinationsLoading,
-  error: onAllDestinationsError, 
-  data: onAllDestinationsData, 
-  ),
+
+            allDestinations.when(
+              loading: onAllDestinationsLoading,
+              error: onAllDestinationsError,
+              data: onAllDestinationsData,
+            ),
             actionsRow(),
             // endReading(context),
 
@@ -262,24 +356,38 @@ allDestinations.when(
     );
   }
 
-  Widget onAllDestinationsLoading() {
-  return CircularProgressIndicator();
-  }
-
-  Widget onAllDestinationsError(Object error, StackTrace stackTrace) {
-    return Text(error.toString());
-  }
-
-  Widget onAllDestinationsData(List<Destination> data) {
-   return  Wrap(
-    children: data.map((e) => Padding(
+  Widget track(Destination e) {
+    return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: Chip(label: Text(e.name),
-      shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(12),
-  ),
+      child: Container(
+        // width: 124,
+        // height: 80,
+        child: Row(
+          children: [
+            const Icon(
+              Icons.arrow_circle_right_sharp,
+              size: 16,
+              color: Colors.grey,
+            ),
+            SizedBox(width: 4,),
+            ConstrainedBox(
+              constraints: BoxConstraints.loose(Size(120, 50)), 
+              child: Card(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    e.name,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    )).toList(),
-   );
+    );
   }
 }
