@@ -17,11 +17,15 @@ class AddLogbookDialog extends ConsumerStatefulWidget {
 
 class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
   List<Destination> allDestinations = []; // Fetch this from Firestore
-  TextEditingController controller1 = TextEditingController();
+  TextEditingController destinationNameController = TextEditingController();
   TextEditingController controller2 = TextEditingController();
   TextEditingController controller3 = TextEditingController();
-  DateTime selectedDate = DateTime.now();
   String newDestinationName = '';
+  DateTime selectedDate = DateTime.now();
+  ///formkey for new [Logbook] & new [Destination]
+  GlobalKey<FormState> logbookFormKey= GlobalKey<FormState>();
+  GlobalKey<FormState> destinationFormKey= GlobalKey<FormState>();
+  
   List<Destination> selectedDestinations = [
     //always starts at HF
     // Destination(id: '00001', name: 'HF'),
@@ -110,7 +114,7 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
       child: TextField(
         decoration: const InputDecoration(
             labelText: 'Driver name', hintText: 'optional'),
-        controller: controller1,
+        controller: destinationNameController,
         // keyboardType: TextInputType.number,
       ),
     );
@@ -169,9 +173,20 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
             .map((e) => Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: ActionChip(
+                    avatar: e.name == 'Finish'
+                        ? Center(
+                            child: Icon(
+                              Icons.flag_circle_rounded,
+                              color: Colors.red,
+                              size: 20,
+                            ),
+                          )
+                        : Container(),
                     label: Text(e.name),
                     onPressed: () {
-                      toggleChipStatus(e);
+                      setState(() {
+                        selectedDestinations.add(e);
+                      });
                     },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(26),
@@ -214,13 +229,7 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
     );
   }
 
-  void toggleChipStatus(Destination e) {
-    setState(() {
-      selectedDestinations.contains(e)
-          ? selectedDestinations.remove(e)
-          : selectedDestinations.add(e);
-    });
-  }
+ 
 
   void createNewDestination() {
     showDialog(context: context, builder: createNewDestinationbuilder);
@@ -229,38 +238,105 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
   Widget createNewDestinationbuilder(BuildContext context) {
     final controller = TextEditingController();
     return Dialog(
-      child: Row(
-        children: [
-          Expanded(
-            // width: 250,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: controller,
-                decoration: const InputDecoration(
-                  // label: Text('Create new desintation'),
-                  hintText: 'New destination name ',
+      child: Form(
+        key: destinationFormKey,
+        child: Row(
+          children: [
+            Expanded(
+              // width: 250,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: controller,
+                  decoration: const InputDecoration(
+                    // label: Text('Create new desintation'),
+                    hintText: 'New destination name ',
+                  ),
+                  onSaved: (newValue) {
+                    newDestinationName=newValue!;
+                  },
                 ),
               ),
             ),
-          ),
-          IconButton(
-              onPressed: () {
-                onCreatreNewDestinationPressed;
-              },
-              icon: const Icon(Icons.done)),
-          IconButton(
-              onPressed: onCancelNewDestinationPressed,
-              icon: const Icon(Icons.cancel)),
-        ],
+            IconButton(
+                onPressed: 
+                  onCreatreNewDestinationPressed
+                ,
+                icon: const Icon(Icons.done)),
+            IconButton(
+                onPressed: onCancelNewDestinationPressed,
+                icon: const Icon(Icons.cancel)),
+          ],
+        ),
       ),
     );
   }
 
-  void onCreatreNewDestinationPressed() {}
+  Future<void> onCreatreNewDestinationPressed() async {
+    destinationFormKey.currentState?.save();
+    await FirebaseFirestore.instance.collection('users')
+    .doc(
+      ref.read(appUserProvider)?.uuid
+    )
+    .collection('destinations'
+    )
+    .doc().set({
+      'name': newDestinationName,
+      // 'id': 
+    });
+
+    // ignore: avoid_print
+    print(newDestinationName);
+  }
 
   void onCancelNewDestinationPressed() {
     Navigator.pop(context);
+  }
+
+  Widget track(Destination e) {
+    return Container(
+      // width: 124,
+      // height: 59,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.keyboard_double_arrow_right,
+            size: 24,
+            color: Colors.grey,
+          ),
+          SizedBox(
+            width: 4,
+          ),
+          e.name == 'Finish'
+              ? Row(
+                children: [
+                  Center(
+                      child: Icon(
+                        Icons.flag_circle_rounded,
+                        color: Colors.red,
+                        size: 28 ,
+                      ),
+                    ),
+                    Text('Finish'),
+                ],
+              )
+              : ActionChip(label: Text(
+                    e.name,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedDestinations.remove(e);
+                    });
+                  },),]
+                   
+              
+        
+      ),
+    );
   }
 
   @override
@@ -294,31 +370,28 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
               color: Theme.of(context).colorScheme.primary,
             ),
 
-            driverNameTextField(),
+            Container(height: 80, child: driverNameTextField()),
 
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Container(
+                // height: 80,
                 child: Card(
                   elevation: 2,
                   child: Wrap(
-                    alignment: WrapAlignment.start,
-                    runAlignment: WrapAlignment.start,
                     children: [
-                       Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: 
-                        Card(
-                          color: Colors.blueGrey.shade100,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0), 
-                            child: Text('HF(Start)'),
-                          ), 
-                        ), 
-                        // Icon(
-                        //   Icons.location_on, 
-                        //   color: Colors.grey,
-                        // ), 
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Icon(
+                              Icons.flag_circle,
+                              size: 35,
+                              color: Color.fromARGB(255, 13, 127, 16),
+                            ),
+                          ),
+                          const Text('HF (Start)'),
+                        ],
                       ),
                       ...selectedDestinations
                           .map(
@@ -350,41 +423,6 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
             //     );
             //   }).toList(),
             // ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget track(Destination e) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Container(
-        // width: 124,
-        // height: 80,
-        child: Row(
-          children: [
-            const Icon(
-              Icons.arrow_circle_right_sharp,
-              size: 16,
-              color: Colors.grey,
-            ),
-            SizedBox(width: 4,),
-            ConstrainedBox(
-              constraints: BoxConstraints.loose(Size(120, 50)), 
-              child: Card(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    e.name,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),

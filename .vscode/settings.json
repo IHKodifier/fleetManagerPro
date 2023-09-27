@@ -18,5 +18,6 @@
     "errorLens.followCursor": "closestProblem",
     "errorLens.gutterIconsFollowCursorOverride": false,
     "errorLens.gutterIconSize": "0",
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": "E:/Non Office/`Dev Space/AppDev/fleetManagerPro/windows"
 }
