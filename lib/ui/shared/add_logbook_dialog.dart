@@ -17,15 +17,15 @@ class AddLogbookDialog extends ConsumerStatefulWidget {
 
 class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
   List<Destination> allDestinations = []; // Fetch this from Firestore
-  TextEditingController destinationNameController = TextEditingController();
-  TextEditingController controller2 = TextEditingController();
   TextEditingController controller3 = TextEditingController();
+  GlobalKey<FormState> destinationFormKey = GlobalKey<FormState>();
+  TextEditingController destinationNameController = TextEditingController();
+  TextEditingController driverNameController = TextEditingController();
+  ///formkey for new [Logbook] & new [Destination]
+  GlobalKey<FormState> logbookFormKey = GlobalKey<FormState>();
+
   String newDestinationName = '';
   DateTime selectedDate = DateTime.now();
-  ///formkey for new [Logbook] & new [Destination]
-  GlobalKey<FormState> logbookFormKey= GlobalKey<FormState>();
-  GlobalKey<FormState> destinationFormKey= GlobalKey<FormState>();
-  
   List<Destination> selectedDestinations = [
     //always starts at HF
     // Destination(id: '00001', name: 'HF'),
@@ -86,36 +86,69 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
 
   Padding currentReadingRow() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Spacer(),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text('Current Reading'),
-          ),
+          Text('Current Reading'),
           const Spacer(
             flex: 3,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(' ${vehicle.driven} '),
+          Text(
+            ' ${vehicle.driven}',
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontSize: 16,
+                  // color: Theme.of(context).colorScheme.onSecondary
+                ),
           ),
+          // const Spacer(),
+          Text(' Km'),
+          const Spacer(),
+        ],
+      ),
+    );
+  }
+  Padding newReadingRow() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Spacer(),
+          Text('New Reading'),
+          const Spacer(
+            flex: 3,
+          ),
+          Text(
+            ' ${vehicle.driven}',
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                  color: Theme.of(context).colorScheme.primary
+                ),
+          ),
+          // const Spacer(),
+          // const Spacer(),
+          Text(' Km'),
           const Spacer(),
         ],
       ),
     );
   }
 
-  Padding driverNameTextField() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: TextField(
-        decoration: const InputDecoration(
-            labelText: 'Driver name', hintText: 'optional'),
-        controller: destinationNameController,
-        // keyboardType: TextInputType.number,
+  Widget driverNameTextField() {
+    return Container(
+      height: 55,
+      margin: EdgeInsets.all(8),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: TextField(
+          decoration: const InputDecoration(
+              labelText: 'Driver name', hintText: 'optional'),
+          controller: driverNameController,
+          // keyboardType: TextInputType.number,
+        ),
       ),
     );
   }
@@ -173,15 +206,15 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
             .map((e) => Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: ActionChip(
-                    avatar: e.name == 'Finish'
-                        ? Center(
-                            child: Icon(
-                              Icons.flag_circle_rounded,
-                              color: Colors.red,
-                              size: 20,
-                            ),
-                          )
-                        : Container(),
+                    // avatar: e.name == 'Finish'
+                    //     ? Center(
+                    //         child: Icon(
+                    //           Icons.flag_circle_rounded,
+                    //           color: Colors.red,
+                    //           size: 20,
+                    //         ),
+                    //       )
+                    //     : Container(),
                     label: Text(e.name),
                     onPressed: () {
                       setState(() {
@@ -189,11 +222,11 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
                       });
                     },
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(26),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                 ))
-            .toList()
+            .toList(),
       ],
     );
   }
@@ -229,8 +262,6 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
     );
   }
 
- 
-
   void createNewDestination() {
     showDialog(context: context, builder: createNewDestinationbuilder);
   }
@@ -253,15 +284,13 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
                     hintText: 'New destination name ',
                   ),
                   onSaved: (newValue) {
-                    newDestinationName=newValue!;
+                    newDestinationName = newValue!;
                   },
                 ),
               ),
             ),
             IconButton(
-                onPressed: 
-                  onCreatreNewDestinationPressed
-                ,
+                onPressed: onCreatreNewDestinationPressed,
                 icon: const Icon(Icons.done)),
             IconButton(
                 onPressed: onCancelNewDestinationPressed,
@@ -273,20 +302,26 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
   }
 
   Future<void> onCreatreNewDestinationPressed() async {
+    final docRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(ref.read(appUserProvider)?.uuid)
+        .collection('destinations')
+        .doc();
+
     destinationFormKey.currentState?.save();
-    await FirebaseFirestore.instance.collection('users')
-    .doc(
-      ref.read(appUserProvider)?.uuid
-    )
-    .collection('destinations'
-    )
-    .doc().set({
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(ref.read(appUserProvider)?.uuid)
+        .collection('destinations')
+        .doc()
+        .set({
       'name': newDestinationName,
-      // 'id': 
+      'id': docRef.id,
     });
 
     // ignore: avoid_print
     print(newDestinationName);
+    Navigator.pop(context);
   }
 
   void onCancelNewDestinationPressed() {
@@ -297,44 +332,110 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
     return Container(
       // width: 124,
       // height: 59,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.keyboard_double_arrow_right,
-            size: 24,
-            color: Colors.grey,
-          ),
-          SizedBox(
-            width: 4,
-          ),
-          e.name == 'Finish'
-              ? Row(
+      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        const Icon(
+          Icons.keyboard_double_arrow_right,
+          size: 24,
+          color: Colors.grey,
+        ),
+        const SizedBox(
+          width: 4,
+        ),
+        e.name == 'Finish'
+            ? const Row(
                 children: [
                   Center(
-                      child: Icon(
-                        Icons.flag_circle_rounded,
-                        color: Colors.red,
-                        size: 28 ,
-                      ),
+                    child: Icon(
+                      Icons.flag_circle_rounded,
+                      color: Colors.red,
+                      size: 28,
                     ),
-                    Text('Finish'),
+                  ),
+                  Text('Finish'),
                 ],
               )
-              : ActionChip(label: Text(
-                    e.name,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      selectedDestinations.remove(e);
-                    });
-                  },),]
-                   
-              
+            : ActionChip(
+                label: Text(
+                  e.name,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  // maxLines: 2,
+                ),
+                onPressed: () {
+                  setState(() {
+                    selectedDestinations.remove(e);
+                  });
+                },
+              ),
+      ]),
+    );
+  }
+
+  Widget tripLength(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
         
+          Divider(
+            indent: 32,
+            endIndent: 32,
+            // height: 20,
+            thickness: 0.5,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0), 
+            child: Text('Trip Length?'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SpinBox(
+              step: 10,
+              textStyle: const TextStyle(fontSize: 20)
+                  .copyWith(fontWeight: FontWeight.w600),
+              decoration: InputDecoration(
+                // labelText: 'Kilometers Driven',
+                labelStyle:
+                    Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+                suffix: const Text(' Kms'),
+                border: const OutlineInputBorder(),
+                suffixStyle: const TextStyle(fontSize: 14).copyWith(
+                    fontWeight: FontWeight.w300, fontStyle: FontStyle.italic),
+                contentPadding: const EdgeInsets.all(4),
+              ),
+              // textAlign: TextAlign.center,
+              min: 10,
+              max: 500000,
+              value: 50,
+              // iconSize: 45,
+              // textStyle: Theme.of(context)
+              //     .textTheme
+              //     .displaySmall!
+              //     .copyWith(fontSize: 16),
+              incrementIcon: Icon(
+                Icons.add_circle,
+                // size: 35,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              decrementIcon: Icon(
+                Icons.remove_circle,
+                // size: 35,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              spacing: 16,
+              onChanged: (value) {
+                setState(() {
+                  // _kmsDriven = value.round();
+                });
+              },
+              // showButtons: false,
+            ),
+          ),
+        currentReadingRow(),
+        newReadingRow(),
+        ],
       ),
     );
   }
@@ -346,51 +447,53 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
     final allDestinations = ref.watch(allDestinationsProvider);
     return Dialog(
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Add Log Book',
-                style: Theme.of(context).textTheme.titleLarge,
+        child: Form(
+          key: logbookFormKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Add Log Book',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
-            ),
+              datePickerButton(context),
+              // currentReadingRow(),
+              Divider(
+                indent: 32,
+                endIndent: 32,
+                height: 20,
+                thickness: 0.5,
+                color: Theme.of(context).colorScheme.primary,
+              ),
 
-            datePickerButton(context),
-
-            currentReadingRow(),
-
-            Divider(
-              indent: 32,
-              endIndent: 32,
-              height: 20,
-              thickness: 0.5,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-
-            Container(height: 80, child: driverNameTextField()),
-
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Container(
-                // height: 80,
-                child: Card(
-                  elevation: 2,
+              // Container(height: 80, child: driverNameTextField()),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Container(
+                  // height: 80,
                   child: Wrap(
                     children: [
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(4.0),
+                            padding: EdgeInsets.all(4.0),
                             child: Icon(
                               Icons.flag_circle,
-                              size: 35,
-                              color: Color.fromARGB(255, 13, 127, 16),
+                              size: 45, 
+                              color: Color.fromARGB(248, 80, 189, 2),
                             ),
                           ),
-                          const Text('HF (Start)'),
+                          Text(
+                            'Start',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(color: Colors.blueGrey),
+                          ),
                         ],
                       ),
                       ...selectedDestinations
@@ -398,32 +501,49 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
                             (e) => track(e),
                           )
                           .toList(),
+
+                      selectedDestinations.length > 0
+                          ? Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(4.0),
+                                  child: Icon(
+                                    Icons.flag_circle,
+                                    size: 45,
+                                    color: Color.fromARGB(255, 235, 55, 19),
+                                  ),
+                                ),
+                                Text(
+                                  'Finish',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall
+                                      ?.copyWith(color: Colors.blueGrey),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                           Divider(
+                        indent: 32,
+                        endIndent: 32,
+                        // height: 20,
+                        thickness: 0.5,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ],
                   ),
                 ),
               ),
-            ),
-
-            allDestinations.when(
-              loading: onAllDestinationsLoading,
-              error: onAllDestinationsError,
-              data: onAllDestinationsData,
-            ),
-            actionsRow(),
-            // endReading(context),
-
-            // Wrap(
-            //   children: allDestinationsStream.map((destination) {
-            //     return ChoiceChip(
-            //       label: Text(destination),
-            //       selected: false, // Update this based on your logic
-            //       onSelected: (bool selected) {
-            //         // Handle your logic here
-            //       },
-            //     );
-            //   }).toList(),
-            // ),
-          ],
+              allDestinations.when(
+                loading: onAllDestinationsLoading,
+                error: onAllDestinationsError,
+                data: onAllDestinationsData,
+              ),
+              tripLength(context),
+             driverNameTextField(),
+              actionsRow(),
+            ],
+          ),
         ),
       ),
     );
