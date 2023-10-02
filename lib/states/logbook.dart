@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../states/destination.dart'; // Import the Destination class
 
 class Logbook extends Equatable {
-  final String id;
+  String id;
   Timestamp timestamp;
   List<Destination> destinations; // Change the type to List<Destination>
   double kmsTravelled;
