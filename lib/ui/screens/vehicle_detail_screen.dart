@@ -228,7 +228,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
                   tabs: tabs,
                   indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: Theme.of(context).colorScheme.onSecondary),
+                      color: Theme.of(context).colorScheme.primaryContainer),
                 ),
                 // TabBar(tabs: tabs),
 
