@@ -42,83 +42,88 @@ class FuelStopCard extends StatelessWidget {
           Row(
             children: [
               FuelStopAvatar(totalDriven: totalDriven, state: state),
-              Card(
-                elevation: 5,
-                margin: const EdgeInsets.all(4),
-                child: SizedBox(
-                  width: 300,
-                  child: Column(mainAxisSize: MainAxisSize.max, children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          state.litres.toString(),
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 28,
-                                  ),
-                        ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        const Text('L'),
-                      ],
-                    ),
-                    // divider,
-                    Row(
-                      children: [
-                        Text(
-                          state.pricePerLitre.toStringAsFixed(3),
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 20,
-                                  ),
-                        ),
-                        Text(
-                          '  Rs/L',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                      ],
-                    ),
+              SizedBox(
+                width: 300,
+                child: Column(mainAxisSize: MainAxisSize.min,
+                 children: [
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: [
+                  //     Text(
+                  //       state.litres.toString(),
+                  //       style:
+                  //           Theme.of(context).textTheme.titleLarge!.copyWith(
+                  //                 fontWeight: FontWeight.w600,
+                  //                 fontSize: 28,
+                  //               ),
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 2,
+                  //     ),
+                  //     const Text('L'),
+                  //   ],
+                  // ),
+                  // divider,
+                  // Row(
+                  //   children: [
+                  //     Text(
+                  //       state.pricePerLitre.toStringAsFixed(3),
+                  //       style:
+                  //           Theme.of(context).textTheme.titleLarge!.copyWith(
+                  //                 fontWeight: FontWeight.w500,
+                  //                 fontSize: 20,
+                  //               ),
+                  //     ),
+                  //     Text(
+                  //       '  Rs/L',
+                  //       style: Theme.of(context).textTheme.labelSmall,
+                  //     ),
+                  //   ],
+                  // ),
 
-                    divider,
+                  // divider,
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        // Divider(thickness: 3,
-                        // color: Colors.black,),
-                        Text(
-                          'Total',
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Divider(thickness: 3,
+                      // color: Colors.black,),
+                    
+                      Text(
+                        'Total',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(
+                                fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(width: 40),
+                      // Spacer(),
+                      Text(
+                        'Rs ',
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                              // fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.italic,
+                              // fontSize: 20,
+                            ),
+                      ), 
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4.0),
+                        child: Text(
+                          Utils.thousandify(state.totalCost.toInt()),
                           style: Theme.of(context)
                               .textTheme
-                              .bodyLarge
+                              .titleLarge 
                               ?.copyWith(
-                                  fontSize: 18, fontWeight: FontWeight.w700),
+                                  fontSize: 42, fontWeight: FontWeight.w700),
                         ),
-                        const SizedBox(width: 40),
-                        // Spacer(),
-
-                        Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: Text(
-                            Utils.thousandify(state.totalCost.toInt()),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(
-                                    fontSize: 18, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                  ]),
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                ]),
               ),
             ],
           ),
@@ -136,16 +141,45 @@ class FuelStopHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Spacer(flex: 4,),
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [ 
+        const Spacer(flex: 2,),
          Icon(
           Icons.local_gas_station_rounded,
           color: Theme.of(context).colorScheme.primary,
-          size: 55,
+          size: 45,
         ),
+        Text(
+          state.litres.toString(),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 28,
+              ),
+        ),
+        const SizedBox(
+          width: 2,
+        ),
+        const Text('L'),
         const Spacer(
-          flex: 1,
+          flex: 3,
+        ),
+         Text(' @ Rs ',
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                // fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.italic,
+                // fontSize: 20,
+              ),
+        ),
+         Text('${
+          state.pricePerLitre.toStringAsFixed(3)}',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.w500,
+                fontSize: 24,
+              ),
+        ),
+        Text(
+          ' /L',
+          style: Theme.of(context).textTheme.labelSmall,
         ),
     
         const Spacer(flex: 2,),
@@ -154,7 +188,7 @@ class FuelStopHeader extends StatelessWidget {
               state.timestamp.millisecondsSinceEpoch)),
           style: Theme.of(context).textTheme.labelSmall,
         ),
-        const Spacer(flex: 4,),
+        const Spacer(flex: 1,),
       ],
     );
   }
@@ -171,9 +205,12 @@ class FuelStopAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 35,
-          child: Text((totalDriven - state.driven).toString()),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            radius: 35,
+            child: Text((totalDriven - state.driven).toString()),
+          ),
         ),
         const Text('Kms ago'),
       ],
