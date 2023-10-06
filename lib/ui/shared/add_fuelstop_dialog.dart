@@ -162,15 +162,15 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
     // create the newFuelStop instance
     final newFuelStop = FuelStop(
         id: docRef.id,
-        driven: newDriven!.toInt(),
+        driven: newDriven==0? oldDriven:newDriven!.toInt(),
         litres: litres,
         totalCost: cost);
     //save the doc to Firbase
     await docRef.set(newFuelStop.toMap());
-    //update the [driven]on parent Vehicle Firebase Doc
-
-    ref.read(currentVehicleProvider.notifier).updateDriven(newDriven!);
-    await FirebaseFirestore.instance
+    //update the [driven]on parent Vehicle Firebase Doc only if its non zero
+if (newDriven!=0) {
+      ref.read(currentVehicleProvider.notifier).updateDriven(newDriven!);
+await FirebaseFirestore.instance
         .collection('users')
         .doc(ref.read(appUserProvider)?.uuid)
         .collection('vehicles')
@@ -179,6 +179,10 @@ class _AddFuelStopDialogState extends ConsumerState<AddFuelStopDialog> {
     setState(() {
       isBusy = false;
     });
+
+
+}
+    
     //  ref.invalidate(currentVehicleProvider);
      Navigator.pop(context);
     //  ref.refresh(currentVehicleProvider);

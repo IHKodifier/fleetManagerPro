@@ -17,6 +17,13 @@ class FuelStopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    var divider = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: Divider(
+        thickness: 1.5,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
+    );
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(
@@ -35,39 +42,49 @@ class FuelStopCard extends StatelessWidget {
           Row(
             children: [
               FuelStopAvatar(totalDriven: totalDriven, state: state),
-              SizedBox(
-                width: 300,
-                child: Card(
-                  elevation: 5,
-                  margin: const EdgeInsets.all(4),
+              Card(
+                elevation: 5,
+                margin: const EdgeInsets.all(4),
+                child: SizedBox(
+                  width: 300,
                   child: Column(mainAxisSize: MainAxisSize.max, children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(state.litres.toString(),style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),),
-                        SizedBox(width: 4 ,),
-                        Text('Ltr    @      Rs '), 
-                         Text(
-                          state.pricePerLitre.toStringAsFixed(4),
+                        Text(
+                          state.litres.toString(),
                           style:
                               Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 28,
                                   ),
+                        ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        const Text('L'),
+                      ],
+                    ),
+                    // divider,
+                    Row(
+                      children: [
+                        Text(
+                          state.pricePerLitre.toStringAsFixed(3),
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 20,
+                                  ),
+                        ),
+                        Text(
+                          '  Rs/L',
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ],
                     ),
-                    // Text('${}), Ltr  @ Rs ${state.pricePerLitre.toStringAsFixed(3)}'),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Divider(
-                        thickness: 1.5,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
+
+                    divider,
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -122,21 +139,22 @@ class FuelStopHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Spacer(flex: 4,),
-        Icon(Icons.local_gas_station_rounded,size: 40,),
-        const Spacer(flex: 1,),
-        Text(
-          // state.location!, 
-          'Fuel Stop',
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.titleLarge,
+         Icon(
+          Icons.local_gas_station_rounded,
+          color: Theme.of(context).colorScheme.primary,
+          size: 55,
         ),
-        const Spacer(flex: 3,),
+        const Spacer(
+          flex: 1,
+        ),
+    
+        const Spacer(flex: 2,),
         Text(
           timeago.format(DateTime.fromMillisecondsSinceEpoch(
               state.timestamp.millisecondsSinceEpoch)),
           style: Theme.of(context).textTheme.labelSmall,
         ),
+        const Spacer(flex: 4,),
       ],
     );
   }
