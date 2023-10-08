@@ -174,7 +174,7 @@ class FuelStopHeader extends StatelessWidget {
           state.pricePerLitre.toStringAsFixed(3)}',
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w500,
-                fontSize: 24,
+                fontSize: 20,
               ),
         ),
         Text(
