@@ -1,8 +1,11 @@
 // import 'package:fleet_manager_pro/onboarding.dart';
 
 import 'package:fleet_manager_pro/startup_view.dart';
+import 'package:fleet_manager_pro/states/flexscheme_state.dart';
 import 'package:fleet_manager_pro/theme_data.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyApp extends ConsumerWidget {
@@ -12,6 +15,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentScheme = ref.watch(flexSchemeProvider);
     final themeMode = ref.watch(themeModeProvider);
     return MaterialApp(
       title: 'Fleet Manager Pro',
@@ -21,8 +25,11 @@ class MyApp extends ConsumerWidget {
 // you use same or higher version, but still same major version. If
 // you use a lower version, some properties may not be supported. In
 // that case you can also remove them after copying the theme to your app.
-      theme: appLightTheme,
-      darkTheme: appDarkTheme,
+
+
+
+      theme: FlexColorScheme.light(scheme: currentScheme).toTheme,
+      darkTheme: FlexColorScheme.dark(scheme: currentScheme).toTheme,
 
       home: StartUpResolver(),
     );
@@ -41,10 +48,14 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
     state = ThemeMode.dark;
   }
 
+
   void applyLightTheme() {
     state = ThemeMode.light;
   }
 }
+
+
+
 
 class AppVersionInfo {
    final version = '1.0.0';

@@ -1,6 +1,9 @@
 import 'package:fleet_manager_pro/app.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
+import 'package:fleet_manager_pro/states/flexscheme_state.dart';
+import 'package:fleet_manager_pro/ui/shared/themes_list.dart';
 import 'package:fleet_manager_pro/ui/shared/vehicles_list.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,15 +32,16 @@ class CustomDrawer extends ConsumerWidget {
                   .copyWith(color: Theme.of(context).colorScheme.onPrimary),
             ),
             accountEmail: Text(appUser.email!),
-            currentAccountPicture: ClipOval(child: Image.network(appUser.photoUrl!)),
+            currentAccountPicture:
+                ClipOval(child: Image.network(appUser.photoUrl!)),
             currentAccountPictureSize: const Size.square(72),
           ),
           const ProfileTile(),
           const Divider(),
           ThemeModeTile(),
           const Divider(),
-          // const MyCarsTile(),
-          // const Divider(),
+          ThemesTile(),
+          const Divider(),
           // const SettingsTile(),
           // const Divider(),
           const AboutTile(),
@@ -183,20 +187,19 @@ class AboutTile extends StatelessWidget {
         // size: 40,
       ),
       onTap: () {
-        final appInfo= AppVersionInfo();
-        showAboutDialog(context: context,
-        applicationName: 'Fleet Manager Pro',
-        applicationVersion: appInfo.version,
-        children: [
-          const Text('Powered By'),
-          Text(appInfo.poweredBy),
-          const Text('a single man startup by'),
-          Text(appInfo.author),
-          
-        ]);
-        
+        final appInfo = AppVersionInfo();
+        showAboutDialog(
+            context: context,
+            applicationName: 'Fleet Manager Pro',
+            applicationVersion: appInfo.version,
+            children: [
+              const Text('Powered By'),
+              Text(appInfo.poweredBy),
+              const Text('a single man startup by'),
+              Text(appInfo.author),
+            ]);
       },
-      title: Text( 
+      title: Text(
         'About',
         style: Theme.of(context).textTheme.titleMedium,
       ),
@@ -210,7 +213,7 @@ class SignOutTile extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: Icon(
         (Icons.logout),
@@ -222,36 +225,61 @@ class SignOutTile extends ConsumerWidget {
         style: Theme.of(context).textTheme.titleMedium,
       ),
       onTap: () async {
-      //   await FirebaseAuth.instance.signOut();
-      // ref.read(appUserProvider.notifier).;
-      print('signing out user');
-      await ref.read(appUserProvider.notifier).signOut();
-      print('user signed out successffully');
-      ref.read(appUserProvider.notifier).clearUser();
+        //   await FirebaseAuth.instance.signOut();
+        // ref.read(appUserProvider.notifier).;
+        print('signing out user');
+        await ref.read(appUserProvider.notifier).signOut();
+        print('user signed out successffully');
+        ref.read(appUserProvider.notifier).clearUser();
       },
     );
   }
 }
 
-class MyCarsTile extends StatelessWidget {
-  const MyCarsTile({
+class ThemesTile extends ConsumerWidget {
+  ThemesTile({
     super.key,
   });
+  late WidgetRef ref;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    this.ref = ref;
     return ListTile(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) =>  VehicleList())),
+      onTap: () {
+        showDialog(context: context, builder: themesDialogBuilder);
+      },
       leading: Icon(
-        (Icons.car_rental),
+        (Icons.color_lens),
         color: Theme.of(context).colorScheme.primary,
         // size: 40,
       ),
       title: Text(
-        'My Cars',
+        'Themes',
         style: Theme.of(context).textTheme.titleMedium,
       ),
+    );
+  }
+
+  Widget themesDialogBuilder(BuildContext context) {
+    final currentScheme = ref.watch(flexSchemeProvider);
+
+    return SimpleDialog(
+      title: Text('Choose Theme'),
+      insetPadding: EdgeInsets.all(8),
+      children: FlexScheme.values
+          .map((e) => ListTile(
+                title: Text(e.name),
+                trailing: currentScheme == e ? Icon(Icons.check) : null,
+                onTap: () async {
+                  
+                                      await Future.delayed(Duration(milliseconds: 500));
+                                      ref.read(flexSchemeProvider.notifier).changeScheme(e);
+                                      Navigator.pop(context);
+
+                },
+              ),)
+          .toList(),
     );
   }
 }

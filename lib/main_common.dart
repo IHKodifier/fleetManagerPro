@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fleet_manager_pro/environment.dart';
 import 'package:fleet_manager_pro/states/barrel_models.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
@@ -29,6 +30,8 @@ Future<void> mainCommon(String env) async {
       storageBucket: 'fleet-manager-prod-86045.appspot.com',
       );
   WidgetsFlutterBinding.ensureInitialized();
+      await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
    // TODO: initialize environment specfic FirebaseProject
   // Firebase.initializeApp(options: FirebaseOp);
   bool showDebugBanner = true;
