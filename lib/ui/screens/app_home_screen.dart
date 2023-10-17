@@ -152,10 +152,14 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
 
        type: BottomNavigationBarType.shifting,
        selectedItemColor: Theme.of(context).colorScheme.primary,
+       unselectedIconTheme: IconThemeData(
+        color: Theme.of(context).colorScheme.primaryContainer
+
+       ),
         onTap: (value) => setState(() {
           currentPageIndex = value;
         }),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        // backgroundColor: Theme.of(context).colorScheme.tertiary,
         items: navBarItems,
       ),
       floatingActionButton: fabs[currentPageIndex],

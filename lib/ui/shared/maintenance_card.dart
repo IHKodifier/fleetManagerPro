@@ -35,7 +35,7 @@ class MaintenanceCard extends StatelessWidget {
             children: [
               MaintenanceAvatar(totalDriven: totalDriven, state: state),
               SizedBox(
-                width: 300,
+                width: 260, 
                 // constraints: BoxConstraints(minHeight: 120),
                 // height: 120,
                 //  color: Colors.green,
@@ -43,9 +43,9 @@ class MaintenanceCard extends StatelessWidget {
                   elevation: 5,
                   margin: const EdgeInsets.all(4),
                   child: Column(
-                      // shrinkWrap: true,
+                      // shrinkWrap: true, 
 
-                      // direction: Axis.vertical,
+                      // direction: Axis.vertical, 
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         ...state.services!
@@ -58,7 +58,7 @@ class MaintenanceCard extends StatelessWidget {
                                   children: [
                                     Expanded(child: Text(e!.name)),
                                     // SizedBox(width: 150),
-                                    const Spacer(),
+                                    // const Spacer(),
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(right: 8.0),
@@ -81,8 +81,7 @@ class MaintenanceCard extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            // Divider(thickness: 3,
-                            // color: Colors.black,),
+                          
                             Text(
                               'Total',
                               style: Theme.of(context)
@@ -94,7 +93,7 @@ class MaintenanceCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 40),
                             // Spacer(),
-
+ 
                             Padding(
                               padding: const EdgeInsets.only(right: 4.0),
                               child: Text(
@@ -161,11 +160,17 @@ class MaintenanceAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 35,
-          child: Text((totalDriven - state.kmsDriven).toString()),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            radius: 35,
+            child: Text((totalDriven - state.kmsDriven).toString()),
+          ),
         ),
-        const Text('Kms ago'),
+        Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: const Text('Kms ago'),
+        ),
       ],
     );
   }

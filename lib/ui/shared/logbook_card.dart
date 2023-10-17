@@ -32,11 +32,11 @@ class LogbookCard extends StatelessWidget {
           //   fontWeight: FontWeight.bold
           // ),
         ),
-     state.driver.isNotEmpty?TextSpan(
-      text: ' (${state.driver})',
-     style: Theme.of(context).textTheme.labelMedium
-      ):TextSpan(text: ' ( Default Driver)',
-           style: Theme.of(context).textTheme.labelMedium),
+    //  state.driver.isNotEmpty?TextSpan(
+    //   text: ' (${state.driver})',
+    //  style: Theme.of(context).textTheme.labelMedium
+    //   ):TextSpan(text: ' ( Default Driver)',
+    //        style: Theme.of(context).textTheme.labelMedium),
       ],
     ));
   }
@@ -46,6 +46,13 @@ class LogbookCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         dateBuilder(context),
+         state.driver.isNotEmpty
+            ? Text(
+                ' (${state.driver})',
+                style: Theme.of(context).textTheme.labelMedium)
+            : Text(
+                ' ( Default Driver)',
+                style: Theme.of(context).textTheme.labelMedium),
       ],
     );
   }
@@ -93,12 +100,10 @@ class LogbookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(
+       shape: RoundedRectangleBorder(
         side: BorderSide(
-          width: 1.0,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        borderRadius: BorderRadius.circular(5),
+            width: 1.0, color: Theme.of(context).colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
       ),
       elevation: 2,
       child: Padding(
@@ -117,24 +122,27 @@ class LogbookCard extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.all(4.0),
-                  child: Icon(Icons.flag_circle_sharp,color: Colors.green),
+                  child: Icon(Icons.flag_circle_sharp,color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
                
                
                 ...state.destinations.map((e) => Padding(
                   padding: const EdgeInsets.all(4),
                   child: Material(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     type: MaterialType.card,
-                    elevation:1,
+                    elevation:5,
                     child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(e.name),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(e.name,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface
+                      ),),
                     )),
-                )).toList(),
+                )).toList(), 
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Icon(Icons.flag_circle_sharp,color: Colors.red),
+                                    child: Icon(Icons.flag_circle_sharp,color: Theme.of(context).colorScheme.onSurfaceVariant),
                                   ),
 
               ],

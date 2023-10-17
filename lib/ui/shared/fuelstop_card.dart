@@ -43,7 +43,7 @@ class FuelStopCard extends StatelessWidget {
             children: [
               FuelStopAvatar(totalDriven: totalDriven, state: state),
               SizedBox(
-                width: 300,
+                width: 260,
                 child: Column(mainAxisSize: MainAxisSize.min,
                  children: [
                   // Row(
@@ -153,7 +153,7 @@ class FuelStopHeader extends StatelessWidget {
           state.litres.toString(),
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w600,
-                fontSize: 28,
+                fontSize: 20,
               ),
         ),
         const SizedBox(
@@ -174,15 +174,15 @@ class FuelStopHeader extends StatelessWidget {
           state.pricePerLitre.toStringAsFixed(3)}',
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w500,
-                fontSize: 20,
+                fontSize: 16,
               ),
         ),
         Text(
-          ' /L',
+          '/L',
           style: Theme.of(context).textTheme.labelSmall,
         ),
     
-        const Spacer(flex: 2,),
+        const Spacer(flex: 4,),
         Text(
           timeago.format(DateTime.fromMillisecondsSinceEpoch(
               state.timestamp.millisecondsSinceEpoch)),
@@ -212,7 +212,10 @@ class FuelStopAvatar extends StatelessWidget {
             child: Text((totalDriven - state.driven).toString()),
           ),
         ),
-        const Text('Kms ago'),
+        Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: const Text('Kms ago'),
+        ),
       ],
     );
   }
