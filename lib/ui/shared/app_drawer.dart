@@ -2,8 +2,6 @@ import 'package:fleet_manager_pro/app.dart';
 import 'package:fleet_manager_pro/states/app_user_state.dart';
 import 'package:fleet_manager_pro/states/flexscheme_state.dart';
 import 'package:fleet_manager_pro/ui/shared/loading_overlay.dart';
-import 'package:fleet_manager_pro/ui/shared/themes_list.dart';
-import 'package:fleet_manager_pro/ui/shared/vehicles_list.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -264,29 +262,29 @@ class ThemesTile extends ConsumerWidget {
 
   Widget themesDialogBuilder(BuildContext context) {
     final currentScheme = ref.watch(flexSchemeProvider);
-    bool  _isLoading =false;
+    bool  isLoading =false;
 
     return Stack(
       children: [
         SimpleDialog(
-          title: Text('Choose Theme'),
-          insetPadding: EdgeInsets.all(8),
+          title: const Text('Choose Theme'),
+          insetPadding: const EdgeInsets.all(8),
           children: FlexScheme.values
               .map(
                 (e) => ListTile(
                   title: Text(e.name),
-                  trailing: currentScheme == e ? Icon(Icons.check) : null,
+                  trailing: currentScheme == e ? const Icon(Icons.check) : null,
                   onTap: () async {
                     Navigator.pop(context);
-                    _isLoading=true;
+                    isLoading=true;
                     ref.read(flexSchemeProvider.notifier).changeScheme(e);
-                    await Future.delayed(Duration(milliseconds: 5000));
+                    await Future.delayed(const Duration(milliseconds: 5000));
                   },
                 ),
               )
               .toList(),
         ),
-        LoadingOverlay(isLoading: _isLoading),
+        LoadingOverlay(isLoading: isLoading),
       ],
     );
   }

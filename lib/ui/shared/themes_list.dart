@@ -19,7 +19,7 @@ class ThemesList extends ConsumerWidget {
             return 
             ListTile(
                 title: Text(scheme.name),
-                trailing: currentScheme == scheme ? Icon(Icons.check) : null,
+                trailing: currentScheme == scheme ? const Icon(Icons.check) : null,
                 onTap: () =>
                     ref.read(flexSchemeProvider.notifier).changeScheme(scheme),
               );

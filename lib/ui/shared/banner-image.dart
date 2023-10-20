@@ -72,15 +72,15 @@ class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
         children: [
           vehicleState.images!.isEmpty
               ? Container(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.primaryContainer,
                   child: Center(
                       child: Padding(
                     padding: const EdgeInsets.all(32.0),
                     child: Text(
-                      'No Media added for this car , click the camer Icon below to add Media for this car',
+                      ' No Media files found for this car',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSecondary),
+                          color: Theme.of(context).colorScheme.onPrimaryContainer),
                     ),
                   )),
                 )
@@ -89,6 +89,7 @@ class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
               ? Container()
               : ImagePageViewDotIndicator(
                   selectedPage: selectedImagePage, pageCount: pageCount),
+          vehicleState.images!.isNotEmpty?
           Positioned(
             bottom: 8,
             left: 8,
@@ -97,6 +98,29 @@ class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
                 child: Icon(
                   Icons.add_a_photo,
                   color: Theme.of(context).colorScheme.onPrimary,
+                  size: 45,
+                ),
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    child: AddMediaDialog(),
+                  ),
+                );
+              },
+            ),
+          )
+        : Positioned(
+            bottom: 50,
+            // top: 0,
+            left: 0,
+            right :0,
+            child: IconButton(
+              icon: Center(
+                child: Icon(
+                  Icons.add_a_photo,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                   size: 45,
                 ),
               ),

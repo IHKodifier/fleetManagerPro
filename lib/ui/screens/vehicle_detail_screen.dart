@@ -135,7 +135,6 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
     vehicleState = ref.watch(currentVehicleProvider);
     maintenanceAsync = ref.watch(maintenanceStreamProvider(vehicleState.id));
     return Scaffold(
-      // body: body(context),
       body: CustomScrollView(
         slivers: [
           const CustomSliverAppBar(),
@@ -362,6 +361,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
       ),
     );
   }
+   
    Widget updateDrivenDialogBuilder(BuildContext context) {
     return AlertDialog(
       title: const Text('Update  driven'),

@@ -170,8 +170,7 @@ class FuelStopHeader extends StatelessWidget {
                 // fontSize: 20,
               ),
         ),
-         Text('${
-          state.pricePerLitre.toStringAsFixed(3)}',
+         Text(state.pricePerLitre.toStringAsFixed(3),
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
@@ -212,9 +211,9 @@ class FuelStopAvatar extends StatelessWidget {
             child: Text((totalDriven - state.driven).toString()),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: const Text('Kms ago'),
+        const Padding(
+          padding: EdgeInsets.all(2.0),
+          child: Text('Kms ago'),
         ),
       ],
     );

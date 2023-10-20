@@ -167,9 +167,9 @@ class MaintenanceAvatar extends StatelessWidget {
             child: Text((totalDriven - state.kmsDriven).toString()),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: const Text('Kms ago'),
+        const Padding(
+          padding: EdgeInsets.all(2.0),
+          child: Text('Kms ago'),
         ),
       ],
     );

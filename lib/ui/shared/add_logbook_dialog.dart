@@ -4,7 +4,6 @@ import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/states/destination.dart';
 import 'package:fleet_manager_pro/states/logbook.dart';
 import 'package:fleet_manager_pro/states/logbook_state.dart';
-import 'package:fleet_manager_pro/ui/shared/barrel_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:intl/intl.dart';
@@ -53,7 +52,7 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Spacer(),
-          Text('Current Reading'),
+          const Text('Current Reading'),
           const Spacer(
             flex: 3,
           ),
@@ -65,7 +64,7 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
                 ),
           ),
           // const Spacer(),
-          Text(' Km'),
+          const Text(' Km'),
           const Spacer(),
         ],
       ),
@@ -80,7 +79,7 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Spacer(),
-          Text('New Reading'),
+          const Text('New Reading'),
           const Spacer(
             flex: 3,
           ),
@@ -93,7 +92,7 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
           ),
           // const Spacer(),
           // const Spacer(),
-          Text(' Km'),
+          const Text(' Km'),
           const Spacer(),
         ],
       ),
@@ -103,7 +102,7 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
   Widget driverNameTextField() {
     return Container(
       height: 55,
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: TextFormField(
@@ -144,7 +143,6 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
   }
 
   Future<void> onAddLogbook() async {
-    ;
     if (logbookFormKey.currentState!.validate()) {
       logbookFormKey.currentState!.save();
       newLogbook.destinations = selectedDestinations;
@@ -480,7 +478,7 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
                 children: [
                   Row(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(4.0),
                         child: Icon(
                           Icons.flag_circle,
@@ -502,10 +500,10 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
                         (e) => track(e),
                       )
                       .toList(),
-                  selectedDestinations.length > 0
+                  selectedDestinations.isNotEmpty
                       ? Row(
                           children: [
-                            Padding(
+                            const Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Icon(
                                 Icons.flag_circle,

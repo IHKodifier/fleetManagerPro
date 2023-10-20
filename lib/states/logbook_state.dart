@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/destination.dart';
 import 'package:fleet_manager_pro/states/logbook.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 
 final allDestinationsProvider =
