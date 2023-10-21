@@ -50,7 +50,7 @@ class VehicleList extends ConsumerWidget {
             },
             child: Card(
                 // margin: const EdgeInsets.all(8),
-                color: Theme.of(_context).colorScheme.onInverseSurface,
+                color: Theme.of(_context).colorScheme.primaryContainer,
                 elevation: 5,
                 // height:150,
                 child: Column(
