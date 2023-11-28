@@ -6,8 +6,9 @@ import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/ui/screens/signup_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gap/gap.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+// import 'package:flutter_animate/flutter_animate.dart';
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
@@ -19,10 +20,134 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   bool isBusy = false;
   bool passwordIsVisible = false;
+  late double width;
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+
+  Expanded signInWithGoogleButton() {
+    return Expanded(
+      child: Container(
+        height: 50,
+        child: OutlinedButton(
+          onPressed: () async {
+            await _signInWithGoogle();
+          },
+          child: const Text('Login with Google'),
+        ),
+      ),
+    );
+  }
+
+  Expanded signInButton(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        height: 50,
+        child: ElevatedButton(
+          onPressed: _login,
+          child: !isBusy
+              ? const Text('Login')
+              : Center(
+                  child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                )),
+        ),
+      ),
+    );
+  }
+
+  Expanded signupButton(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        height: 50,
+        child: ElevatedButton(
+          onPressed: () {
+            // Navigate to SignUpScreen
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const SignupScreen(),
+            ));
+          },
+          child: const Text('Sign Up'),
+        ),
+      ),
+    );
+  }
+
+  TextFormField passwordField() {
+    return TextFormField(
+      controller: _passwordController,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        suffixIcon: IconButton(
+          onPressed: () {
+            setState(() {
+              passwordIsVisible = !passwordIsVisible;
+            });
+          },
+          icon:
+              Icon(passwordIsVisible ? Icons.visibility : Icons.visibility_off),
+        ),
+      ),
+      obscureText: !passwordIsVisible,
+    );
+  }
+
+  TextFormField userNameField() {
+    return TextFormField(
+      controller: _usernameController,
+      decoration: const InputDecoration(labelText: 'Username'),
+    );
+  }
+
+  Widget oneStopShop(BuildContext context) {
+    return Text(
+      'Your One Stop shop to manage all your vehicles  and their service History, All in One Place ',
+      style: Theme.of(context).textTheme.bodyLarge,
+    );
+  }
+
+  Expanded repairGraphic() {
+    return Expanded(
+      flex: 2,
+      child: PageView(
+        children: [
+          Container(
+            // color: Color s.green,
+            child: Image.asset(
+              'assets/intro 1.jpg',
+              height: 250,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+          Card(
+            // color: Colors.green,
+            child: Image.asset(
+              'assets/intro 2.jpg',
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+          Card(
+            // color: Colors.green,
+            child: Image.asset(
+              'assets/intro 01.png',
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Text welcomeBanner(BuildContext context) {
+    return Text(
+      'Welcome to Fleet Manager Pro!',
+      style: Theme.of(context).textTheme.headlineLarge,
+    );
+  }
 
   Future<void> _login() async {
     setState(() {
@@ -143,152 +268,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return user;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // shrinkWrap: true,
-              children: [
-                const Spacer(
-                    // flex: 0,
-                    ),
-                Text(
-                  'Welcome to Fleet Manager Pro!',
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Expanded(
-                  flex: 3,
-                  child: PageView(
-                    children: [
-                      Card(
-                        // color: Color s.green,
-                        child: Image.asset(
-                          'assets/intro 1.jpg',
-                          height: 250,
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                      Card(
-                        // color: Colors.green,
-                        child: Image.asset(
-                          'assets/intro 2.jpg',
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                      Card(
-                        // color: Colors.green,
-                        child: Image.asset(
-                          'assets/intro 01.png',
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Your One Stop shop to manage all your vehicles  and their service History',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                // const Spacer(
-                //   flex: 1,
-                // ),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(labelText: 'Username'),
-                ),
-                const SizedBox(
-                  height: 2.0,
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          passwordIsVisible = !passwordIsVisible;
-                        });
-                      },
-                      icon: Icon(passwordIsVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                    ),
-                  ),
-                  obscureText: !passwordIsVisible,
-                ),
-                const SizedBox(height: 2.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Navigate to SignUpScreen
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SignupScreen(),
-                          ));
-                        },
-                        child: const Text('Sign Up'),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: ElevatedButton(
-                        onPressed: _login,
-                        child: !isBusy
-                            ? const Text('Login')
-                            : Center(
-                                child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              )),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4.0),
-                const Row(
-                  children: [],
-                ),
-                const SizedBox(height: 4.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () async {
-                          await _signInWithGoogle();
-                        },
-                        child: const Text('Login with Google'),
-                      ),
-                    ),
-                  ],
-                ),
-                // Spacer(),
-                const SizedBox(
-                  height: 4,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Future<void> _frorgotPassword() async {
     // Send a password reset email to the u
     //  ser's email address.
@@ -322,5 +301,63 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // var width;
+    return SafeArea(
+      child: Scaffold(
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            width = constraints.maxWidth;
+
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  // shrinkWrap: true,
+                  children: [
+                    Gap(80),
+                    welcomeBanner(context),
+                    repairGraphic(),
+                    SizedBox(
+                      width: width / 2.1,
+                      child: Column(
+                        children: [
+                          oneStopShop(context),
+                          Gap(80),
+                          userNameField(),
+                          Gap(12),
+                          passwordField(),
+                          Gap(12),
+                          Row(
+                            children: [
+                              signupButton(context),
+                              Gap(12),
+                              signInButton(context),
+                            ],
+                          ),
+                          Gap(12),
+                          Row(
+                            children: [
+                              signInWithGoogleButton(),
+                            ],
+                          ),
+                          Gap(12),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }

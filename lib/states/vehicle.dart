@@ -11,6 +11,9 @@ class Vehicle extends Equatable {
   List<Maintenance?> maintenances;
   List<FuelStop?> fuelstops;
   List<Logbook?> logbooks;
+  int maintenancesCount;
+  int fuelstopsCount;
+  int loobooksCount;
   String? make;
   String? model;
   String? year;
@@ -31,6 +34,9 @@ class Vehicle extends Equatable {
     this.regCity,
     this.driven,
     this.images,
+    this.maintenancesCount=0,
+    this.loobooksCount=0,
+    this.fuelstopsCount=0
   });
 
   @override
@@ -63,6 +69,9 @@ class Vehicle extends Equatable {
     String? year,
     String? reg,
     String? regCity,
+    int? maintenancesCount,
+    int? fuelstopsCount,
+    int? mlogbooksCount,
     int? driven,
     List<String?>? images,
   }) {
@@ -84,6 +93,7 @@ class Vehicle extends Equatable {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
+    
 
     result.addAll({'id': id});
     if (doors != null) {
@@ -92,14 +102,17 @@ class Vehicle extends Equatable {
     if (maintenances.isNotEmpty) {
       result.addAll(
           {'maintenances': maintenances.map((x) => x?.toMap()).toList()});
+          result.addAll({'nintenancesCount' : maintenancesCount,});
     }
     if (fuelstops.isNotEmpty) {
       result.addAll(
           {'fuelstops': fuelstops.map((x) => x?.toMap()).toList()});
+          result.addAll({'fuelstopsCount':fuelstopsCount});
     }
        if (logbooks.isNotEmpty) {
       result.addAll(
           {'logbooks': logbooks.map((x) => x?.toMap()).toList()});
+          result.addAll({'logbooksCount':loobooksCount});
     }
      if (images!.isNotEmpty) {
       result.addAll(
@@ -141,6 +154,9 @@ class Vehicle extends Equatable {
       year: map['year'],
       reg: map['reg'],
       regCity: map['regcity'],
+      maintenancesCount: map['maintenancesCount'] ?? 0,
+      fuelstopsCount: map['fuelstopsCount'] ?? 0,
+      loobooksCount: map['logbookCount'] ?? 0,
       driven: map['driven'],
       images: map['images'] != null
           ? List<String?>.from(map['images']?.map((x) => x))

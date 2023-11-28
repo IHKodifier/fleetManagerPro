@@ -1,4 +1,5 @@
 import 'package:fleet_manager_pro/utils.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../states/barrel_models.dart';
@@ -34,8 +35,8 @@ class MaintenanceCard extends StatelessWidget {
           Row(
             children: [
               MaintenanceAvatar(totalDriven: totalDriven, state: state),
-              SizedBox(
-                width: 260, 
+              Container(
+                width: MediaQuery.of(context).size.width-100,  
                 // constraints: BoxConstraints(minHeight: 120),
                 // height: 120,
                 //  color: Colors.green,
@@ -50,23 +51,29 @@ class MaintenanceCard extends StatelessWidget {
                       children: [
                         ...state.services!
                             .map(
-                              (e) => Padding(
+                              (e) {
+                              final isEven=(state.services!.indexOf(e) % 2)==0;
+                                return Padding(
                                 padding: const EdgeInsets.fromLTRB(8, 0, 2, 0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(child: Text(e!.name)),
-                                    // SizedBox(width: 150),
-                                    // const Spacer(),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: Text(Utils.thousandify(e.cost)),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                child: Container(
+                                  color: isEven?Colors.blue:Colors.yellow,
+                                  child: Row(
+                                    
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(child: Text(e!.name)),
+                                      // SizedBox(width: 150),
+                                      // const Spacer(),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: Text(Utils.thousandify(e.cost)),
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                              },
                             )
                             .toList(),
                         // Spacer(),
@@ -75,7 +82,7 @@ class MaintenanceCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Divider(
                             thickness: 1.5,
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                           ),
                         ),
                         Row(

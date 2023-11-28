@@ -2,6 +2,7 @@
 
 import 'package:fleet_manager_pro/startup_view.dart';
 import 'package:fleet_manager_pro/states/flexscheme_state.dart';
+import 'package:fleet_manager_pro/ui/shared/incompatibe_device_widget.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,11 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Fleet Manager Pro',
       debugShowCheckedModeBanner: isDebugBannerVisible,
-      builder: (context, child) => ResponsiveBreakpoints.builder(
+      builder: (context, child) =>
+
+        
+
+          ResponsiveBreakpoints.builder(
           child: LayoutBuilder(
             builder: (context, constraints) {
               return ConstrainedBox(
@@ -28,16 +33,18 @@ class MyApp extends ConsumerWidget {
                     minWidth: 200,
                     minHeight: constraints.maxHeight,
                   ),
-                  child: child);
+                  child: ResponsiveBreakpoints.of(context).smallerThan(MOBILE)?IncompatibleDeviceWidget():child);
             },
           ),
           breakpoints: [
-            const Breakpoint(start: 200, end: 650, name: MOBILE),
-            const Breakpoint(start: 400, end: 650, name: TABLET),
-            const Breakpoint(start: 651, end: 1920, name: DESKTOP),
-            const Breakpoint(start: 800, end: 1200, name: 'EXPAND_SIDE_PANEL'),
-            const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+            const Breakpoint(start: 350, end: 499, name: MOBILE),
+            const Breakpoint(start: 500, end: 799, name: TABLET),
+            const Breakpoint(start: 800, end: 1919, name: DESKTOP),
+            const Breakpoint(start: 1920, end: 3839, name: 'EXPAND_SIDE_PANEL'),
+            const Breakpoint(start: 3840, end: 4095, name: '4K'),
+            const Breakpoint(start: 4096, end: 7680, name: '8K'),
           ]),
+            
 
       themeMode: themeMode,
 // This theme was made for FlexColorScheme version 6.1.1. Make sure
@@ -52,6 +59,8 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
+
 
 final themeModeProvider =
     StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
