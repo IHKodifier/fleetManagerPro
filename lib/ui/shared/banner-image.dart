@@ -9,23 +9,23 @@ class imagePageViewContainer extends ConsumerStatefulWidget {
   const imagePageViewContainer(int length, {super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _imagePageViewContainerState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _imagePageViewContainerState();
 }
 
-class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer> with SingleTickerProviderStateMixin {
+class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
+    with SingleTickerProviderStateMixin {
   late Vehicle vehicleState;
-    late final imagePageController;
-      late int selectedImagePage;
+  late final imagePageController;
+  late int selectedImagePage;
 
-      @override
-      
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-      selectedImagePage = 0;
+    selectedImagePage = 0;
     imagePageController = PageController(initialPage: selectedImagePage);
-        vehicleState = ref.read(currentVehicleProvider);
-
+    vehicleState = ref.read(currentVehicleProvider);
   }
 
   PageView imagePageView() {
@@ -40,6 +40,7 @@ class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
               // borderRadius: BorderRadius.circular(16),
               child: Image.network(
                 fit: BoxFit.fitHeight,
+                width:double.infinity,
                 e!,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) {
@@ -66,7 +67,7 @@ class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
   Widget build(BuildContext context) {
     final vehicleState = ref.watch(currentVehicleProvider);
     int pageCount = vehicleState.images!.length;
-     return SizedBox(
+    return SizedBox(
       height: 250,
       child: Stack(
         children: [
@@ -80,7 +81,8 @@ class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
                       ' No Media files found for this car',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimaryContainer),
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
                     ),
                   )),
                 )
@@ -89,51 +91,54 @@ class _imagePageViewContainerState extends ConsumerState<imagePageViewContainer>
               ? Container()
               : ImagePageViewDotIndicator(
                   selectedPage: selectedImagePage, pageCount: pageCount),
-          vehicleState.images!.isNotEmpty?
-          Positioned(
-            bottom: 8,
-            left: 8,
-            child: IconButton(
-              icon: Center(
-                child: Icon(
-                  Icons.add_a_photo,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 45,
-                ),
-              ),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    child: AddMediaDialog(),
+          vehicleState.images!.isNotEmpty
+              ? Positioned(
+                  bottom: 32,
+                  // left: double.infinity/2,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal:16.0),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.add_a_photo,
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          size: 45,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                              child: AddMediaDialog(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                );
-              },
-            ),
-          )
-        : Positioned(
-            bottom: 50,
-            // top: 0,
-            left: 0,
-            right :0,
-            child: IconButton(
-              icon: Center(
-                child: Icon(
-                  Icons.add_a_photo,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  size: 45,
-                ),
-              ),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    child: AddMediaDialog(),
+                )
+              : Positioned(
+                  bottom: 50,
+                  // top: 0,
+                  left: 0,
+                  right: 0,
+                  child: IconButton(
+                    icon: Center(
+                      child: Icon(
+                        Icons.add_a_photo,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        size: 45,
+                      ),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          child: AddMediaDialog(),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ),
+                ),
         ],
       ),
     );

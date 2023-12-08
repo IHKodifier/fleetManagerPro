@@ -125,18 +125,24 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
       child: Row(
         children: [
           Expanded(
-              child: OutlinedButton.icon(
-                  onPressed: onCancel,
-                  icon: const Icon(Icons.cancel),
-                  label: const Text('Cancel'))),
+              child: Container(
+                height: 50,
+                child: TextButton(
+                    onPressed: onCancel,
+                    // icon: const Icon(Icons.cancel),
+                    child: const Text('Cancel')),
+              )),
           const SizedBox(
             width: 4,
           ),
           Expanded(
-              child: FilledButton.icon(
-                  onPressed: onAddLogbook,
-                  icon: const Icon(Icons.save),
-                  label: const Text('Save'))),
+              child: Container(
+                height: 50,
+                child: FilledButton.icon(
+                    onPressed: onAddLogbook,
+                    icon: const Icon(Icons.save),
+                    label: const Text('Save')),
+              )),
         ],
       ),
     );
@@ -391,50 +397,53 @@ class _AddLogbookDialogState extends ConsumerState<AddLogbookDialog> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric( 
               horizontal: 16.0,
             ),
-            child: SpinBox(
-              step: 10,
-              textStyle: const TextStyle(fontSize: 20)
-                  .copyWith(fontWeight: FontWeight.w400),
-              decoration: InputDecoration(
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(fontSize: 12),
-                suffix: const Text(' Kms'),
-                border: const OutlineInputBorder(),
-                suffixStyle: const TextStyle(fontSize: 14).copyWith(
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.italic,
+            child: SizedBox(
+              width: 260,
+              child: SpinBox(
+                step: 10,
+                textStyle: const TextStyle(fontSize: 20)
+                    .copyWith(fontWeight: FontWeight.w400),
+                decoration: InputDecoration(
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(fontSize: 12),
+                  suffix: const Text(' Kms'),
+                  border: const OutlineInputBorder(),
+                  suffixStyle: const TextStyle(fontSize: 14).copyWith(
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  contentPadding: const EdgeInsets.all(4),
                 ),
-                contentPadding: const EdgeInsets.all(4),
+              
+                min: 0,
+                max: 600,
+                value: 0,
+              
+                incrementIcon: Icon(
+                  Icons.add_circle,
+                  // size: 35,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                decrementIcon: Icon(
+                  Icons.remove_circle,
+                  // size: 35,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                spacing: 16,
+                onChanged: (value) {
+                  setState(() {
+                    // _kmsDriven = value.round();
+                    // vehicle.driven = value.round();
+                    newLogbook.kmsTravelled = value;
+                  });
+                },
+                // showButtons: false,
               ),
-
-              min: 0,
-              max: 600,
-              value: 0,
-
-              incrementIcon: Icon(
-                Icons.add_circle,
-                // size: 35,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              decrementIcon: Icon(
-                Icons.remove_circle,
-                // size: 35,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              spacing: 16,
-              onChanged: (value) {
-                setState(() {
-                  // _kmsDriven = value.round();
-                  // vehicle.driven = value.round();
-                  newLogbook.kmsTravelled = value;
-                });
-              },
-              // showButtons: false,
             ),
           ),
           currentReadingRow(),

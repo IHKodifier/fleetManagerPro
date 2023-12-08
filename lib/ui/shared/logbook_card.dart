@@ -117,32 +117,39 @@ class LogbookCard extends StatelessWidget {
             Wrap(
               alignment: WrapAlignment.center,
               runAlignment: WrapAlignment.center,
-              spacing: 0,
+              spacing: 0.1,
               children: [
 
                 Padding(
                   padding: const EdgeInsets.all(4.0),
-                  child: Icon(Icons.flag_circle_sharp,color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  child:Chip(label: Text('Start')),
+                  //  Icon(Icons.flag_circle_sharp,
+                  // color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
                
                
                 ...state.destinations.map((e) => Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Material(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    type: MaterialType.card,
-                    elevation:5,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(e.name,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface
-                      ),),
-                    )),
+                  padding: const EdgeInsets.all(2),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      // type: MaterialType.card, 
+                      // elevation:5,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(e.name,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface
+                        ),),
+                      )),
+                  ),
                 )).toList(), 
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Icon(Icons.flag_circle_sharp,color: Theme.of(context).colorScheme.onSurfaceVariant),
+                                    child:Chip(label: Text('Finish')),
+                                    //  Icon(Icons.flag_circle_sharp
+                                    // ,color: Theme.of(context).colorScheme.onSurfaceVariant),
                                   ),
 
               ],

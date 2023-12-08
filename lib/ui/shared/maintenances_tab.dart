@@ -49,10 +49,16 @@ class MaintenancesTab extends ConsumerWidget {
               print(
                   'length of active maintenances = ${maintenances.length.toString()}');
               final maintenance = maintenances[index];
-              return MaintenanceCard(
-                state: maintenance,
-                totalDriven: ref.read(currentVehicleProvider).driven!,
-              );
+              return 
+                // padding: EdgeInsets.all(8),
+                 Container(
+                  margin: EdgeInsets.symmetric(vertical:16.0),
+                   child: MaintenanceCard(
+                    state: maintenance,
+                    totalDriven: ref.read(currentVehicleProvider).driven!,
+                                   ),
+                 );
+              
             },
             childCount: maintenances.length,
               ),

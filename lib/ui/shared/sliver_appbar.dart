@@ -15,6 +15,7 @@ class CustomSliverAppBar extends ConsumerWidget {
           floating: true,
           backgroundColor: Colors.transparent,
           expandedHeight: 200,
+          iconTheme: Theme.of(context).iconTheme.copyWith(color: Theme.of(context).colorScheme.onBackground),
           // snap: true ,
           flexibleSpace: FlexibleSpaceBar(
               background: imagePageViewContainer(vehicleState.images!.length),

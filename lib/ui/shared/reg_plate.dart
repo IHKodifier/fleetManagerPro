@@ -65,7 +65,8 @@ class RegPlateWidget extends StatelessWidget {
                   .titleLarge!
                   .copyWith(
                     // fontSize: 20,
-                    fontWeight: FontWeight.w400, color: Colors.black)),
+                    fontWeight: FontWeight.w400, 
+                    color: Theme.of(context).colorScheme.onSurfaceVariant)),
         ),
         Text(state.regCity!,
             // maxLines: 3,
@@ -74,7 +75,8 @@ class RegPlateWidget extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .labelSmall!
-                .copyWith(fontWeight: FontWeight.w400, color: Colors.black)),
+                .copyWith(fontWeight: FontWeight.w400, 
+                color: Theme.of(context).colorScheme.onSurfaceVariant)),
       ],
     );
   }

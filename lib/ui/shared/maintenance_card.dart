@@ -18,6 +18,7 @@ class MaintenanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Card(
+      color: Theme.of(context).colorScheme.outlineVariant,
       shape: RoundedRectangleBorder(
         side: BorderSide(
             width: 1.0, color: Theme.of(context).colorScheme.primary),
@@ -33,10 +34,11 @@ class MaintenanceCard extends StatelessWidget {
             child: MaintenanceHeader(state: state),
           ),
           Row(
-            children: [
+            children: [ 
               MaintenanceAvatar(totalDriven: totalDriven, state: state),
               Container(
-                width: MediaQuery.of(context).size.width-100,  
+                width: MediaQuery.of(context).size.width - 120,
+                padding: EdgeInsets.all(8),
                 // constraints: BoxConstraints(minHeight: 120),
                 // height: 120,
                 //  color: Colors.green,
@@ -44,25 +46,37 @@ class MaintenanceCard extends StatelessWidget {
                   elevation: 5,
                   margin: const EdgeInsets.all(4),
                   child: Column(
-                      // shrinkWrap: true, 
+                      // shrinkWrap: true,
 
-                      // direction: Axis.vertical, 
+                      // direction: Axis.vertical,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        ...state.services!
-                            .map(
-                              (e) {
-                              final isEven=(state.services!.indexOf(e) % 2)==0;
-                                return Padding(
+                        ...state.services!.map(
+                          (e) {
+                            final isEven =
+                                (state.services!.indexOf(e) % 2) == 0;
+                            return Padding(
                                 padding: const EdgeInsets.fromLTRB(8, 0, 2, 0),
                                 child: Container(
-                                  color: isEven?Colors.blue:Colors.yellow,
+                                  color: isEven
+                                      ? Theme.of(context).colorScheme.surface
+                                      : Theme.of(context).colorScheme.primaryContainer,
                                   child: Row(
-                                    
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Expanded(child: Text(e!.name)),
+                                      Expanded(
+                                          child: Text(
+                                        e!.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: isEven
+                                                  ? Theme.of(context).colorScheme.onSurface
+                                                  : Theme.of(context).colorScheme.onSurfaceVariant,
+                                            ),
+                                      )),
                                       // SizedBox(width: 150),
                                       // const Spacer(),
                                       Padding(
@@ -73,22 +87,23 @@ class MaintenanceCard extends StatelessWidget {
                                     ],
                                   ),
                                 ));
-                              },
-                            )
-                            .toList(),
+                          },
+                        ).toList(),
                         // Spacer(),
                         // SizedBox(height: 6,),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Divider(
                             thickness: 1.5,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.5),
                           ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                          
                             Text(
                               'Total',
                               style: Theme.of(context)
@@ -100,7 +115,7 @@ class MaintenanceCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 40),
                             // Spacer(),
- 
+
                             Padding(
                               padding: const EdgeInsets.only(right: 4.0),
                               child: Text(

@@ -35,6 +35,9 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
   late int selectedImagePage;
   // late Widget tabBar;
   late Vehicle vehicleState;
+  int? maintenanceCount=-1;
+  int? fuelstopsCount=-1;
+  int? logbookCount=-1;
 
   // late BuildContext _context;
 
@@ -263,7 +266,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
               return SliverToBoxAdapter(
                   child: Container(
                 height: 150,
-                // color: Colors.deepOrange,
+                // color: Colors.deepOrange, 
               ));
               // allMaintenances = List.from(maintenances);
               // filteredMaintenances = List.from(allMaintenances);
@@ -293,7 +296,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         duration: const Duration(milliseconds: 150),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
         fanAngle: 90,
         distance: 120,
         expandedFabSize: ExpandableFabSize.small,
@@ -305,7 +308,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
         children: [
           FloatingActionButton(
             heroTag: 'gas',
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
@@ -322,7 +325,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
           ),
           FloatingActionButton(
             heroTag: 'logbook',
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             child: const Icon(
               Icons.mode_of_travel_rounded,
               size: 50,
@@ -338,7 +341,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
           ),
           FloatingActionButton(
             heroTag: 'repair',
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             child: const Icon(
               Icons.car_repair_outlined,
               size: 50,

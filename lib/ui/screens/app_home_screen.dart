@@ -156,7 +156,8 @@ class _AppHomeScreenState extends ConsumerState<AppHomeScreen> {
         tooltip: 'Add vehicle',
         child: const FaIcon(
           FontAwesomeIcons.plus,
-          // color: Theme.of(context).colorScheme.outline,
+          // color: Theme.of().colorScheme.outline,
+          color: Colors.white,
           size: 35,
         ),
       ),

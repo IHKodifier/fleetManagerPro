@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 
 class AddVehiclePage extends ConsumerStatefulWidget {
@@ -42,14 +43,20 @@ class _AddVehicleFormState extends ConsumerState<AddVehiclePage> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Expanded(
-            child: OutlinedButton(
-                onPressed: onCancelPressed, child: const Text('Cancel'))),
+            child: Container(
+              height: 50,
+              child: OutlinedButton(
+                  onPressed: onCancelPressed, child: const Text('Cancel')),
+            )),
         const SizedBox(width: 12),
         Expanded(
-            child: ElevatedButton.icon(
-                onPressed: onSavePressed,
-                icon: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
-                label: const Text('Save'))),
+            child: Container(
+              height: 50,
+              child: ElevatedButton.icon(
+                  onPressed: onSavePressed,
+                  icon: const FaIcon(FontAwesomeIcons.solidFloppyDisk),
+                  label: const Text('Save')),
+            )),
       ],
     );
   }
@@ -168,30 +175,34 @@ class DrivenSpinBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      // width: 200,
-      child: SpinBox(
-        min: 0,
-        max: 1000000,
-        step: 100,
-        value: state.driven?.toDouble() ?? 0.0,
-        keyboardType: TextInputType.number,
-        decoration: const InputDecoration(
-          // labelText: 'Driven',
-          suffix: Text('Km'),
+    final width = ResponsiveBreakpoints.of(context).screenWidth;
+    return Align(
+      alignment: Alignment.center,
+      widthFactor: 1, 
+      child: SizedBox(
+        width: 260,
+        child: SpinBox(
+          min: 0,
+          max: 1000000,
+          step: 100,
+          value: state.driven?.toDouble() ?? 0.0,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(
+            // labelText: 'Driven',
+            suffix: Text('Km'),
+          ),
+          incrementIcon: Icon(
+            Icons.add_circle,
+            color: Theme.of(context).colorScheme.primary,
+            size: 35,
+          ),
+          decrementIcon: Icon(
+            Icons.remove_circle,
+            color: Theme.of(context).colorScheme.primary,
+            size: 35,
+          ),
+        onSubmitted: (p0) => state.driven= p0.toInt(),
         ),
-        incrementIcon: Icon(
-          Icons.add_circle,
-          color: Theme.of(context).colorScheme.primary,
-          size: 35,
-        ),
-        decrementIcon: Icon(
-          Icons.remove_circle,
-          color: Theme.of(context).colorScheme.primary,
-          size: 35,
-        ),
-      onSubmitted: (p0) => state.driven= p0.toInt(),
       ),
     );
   }

@@ -615,11 +615,14 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
               // const Spacer(
               //   flex: 1,
               // ),
-              SizedBox(
+              Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: SizedBox(
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _submitAddMaintenanceForm,
                   child: _isBusy? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,)): const Text('Submit'),
+                  ),
                 ),
               ),
             ],

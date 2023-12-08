@@ -40,6 +40,7 @@ class FuelStopCard extends StatelessWidget {
             child: FuelStopHeader(state: state),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FuelStopAvatar(totalDriven: totalDriven, state: state),
               SizedBox(
@@ -187,7 +188,7 @@ class FuelStopHeader extends StatelessWidget {
               state.timestamp.millisecondsSinceEpoch)),
           style: Theme.of(context).textTheme.labelSmall,
         ),
-        const Spacer(flex: 1,),
+        //  Spacer(flex: 0,),
       ],
     );
   }

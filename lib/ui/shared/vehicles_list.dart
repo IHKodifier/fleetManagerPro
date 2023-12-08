@@ -64,16 +64,16 @@ class VehicleList extends ConsumerWidget {
 
   Widget onData(List<Vehicle> data) {
     _data = data;
-    var gridDelegate = ResponsiveGridDelegate(
-      // maxCrossAxisExtent: 400,
-      minCrossAxisExtent: 250,
-      maxCrossAxisExtent: 450,
+    var gridDelegate = const ResponsiveGridDelegate(
+      // crossAxisExtent: 400, 
+      minCrossAxisExtent: 420,
+      maxCrossAxisExtent: 500, 
       crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
+      // mainAxisSpacing: 16,
     );
     return SliverToBoxAdapter(
-      child: Container(
-        height: 900,
+      child: Container( 
+        height:700,
         child: ResponsiveGridView.builder(
             // scrollDirection: ,
             alignment: Alignment.center,
@@ -148,14 +148,14 @@ class VehicleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveScaledBox(
       autoCalculateMediaQueryData: true,
-      width: 180,
-      // height:100,
+      width: 180, 
+      // height:100, 
       child: Align(
         alignment: Alignment.center,
         child: Card(
             // margin: const EdgeInsets.all(8),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
             color: Theme.of(_context).colorScheme.surfaceVariant,
             elevation: 3,
             child: Column(
@@ -297,8 +297,8 @@ class VehicleCard extends StatelessWidget {
   }
 
   Widget serviceCount(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
