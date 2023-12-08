@@ -4,10 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fleet_manager_pro/states/barrel_models.dart';
 import 'package:fleet_manager_pro/states/barrel_states.dart';
 import 'package:fleet_manager_pro/ui/screens/signup_screen.dart';
+import 'package:fleet_manager_pro/ui/shared/hover_button.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gap/gap.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 // import 'package:flutter_animate/flutter_animate.dart';
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
@@ -46,15 +49,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       flex: 2,
       child: Container(
         height: 50,
-        child: ElevatedButton(
-          onPressed: _login,
-          child: !isBusy
-              ? const Text('Login')
-              : Center(
-                  child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                )),
-        ),
+        child: HoverButton(
+          translateTo: TranslateTo.right,
+          child: ElevatedButton(
+            onPressed: _login,
+            child: !isBusy
+                ? const Text('Login')
+                : Center(
+                    child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  )),
+          ),
+        )
       ),
     );
   }
@@ -64,14 +70,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       flex: 2,
       child: Container(
         height: 50,
-        child: ElevatedButton(
-          onPressed: () {
-            // Navigate to SignUpScreen
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const SignupScreen(),
-            ));
-          },
-          child: const Text('Sign Up'),
+        child: HoverButton(
+          translateTo: TranslateTo.left,
+          child: ElevatedButton(
+            onPressed: () {
+              // Navigate to SignUpScreen
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const SignupScreen(),
+              ));
+            },
+            child: const Text('Sign Up'),
+          ),
         ),
       ),
     );
@@ -325,7 +334,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     welcomeBanner(context),
                     repairGraphic(),
                     SizedBox(
-                      width: width / 2.1,
+                      width: ResponsiveBreakpoints.of(context).isMobile?
+                      ResponsiveBreakpoints.of(context).screenWidth*.85:
+                      width / 2.1,
                       child: Column(
                         children: [
                           oneStopShop(context),
