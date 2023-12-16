@@ -66,7 +66,7 @@ dependencies:
   path_provider: ^2.1.1 
 
   #  for image cropping  
-  image_cropper: ^5.0.0 #  is not available on web
+  image_cropper: ^5.0.0 #  is not available on desktop
   # however,
   # crop_image: ^1.0.11 
   # is vailable on web and windows

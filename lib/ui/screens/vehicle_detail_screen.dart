@@ -35,9 +35,6 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
   late int selectedImagePage;
   // late Widget tabBar;
   late Vehicle vehicleState;
-  int? maintenanceCount=-1;
-  int? fuelstopsCount=-1;
-  int? logbookCount=-1;
 
   // late BuildContext _context;
 
@@ -71,68 +68,61 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    // TabController tabController = TabController(length: 3, vsync: this);
+    var tabs = [
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          children: [
+            Icon(
+              Icons.car_repair,
+              color: Theme.of(context).colorScheme.primary,
+              // size: 40,
+            ),
+            Text(
+              'Maintances',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          children: [
+            Icon(
+              Icons.local_gas_station_rounded,
+              color: Theme.of(context).colorScheme.primary,
+              // size: 40,
+            ),
+            Text(
+              'Fuel Stops',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          children: [
+            Icon(
+              Icons.location_pin,
+              color: Theme.of(context).colorScheme.primary,
+              // size: 40,
+            ),
+            Text(
+              'Log Book',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ],
+        ),
+      ),
+    ];
 
-    //
-      // indicator: BoxDecoration(
-      //     borderRadius: BorderRadius.circular(6),
-      //     color: Theme.of(context).colorScheme.surface),
-     var  tabs= [
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            children: [
-              Icon(
-                Icons.car_repair,
-                color: Theme.of(context).colorScheme.primary,
-                // size: 40,
-              ),
-              Text(
-                'Maintances',
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column( 
-            children: [
-              Icon(
-                Icons.local_gas_station_rounded,
-                color: Theme.of(context).colorScheme.primary,
-                // size: 40,
-              ),
-              Text(
-                'Fuel Stops',
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            children: [
-              Icon(
-                Icons.location_pin,
-                color: Theme.of(context).colorScheme.primary,
-                // size: 40,
-              ),
-              Text(
-                'Log Book',
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-            ],
-          ),
-        ),
-      ];
-    
     var tabViews = [
       MaintenancesTab(),
       FuelStopsTab(),
       LogbookTab(),
-   
     ];
 
     vehicleState = ref.watch(currentVehicleProvider);
@@ -211,13 +201,53 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
                     IconButton(
                         onPressed: () {
                           showDialog(
-                              context: context,
-                              builder: updateDrivenDialogBuilder);
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Update  driven'),
+                              content: Container(
+                                width: 150,
+                                height: 50,
+                                child: SpinBox(
+                                  min: vehicleState.driven!.toDouble(),
+                                  max: 2000000,
+                                  value: newDriven,
+                                  step: 10,
+                                  onChanged: (value) => setState(() {
+                                    newDriven = value;
+                                    vehicleState = vehicleState.copyWith(
+                                        driven: newDriven.toInt());
+                                  }),
+                                ),
+                              ),
+                              actions: [
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      OutlinedButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text('Cancel')),
+                                      ElevatedButton(
+                                          onPressed: _updateDriven,
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(6.0),
+                                            child: Text('Save'),
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                                // const Spacer(),
+                              ],
+                              actionsAlignment: MainAxisAlignment.center,
+                            ),
+                          );
                         },
                         icon: const Icon(Icons.edit))
                   ],
                 ),
-        
               ],
             ),
           ),
@@ -238,7 +268,6 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
                   child: TabBarView(
                     children: tabViews,
                   ),
-             
                 ),
               ]),
             ),
@@ -266,7 +295,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
               return SliverToBoxAdapter(
                   child: Container(
                 height: 150,
-                // color: Colors.deepOrange, 
+                // color: Colors.deepOrange,
               ));
               // allMaintenances = List.from(maintenances);
               // filteredMaintenances = List.from(allMaintenances);
@@ -290,7 +319,6 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
               // );
             },
           ),
-          
         ],
       ),
       floatingActionButtonLocation: ExpandableFab.location,
@@ -355,50 +383,45 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen>
               );
             },
           ),
-        
-        
-        
-        
-        
         ],
       ),
     );
   }
-   
-   Widget updateDrivenDialogBuilder(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Update  driven'),
-      content: SpinBox(
-        min: vehicleState.driven!.toDouble(),
-        max: 2000000,
-        value: newDriven,
-        step: 10,
-        onChanged: (value) => setState(() {
-          newDriven = value;
-          vehicleState = vehicleState.copyWith(driven: newDriven.toInt());
-        }),
-      ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel')),
-              ElevatedButton(
-                  onPressed: _updateDriven,
-                  child: const Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: Text('Save'),
-                  )),
-            ],
-          ),
-        ),
-        const Spacer(),
-      ],
-      actionsAlignment: MainAxisAlignment.center,
-    );
-  }
+
+  // void updateDrivenDialogBuilder(BuildContext context) {
+  //   AlertDialog(
+  //     title: const Text('Update  driven'),
+  //     content: SpinBox(
+  //       min: vehicleState.driven!.toDouble(),
+  //       max: 2000000,
+  //       value: newDriven,
+  //       step: 10,
+  //       onChanged: (value) => setState(() {
+  //         newDriven = value;
+  //         vehicleState = vehicleState.copyWith(driven: newDriven.toInt());
+  //       }),
+  //     ),
+  //     actions: [
+  //       Padding(
+  //         padding: const EdgeInsets.all(4.0),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //           children: [
+  //             OutlinedButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 child: const Text('Cancel')),
+  //             ElevatedButton(
+  //                 onPressed: _updateDriven,
+  //                 child: const Padding(
+  //                   padding: EdgeInsets.all(6.0),
+  //                   child: Text('Save'),
+  //                 )),
+  //           ],
+  //         ),
+  //       ),
+  //       const Spacer(),
+  //     ],
+  //     actionsAlignment: MainAxisAlignment.center,
+  //   );
+  // }
 }

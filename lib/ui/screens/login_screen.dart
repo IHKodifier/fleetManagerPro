@@ -324,45 +324,48 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  // shrinkWrap: true,
-                  children: [
-                    Gap(80),
-                    welcomeBanner(context),
-                    repairGraphic(),
-                    SizedBox(
-                      width: ResponsiveBreakpoints.of(context).isMobile?
-                      ResponsiveBreakpoints.of(context).screenWidth*.85:
-                      width / 2.1,
-                      child: Column(
-                        children: [
-                          oneStopShop(context),
-                          Gap(80),
-                          userNameField(),
-                          Gap(12),
-                          passwordField(),
-                          Gap(12),
-                          Row(
-                            children: [
-                              signupButton(context),
-                              Gap(12),
-                              signInButton(context),
-                            ],
-                          ),
-                          Gap(12),
-                          Row(
-                            children: [
-                              signInWithGoogleButton(),
-                            ],
-                          ),
-                          Gap(12),
-                        ],
+                child: Container(
+                  // height: 150,
+                  child: Column( 
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    // shrinkWrap: true,
+                    children: [
+                      // Gap(80),
+                      welcomeBanner(context),
+                      repairGraphic(),
+                      SizedBox(
+                        width: ResponsiveBreakpoints.of(context).isMobile?
+                        ResponsiveBreakpoints.of(context).screenWidth*.85:
+                        width / 2.1,
+                        child: Column(
+                          children: [
+                            oneStopShop(context),
+                            Gap(20),
+                            userNameField(),
+                            Gap(12),
+                            passwordField(),
+                            Gap(12),
+                            Row(
+                              children: [
+                                signupButton(context),
+                                Gap(12),
+                                signInButton(context),
+                              ],
+                            ),
+                            Gap(12),
+                            Row(
+                              children: [
+                                signInWithGoogleButton(),
+                              ],
+                            ),
+                            Gap(12),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );
