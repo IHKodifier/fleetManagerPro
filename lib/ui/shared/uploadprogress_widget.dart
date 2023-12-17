@@ -14,6 +14,13 @@ class MediaUploadProgressWidget extends ConsumerWidget {
 
   final Media appMedia;
 
+  IconButton uploadButton(MediaUploadProgressNotifier uploadNotifier) {
+    return IconButton(
+        icon: const Icon(Icons.cloud_upload),
+        onPressed: () => uploadNotifier.startUpload(),
+      );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appUser = ref.read(appUserProvider);
@@ -79,12 +86,5 @@ class MediaUploadProgressWidget extends ConsumerWidget {
 
 
 
-  }
-
-  IconButton uploadButton(MediaUploadProgressNotifier uploadNotifier) {
-    return IconButton(
-        icon: const Icon(Icons.cloud_upload),
-        onPressed: () => uploadNotifier.startUpload(),
-      );
   }
 }

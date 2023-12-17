@@ -82,6 +82,8 @@ final StateNotifierProviderRef ref;
     });
 
     await _uploadTask!.whenComplete(() async {
+      state.isComplete=true;
+      state.isInProgress= false;
       // _uploadTask.
       _uploadProgressStreamController.close();
       media.url = await storageRef.getDownloadURL();
