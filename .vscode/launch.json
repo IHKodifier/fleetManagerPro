@@ -58,10 +58,13 @@
             "flutterMode": "release",
             "args":[
               "--flavor",
-              "dev",
+              "prod",
                "--target",
               "lib/main_prod.dart",
-              "--verbose"
+              "--verbose",
+              // "--warning-mode","all"
+              // "--stacktrace",
+
             ],
             
           }
