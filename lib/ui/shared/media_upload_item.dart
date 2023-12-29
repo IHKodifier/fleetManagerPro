@@ -17,8 +17,7 @@ class MediaUploadItemWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appUser = ref.watch(appUserProvider);
-   
-    return Row(
+       return Row(
       children: [
         MediaThumbnail(appMedia: appMedia),
         const SizedBox(width: 16),
