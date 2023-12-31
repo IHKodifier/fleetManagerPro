@@ -94,7 +94,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 key: _formKey,
                 child: ListView(
                   children: [
-                    Gap(16),
+                    const Gap(16),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
@@ -103,7 +103,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
                     ),
-                    Gap(16),
+                    const Gap(16),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -130,7 +130,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                     // const Spacer(),
-                    Gap(12),
+                    const Gap(12),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -168,7 +168,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                     // const Spacer(),
-                    Gap(12),
+                    const Gap(12),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -209,7 +209,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                     // const Spacer(),
-                                        Gap(12),
+                                        const Gap(12),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -229,7 +229,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                     // const Spacer(),
-                                        Gap(12),
+                                        const Gap(12),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -249,7 +249,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                     // const Spacer(),
-                                        Gap(12),
+                                        const Gap(12),
 
                     SizedBox(
                       height: 50,
@@ -303,33 +303,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         ],
                       ),
                     ),
-                    // const Spacer(
-                    //   flex: 2,
-                    // ),
-                                        Gap(12),
+                                        SizedBox(height: 10,),
 
-                    const Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text('Powered by EnigmaTek Inc.'),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        // Spacer(flex: 2),
-                        Gap(12),
-                      ],
-                    ),
-                    // Text(''),
-
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     // Navigate to LoginScreen
-                    //   },
-                    //   child: Text('Already have an account?'),
-                    // ),
+                    Center(child: const Text('Powered by EnigmaTek Inc.')),
+                                        SizedBox(height: 10,),
+                    
                   ],
                 ),
               ),

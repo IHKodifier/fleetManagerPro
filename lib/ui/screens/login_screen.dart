@@ -360,7 +360,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 signInWithGoogleButton(),
                               ],
                             ),
-                            Gap(12),
+                            Gap(20),
+                                                    Text('Powered by EnigmaTek Inc.'),
+                            Gap(20),
+
                           ],
                         ),
                       ),
