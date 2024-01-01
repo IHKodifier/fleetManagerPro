@@ -69,18 +69,22 @@ class ThemeModeTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
     themeNotifier = ref.read(themeModeProvider.notifier);
-    return ListTile(
-      leading: Icon(
+    return SwitchListTile(
+      value: themeMode==ThemeMode.dark,
+      secondary: Icon(
         (Icons.dark_mode),
         color: Theme.of(context).colorScheme.primary,
         // size: 40,
       ),
+      onChanged: (value) {
+        onChanged(value);
+      },
       title: Text(
         'Dark Mode',
         style: Theme.of(context).textTheme.titleMedium,
       ),
-      trailing:
-          Switch(value: themeMode == ThemeMode.dark, onChanged: onChanged),
+      // trailing:
+      //     Switch(value: themeMode == ThemeMode.dark, onChanged: onChanged),
     );
   }
 }
@@ -137,7 +141,7 @@ class ProfileTile extends StatelessWidget {
     return ListTile(
       onTap: () => Navigator.of(context)
           .push(MaterialPageRoute(builder: (_) => ProfileView())),
-      hoverColor: Colors.green,
+      // hoverColor: Colors.green,
       leading: Icon(
         (Icons.person),
         color: Theme.of(context).colorScheme.primary,

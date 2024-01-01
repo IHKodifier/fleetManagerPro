@@ -159,7 +159,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
             //TODO dispose controllers
             ref.refresh(selectedServicesProvider);
             //todo update [driven] on vehicle objet
-            // ref.read(currentVehicleProvider.notifier).updateDriven(_kmsDriven!);
+            ref.read(currentVehicleProvider.notifier).updateDriven(_kmsDriven!);
             FirebaseFirestore.instance
                 .collection('users')
                 .doc(ref.read(appUserProvider)?.uuid)
@@ -167,6 +167,7 @@ class AddMaintenanceScreenState extends ConsumerState<AddMaintenanceScreen> {
                 .doc(ref.read(currentVehicleProvider).id)
                 .set({'driven': _kmsDriven}, SetOptions(merge: true)).then(
                     (value) {
+                      // ref.read(cuurentVehicleProvider.n)
               Navigator.pop(context);
               setState(() {
                 _isBusy=false;
